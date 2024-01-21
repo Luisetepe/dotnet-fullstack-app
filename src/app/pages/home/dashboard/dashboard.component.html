@@ -1,0 +1,46 @@
+<div style="display: flex; flex-direction: column">
+  <div style="display: flex; flex-direction: row">
+    <div>
+      <div class="dashboard-card" style="background-color: #1890ff">
+        <div class="dashboard-card-data">
+          <span nz-icon nzType="appstore" nzTheme="outline"></span>
+          <div>
+            <div>Plants</div>
+            <span>28</span>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-card" style="background-color: #faad14; margin-top: 12px">
+        <div class="dashboard-card-data">
+          <span nz-icon nzType="thunderbolt" nzTheme="outline"></span>
+          <div>
+            <div>Total Capacity</div>
+            <span>1,909 MW</span>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-card" style="background-color: #7cb305; margin-top: 12px">
+        <div class="dashboard-card-data">
+          <span nz-icon nzType="environment" nzTheme="outline"></span>
+          <div>
+            <div>Locations</div>
+            <span>21</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: center; margin-left: 25px">
+      <canvas id="PowerChart">{{ chart }}</canvas>
+    </div>
+  </div>
+  <div
+    style="
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-gap: 10px;
+      margin-top: 30px;
+    ">
+    <app-example-table></app-example-table>
+    <app-example-table></app-example-table>
+  </div>
+</div>

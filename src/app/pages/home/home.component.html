@@ -1,0 +1,78 @@
+<nz-layout class="app-layout">
+  <div style="margin-left: 232px">
+    <nz-sider class="menu-sidebar" nzWidth="232px" nzTheme="light">
+      <div class="sidebar-logo">
+        <a href="https://ng.ant.design/" target="_blank">
+          <img src="assets/images/FRV.jpg" alt="logo" />
+        </a>
+      </div>
+      <ul nz-menu nzMode="inline" [nzInlineCollapsed]="false" class="app-menu">
+        @for (route of routes; track route.label) {
+          <!--If it is a flat route-->
+          @if (route.path) {
+            <li nz-menu-item nzMatchRouter [routerLink]="[route.path]">
+              <span nz-icon nzType="{{ route.icon }}"></span>
+              <span class="nav-text">{{ route.label }}</span>
+            </li>
+          } @else {
+            <!--If it is a route with sub-routes-->
+            <li
+              nz-submenu
+              nzTitle="{{ route.label }}"
+              nzIcon="{{ route.icon }}"
+              [(nzOpen)]="route.isOpen">
+              <ul>
+                @for (subRoute of route.children; track subRoute.label) {
+                  <li nz-menu-item nzMatchRouter [routerLink]="[subRoute.path]">
+                    <span nz-icon nzType="{{ subRoute.icon }}"></span>
+                    <span class="nav-text">{{ subRoute.label }}</span>
+                  </li>
+                }
+              </ul>
+            </li>
+          }
+        }
+      </ul>
+    </nz-sider>
+    <nz-layout>
+      <nz-header>
+        <div class="app-header">
+          <span class="app-breadcrum">
+            @for (segment of currentBreadcrumb; track segment.label; let last = $last) {
+              <span>
+                <span nz-icon nzType="{{ segment.icon }}" class="breadcrum-icon"></span>
+                <span>{{ segment.label }}</span>
+              </span>
+              @if (!last) {
+                <span class="breadcrum-separator">/</span>
+              }
+            }
+          </span>
+          <span style="margin-right: 300px">
+            <nz-avatar
+              nzSize="large"
+              nzIcon="user"
+              nz-popover
+              [nzPopoverContent]="contentTemplate"
+              nzPopoverTrigger="click"
+              nzPopoverPlacement="bottomLeft"
+              >></nz-avatar
+            >
+          </span>
+        </div>
+      </nz-header>
+      <nz-content>
+        <div>
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
+    </nz-layout>
+  </div>
+</nz-layout>
+
+<ng-template #contentTemplate>
+  <div>
+    <p>Content muy largo con botones e icono [...]</p>
+    <p>Content muy largo con botones e icono [...]</p>
+  </div>
+</ng-template>
