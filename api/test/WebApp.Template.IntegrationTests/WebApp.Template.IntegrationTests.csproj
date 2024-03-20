@@ -29,4 +29,8 @@
       <ProjectReference Include="..\..\src\WebApp.Template.Tools\WebApp.Template.Tools.csproj" />
     </ItemGroup>
 
+     <ItemGroup>
+        <Content Include="xunit.runner.json" CopyToOutputDirectory="Always"/>
+    </ItemGroup>
+
 </Project>

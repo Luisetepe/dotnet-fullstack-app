@@ -2,13 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using TSID.Creator.NET;
 using WebApp.Template.Application.Data.DbContexts;
 
 namespace WebApp.Template.IntegrationTests;
 
-public class IntegrationTestFixture(IMessageSink sink) : TestFixture<Program>(sink)
+public class IntegrationTestFixture : AppFixture<Program>
 {
-    private readonly string _testDatabaseId = TsidCreator.GetTsid().ToString().ToString("N");
+    private readonly string _testDatabaseId = TsidCreator.GetTsid().ToString();
 
     protected override async Task SetupAsync()
     {
