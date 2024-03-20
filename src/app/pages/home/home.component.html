@@ -1,78 +1,92 @@
-<nz-layout class="app-layout">
-  <div style="margin-left: 232px">
-    <nz-sider class="menu-sidebar" nzWidth="232px" nzTheme="light">
-      <div class="sidebar-logo">
-        <a href="https://ng.ant.design/" target="_blank">
-          <img src="assets/images/FRV.jpg" alt="logo" />
-        </a>
-      </div>
-      <ul nz-menu nzMode="inline" [nzInlineCollapsed]="false" class="app-menu">
-        @for (route of routes; track route.label) {
-          <!--If it is a flat route-->
-          @if (route.path) {
-            <li nz-menu-item nzMatchRouter [routerLink]="[route.path]">
-              <span nz-icon nzType="{{ route.icon }}"></span>
-              <span class="nav-text">{{ route.label }}</span>
-            </li>
-          } @else {
-            <!--If it is a route with sub-routes-->
-            <li
-              nz-submenu
-              nzTitle="{{ route.label }}"
-              nzIcon="{{ route.icon }}"
-              [(nzOpen)]="route.isOpen">
-              <ul>
-                @for (subRoute of route.children; track subRoute.label) {
-                  <li nz-menu-item nzMatchRouter [routerLink]="[subRoute.path]">
-                    <span nz-icon nzType="{{ subRoute.icon }}"></span>
-                    <span class="nav-text">{{ subRoute.label }}</span>
-                  </li>
-                }
-              </ul>
-            </li>
-          }
-        }
-      </ul>
-    </nz-sider>
-    <nz-layout>
-      <nz-header>
-        <div class="app-header">
-          <span class="app-breadcrum">
-            @for (segment of currentBreadcrumb; track segment.label; let last = $last) {
-              <span>
-                <span nz-icon nzType="{{ segment.icon }}" class="breadcrum-icon"></span>
-                <span>{{ segment.label }}</span>
-              </span>
-              @if (!last) {
-                <span class="breadcrum-separator">/</span>
+<nz-layout class="h-screen">
+  <nz-sider
+    class="relative z-10 min-h-screen border-r-4 shadow-xl"
+    nzWidth="232px"
+    nzTheme="light">
+    <div class="relative mb-12 mt-12 h-32 overflow-hidden leading-10">
+      <a href="https://ng.ant.design/" target="_blank">
+        <img
+          class="inline-block h-32 w-full align-middle"
+          src="assets/images/FRV.jpg"
+          alt="logo" />
+      </a>
+    </div>
+    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="false" class="mt-16">
+      @for (route of this.routes; track route.label) {
+        <!--If it is a flat route-->
+        @if (route.path) {
+          <li nz-menu-item nzMatchRouter [routerLink]="[route.path]">
+            <span class="!text-lg" nz-icon nzType="{{ route.icon }}"></span>
+            <span class="text-lg">{{ route.label }}</span>
+          </li>
+        } @else {
+          <!--If it is a route with sub-routes-->
+          <li
+            class="text-lg"
+            nz-submenu
+            nzTitle="{{ route.label }}"
+            nzIcon="{{ route.icon }}"
+            [(nzOpen)]="route.isOpen">
+            <ul>
+              @for (subRoute of route.children; track subRoute.label) {
+                <li nz-menu-item nzMatchRouter [routerLink]="[subRoute.path]">
+                  <span
+                    class="!text-lg"
+                    nz-icon
+                    nzType="{{ subRoute.icon }}"></span>
+                  <span class="text-lg">{{ subRoute.label }}</span>
+                </li>
               }
-            }
+            </ul>
+          </li>
+        }
+      }
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header class="w-full p-0">
+      <div
+        class="flex h-16 flex-row items-center justify-between bg-white p-0 shadow-md">
+        <span></span>
+        <span class="ml-7 text-3xl font-extrabold">
+          <span>
+            <span
+              nz-icon
+              nzType="{{ this.currentBreadcrumb.icon }}"
+              class="mr-3 text-4xl"></span>
+            <span>{{ this.currentBreadcrumb.label }}</span>
           </span>
-          <span style="margin-right: 300px">
-            <nz-avatar
-              nzSize="large"
-              nzIcon="user"
-              nz-popover
-              [nzPopoverContent]="contentTemplate"
-              nzPopoverTrigger="click"
-              nzPopoverPlacement="bottomLeft"
-              >></nz-avatar
-            >
-          </span>
-        </div>
-      </nz-header>
-      <nz-content>
-        <div>
-          <router-outlet></router-outlet>
-        </div>
-      </nz-content>
-    </nz-layout>
-  </div>
+        </span>
+        <span class="mr-6">
+          <nz-avatar
+            nzSize="large"
+            nzIcon="user"
+            nz-popover
+            [nzPopoverContent]="contentTemplate"
+            nzPopoverTrigger="click"></nz-avatar>
+        </span>
+      </div>
+    </nz-header>
+    <ng-template #emptyIndicatorTemplate></ng-template>
+
+    <div class="h-full overflow-y-auto">
+      <nz-spin
+        [nzSpinning]="this.appStore.isRouteLoading"
+        [nzIndicator]="emptyIndicatorTemplate"
+        nzSize="large">
+        <nz-content class="mb-2 ml-2 mr-1 mt-3 min-w-[820px]">
+          <div class="p-2">
+            <router-outlet></router-outlet>
+          </div>
+        </nz-content>
+      </nz-spin>
+    </div>
+  </nz-layout>
 </nz-layout>
 
 <ng-template #contentTemplate>
   <div>
-    <p>Content muy largo con botones e icono [...]</p>
-    <p>Content muy largo con botones e icono [...]</p>
+    <p>Content</p>
+    <p>Content</p>
   </div>
 </ng-template>

@@ -40,3 +40,7 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Dotnet project build files
+api/**/bin/
+api/**/obj/

@@ -1,8 +1,60 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
-  },
-  "editor.formatOnSave": true,
-  "editor.suggest.snippetsPreventQuickSuggestions": false,
-  "editor.inlineSuggest.enabled": true
+	"[html]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[jsonc]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[csharp]": {
+		"editor.tabSize": 4
+	},
+	"editor.codeActionsOnSave": {
+		"quickfix.biome": "explicit",
+		"source.organizeImports.biome": "explicit"
+	},
+	"editor.formatOnSave": true,
+	"editor.suggest.snippetsPreventQuickSuggestions": false,
+	"editor.inlineSuggest.enabled": true,
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/.idea": true,
+		"**/dist": true,
+		"**/build": true,
+		"api/**/bin": true,
+		"api/**/obj": true,
+		"**/.angular": true
+	},
+	"files.exclude": {
+		"**/.idea": true,
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		"**/node_modules": true,
+		"**/dist": true,
+		"api/**/bin": true,
+		"api/**/obj": true,
+		"**/.angular": true
+	},
+	"advancedNewFile.exclude": {
+		"**/node_modules": true,
+		"**/.idea": true,
+		"**/dist": true,
+		"**/build": true,
+		"api/**/bin": true,
+		"api/**/obj": true,
+		"**/.angular": true
+	},
 }
