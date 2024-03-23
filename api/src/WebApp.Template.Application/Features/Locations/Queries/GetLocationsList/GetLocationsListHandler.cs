@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Data.DbContexts;
 using WebApp.Template.Application.Data.DbEntities;
 using WebApp.Template.Application.Data.Services;
+using WebApp.Template.Application.Shared.Exceptions;
 using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Application.Features.Locations.Queries.GetLocationsList;
@@ -64,7 +65,7 @@ public class GetLocationsListHandler(WebAppDbContext db, IUniqueIdentifierServic
                 "name" => x => x.Name,
                 "latitude" => x => x.Latitude,
                 "longitude" => x => x.Longitude,
-                _ => throw new ArgumentOutOfRangeException(nameof(query.Request.OrderBy), query.Request.OrderBy)
+                _ => throw new OrderByException(query.Request.OrderBy)
             };
         }
 

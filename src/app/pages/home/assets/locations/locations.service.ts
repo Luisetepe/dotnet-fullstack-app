@@ -9,37 +9,35 @@ import { Injectable, inject } from '@angular/core'
 import { Observable, map } from 'rxjs'
 import * as z from 'zod'
 
-const plantDataDtoSchema = z.object({
-	plants: z.array(
+export const DEFAULT_LOCATIONS_PAGE_SIZE = 10
+
+const locationDataDtoSchema = z.object({
+	locations: z.array(
 		z.object({
 			id: z.string(),
 			name: z.string(),
-			plantId: z.string(),
-			utilityCompany: z.string(),
-			status: z.string(),
-			tags: z.array(z.string()),
-			capacityDc: z.number(),
-			portfolios: z.array(z.string())
+			longitude: z.number(),
+			latitude: z.number()
 		})
 	),
 	pagination: paginationInfoSchema
 })
-export type PlantDataDto = z.infer<typeof plantDataDtoSchema>
+export type LocationDataDto = z.infer<typeof locationDataDtoSchema>
 
 @Injectable({ providedIn: 'root' })
-export class PlantsService {
+export class LocationsService {
 	private backendApiService = inject(BackendApiService)
 
-	getPlantsList(params?: SearchRequest): Observable<PlantDataDto> {
+	getLocationsList(params?: SearchRequest): Observable<LocationDataDto> {
 		const searchParams = searchRequestSchema.parse(params)
 
 		return this.backendApiService
-			.get<PlantDataDto>('plants/getPlantsList', createHttpParams(searchParams))
+			.get<LocationDataDto>('locations/getLocationsList', createHttpParams(searchParams))
 			.pipe(
 				map((data) => {
-					const result = plantDataDtoSchema.safeParse(data)
+					const result = locationDataDtoSchema.safeParse(data)
 					if (!result.success) {
-						throw new Error('Invalid plant data')
+						throw new Error('Invalid location data')
 					}
 					return result.data
 				})

@@ -3,22 +3,22 @@ import { inject } from '@angular/core'
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router'
 import { NzNotificationService } from 'ng-zorro-antd/notification'
 import { EMPTY, catchError, delay, finalize } from 'rxjs'
-import { PlantDataDto, PlantsService } from './plants.service'
+import { DEFAULT_LOCATIONS_PAGE_SIZE, LocationDataDto, LocationsService } from './locations.service'
 
-export const plantsResolver: ResolveFn<PlantDataDto> = (
+export const locationsResolver: ResolveFn<LocationDataDto> = (
 	route: ActivatedRouteSnapshot,
 	state: RouterStateSnapshot
 ) => {
-	const plantsService = inject(PlantsService)
+	const plantsService = inject(LocationsService)
 	const notification = inject(NzNotificationService)
 	const appStore = inject(AppStore)
 
-	appStore.startRouteLoading('Loading plants data...')
+	appStore.startRouteLoading('Loading locations data...')
 
 	return plantsService
-		.getPlantsList({
+		.getLocationsList({
 			pageNumber: 1,
-			pageSize: 5
+			pageSize: DEFAULT_LOCATIONS_PAGE_SIZE
 		})
 		.pipe(
 			delay(500),
@@ -26,11 +26,11 @@ export const plantsResolver: ResolveFn<PlantDataDto> = (
 				appStore.finishRouteLoading()
 			}),
 			catchError((error) => {
-				console.error('Error fetching plants data:', error)
+				console.error('Error fetching locations data:', error)
 				appStore.finishRouteLoading()
 				notification.error(
-					'Error fetching plants data',
-					'An error occurred while fetching plants data. Please try again later.'
+					'Error fetching locations data',
+					'An error occurred while fetching locations data. Please try again later.'
 				)
 				return EMPTY
 			})

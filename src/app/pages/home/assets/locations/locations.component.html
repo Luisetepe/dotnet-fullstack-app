@@ -1,1 +1,68 @@
-<h1>LOCATIONS</h1>
+<nz-page-header style="padding: 16px 16px 2px; background-color: white">
+  <nz-page-header-title>
+    <span>
+      <span nz-icon nzType="reconciliation" nzTheme="outline"></span>
+      <span class="ml-2">Locations List</span>
+    </span>
+  </nz-page-header-title>
+  <nz-page-header-extra class="flex w-2/3 justify-end">
+    <nz-button-group class="w-2/3">
+      <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          nz-input
+          placeholder="search locations..."
+          (input)="onSearch($event)" />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <span nz-icon nzType="search"></span>
+      </ng-template>
+    </nz-button-group>
+  </nz-page-header-extra>
+  <nz-page-header-content>
+    <nz-table
+      #filterTable
+      [nzData]="locations"
+      [nzFrontPagination]="false"
+      [nzLoading]="loading"
+      [nzTotal]="paginartionInfo.totalRows"
+      [nzPageSize]="paginartionInfo.currentPageSize"
+      [nzPageIndex]="paginartionInfo.currentPageNumber"
+      (nzQueryParams)="onQueryParamsChange($event)"
+      nzTableLayout="fixed">
+      <thead>
+        <tr>
+          <th
+            nzColumnKey="name"
+            [nzSortFn]="true"
+            [nzSortDirections]="['ascend', 'descend']"
+            nzSortOrder="ascend">
+            Name
+          </th>
+          <th
+            nzColumnKey="latitude"
+            [nzSortFn]="true"
+            [nzSortDirections]="['ascend', 'descend']">
+            Latitude
+          </th>
+          <th
+            nzColumnKey="longitude"
+            [nzSortFn]="true"
+            [nzSortDirections]="['ascend', 'descend']">
+            Longitude
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of filterTable.data; track data.id) {
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.latitude }}</td>
+            <td>{{ data.longitude }}</td>
+          </tr>
+        }
+      </tbody>
+    </nz-table>
+  </nz-page-header-content>
+</nz-page-header>

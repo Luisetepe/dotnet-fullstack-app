@@ -16,7 +16,7 @@ export const dashboardResolver: ResolveFn<DashboardData> = (
 	appStore.startRouteLoading('Loading dashboard data...')
 
 	return dashboardService.getDashboardData().pipe(
-		delay(1000),
+		delay(500),
 		finalize(() => {
 			appStore.finishRouteLoading()
 		}),

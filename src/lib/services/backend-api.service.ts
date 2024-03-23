@@ -15,10 +15,19 @@ export type BaseResponse<T> = {
 	result?: T
 }
 
+export const paginationInfoSchema = z.object({
+	currentPageNumber: z.number(),
+	currentPageSize: z.number(),
+	totalRows: z.number(),
+	totalPages: z.number()
+})
+
+export type PaginationInfo = z.infer<typeof paginationInfoSchema>
+
 export const searchRequestSchema = z
 	.object({
 		search: z.string().optional(),
-		page: z.number().optional(),
+		pageNumber: z.number().optional(),
 		pageSize: z.number().optional(),
 		order: z.enum(['asc', 'desc']).optional(),
 		orderBy: z.string().optional()
@@ -36,7 +45,7 @@ export class BackendApiService {
 		const options = { params, headers, observe: 'response' } as const
 		return this.http.get<BaseResponse<T>>(`${this.baseUrl}/${url}`, options).pipe(
 			map((response) => {
-				// biome-ignore lint/style/noNonNullAssertion: it is safe to assume a body is present
+				// biome-ignore lint/style/noNonNullAssertion: It is safe to assume a body is present
 				return response.body?.result!
 			}),
 			catchError(handleApiError)
@@ -48,7 +57,7 @@ export class BackendApiService {
 		const options = { headers, observe: 'response' } as const
 		return this.http.post<BaseResponse<T>>(`${this.baseUrl}/${url}`, body, options).pipe(
 			map((response) => {
-				// biome-ignore lint/style/noNonNullAssertion: it is safe to assume a body is present
+				// biome-ignore lint/style/noNonNullAssertion: It is safe to assume a body is present
 				return response.body?.result!
 			}),
 			catchError(handleApiError)

@@ -24,25 +24,33 @@
     <nz-table
       #filterTable
       [nzData]="plants"
+      [nzFrontPagination]="false"
       [nzLoading]="loading"
+      [nzTotal]="paginartionInfo.totalRows"
+      [nzPageSize]="paginartionInfo.currentPageSize"
+      [nzPageIndex]="currentPage"
+      (nzQueryParams)="onQueryParamsChange($event)"
       nzTableLayout="fixed">
       <thead>
         <tr>
-          @for (column of columnsDef; track column.name) {
-            <!-- <th
-              [nzSortOrder]="column.sortOrder"
-              [nzSortFn]="column.sortFn"
-              [nzSortDirections]="column.sortDirections"
-              [nzFilterMultiple]="column.filterMultiple"
-              [nzFilters]="column.listOfFilter"
-              [nzFilterFn]="column.filterFn"
-              >
-              {{ column.name }}
-            </th> -->
-            <th>
-              {{ column.name }}
-            </th>
-          }
+          <th
+            nzColumnKey="name"
+            [nzSortFn]="true"
+            [nzSortDirections]="['ascend', 'descend']"
+            nzSortOrder="ascend">
+            Name
+          </th>
+          <th nzColumnKey="plantId">Plant ID</th>
+          <th nzColumnKey="utilityCompany">Utility Company</th>
+          <th
+            nzColumnKey="status"
+            [nzSortFn]="true"
+            [nzSortDirections]="['ascend', 'descend']">
+            Status
+          </th>
+          <th nzColumnKey="tags">Tags</th>
+          <th nzColumnKey="capacityDc">Capacity DC</th>
+          <th nzColumnKey="portfolios">Portfolios</th>
         </tr>
       </thead>
       <tbody>

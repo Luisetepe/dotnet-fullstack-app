@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Data.DbContexts;
 using WebApp.Template.Application.Data.DbEntities;
 using WebApp.Template.Application.Data.Services;
+using WebApp.Template.Application.Shared.Exceptions;
 using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Application.Features.Plants.Queries.GetPlantsList;
@@ -70,7 +71,7 @@ public class GetPlantsListHandler(WebAppDbContext db, IUniqueIdentifierService i
             {
                 "name" => x => x.Name,
                 "status" => x => x.Status.Name,
-                _ => throw new ArgumentOutOfRangeException(nameof(query.Request.OrderBy), query.Request.OrderBy)
+                _ => throw new OrderByException(query.Request.OrderBy)
             };
         }
 
