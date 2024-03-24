@@ -13,7 +13,9 @@ public record GetDashboardWidgetsDataResponseDto
 public class GetDashboardWidgetsDataResponse : BaseResponse<GetDashboardWidgetsDataResponseDto>
 {
     [System.Text.Json.Serialization.JsonConstructor]
-    public GetDashboardWidgetsDataResponse(GetDashboardWidgetsDataResponseDto result) : base(result) { }
+    public GetDashboardWidgetsDataResponse(GetDashboardWidgetsDataResponseDto result)
+        : base(result) { }
 
-    public GetDashboardWidgetsDataResponse(string message) : base(message) { }
+    public GetDashboardWidgetsDataResponse(string message, StatusCode statusCode)
+        : base(message, statusCode) { }
 }

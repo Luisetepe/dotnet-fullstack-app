@@ -12,11 +12,7 @@ public class ResourceTypeConfiguration : IEntityTypeConfiguration<ResourceType>
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id)
-            .HasColumnType("bigint")
-            .IsRequired();
-        builder.Property(x => x.Name)
-            .HasColumnType("varchar(100)")
-            .IsRequired();
+        builder.Property(x => x.Id).HasColumnType("bigint").IsRequired();
+        builder.Property(x => x.Name).HasColumnType("varchar(100)").IsRequired();
     }
 }

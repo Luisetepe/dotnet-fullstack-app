@@ -27,11 +27,7 @@ public class PlantType
     {
         ValidateCreationArguments(id, name);
 
-        return new PlantType
-        {
-            Id = id,
-            Name = name
-        };
+        return new PlantType { Id = id, Name = name };
     }
 
     private static void ValidateCreationArguments(long id, string name)

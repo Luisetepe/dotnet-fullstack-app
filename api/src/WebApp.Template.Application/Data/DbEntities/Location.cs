@@ -31,7 +31,12 @@ public class Location
         };
     }
 
-    private static void ValidateCreationArguments(long id, string name, decimal longitude, decimal latitude)
+    private static void ValidateCreationArguments(
+        long id,
+        string name,
+        decimal longitude,
+        decimal latitude
+    )
     {
         if (id <= 0)
             throw new DbEntityCreationException(nameof(Location), nameof(id));

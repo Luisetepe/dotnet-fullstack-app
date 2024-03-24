@@ -9,7 +9,10 @@ namespace WebApp.Template.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegisterApplicationServices(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         services.AddDbContext<WebAppDbContext>(options =>
         {
@@ -17,7 +20,9 @@ public static class DependencyInjection
             options.UseSnakeCaseNamingConvention();
         });
 
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())
+        );
 
         services.AddSingleton<IUniqueIdentifierService, UniqueIdentifierService>();
 

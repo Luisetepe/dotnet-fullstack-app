@@ -26,7 +26,7 @@ public static class PlantSeed
         if (portfolios.Length < 2)
             throw new Exception("Portfolios must be seeded before Plants.");
 
-        Plant[] plants = 
+        Plant[] plants =
         [
             Plant.CreatePlant(
                 idService.Create(),
@@ -45,7 +45,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2)),
+                Random.Shared.GetItems(portfolios, 2)
+            ),
             Plant.CreatePlant(
                 idService.Create(),
                 "Plant 2",
@@ -63,7 +64,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2)),
+                Random.Shared.GetItems(portfolios, 2)
+            ),
             Plant.CreatePlant(
                 idService.Create(),
                 "Plant 3",
@@ -81,7 +83,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2)),
+                Random.Shared.GetItems(portfolios, 2)
+            ),
             Plant.CreatePlant(
                 idService.Create(),
                 "Plant 4",
@@ -99,7 +102,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2)),
+                Random.Shared.GetItems(portfolios, 2)
+            ),
             Plant.CreatePlant(
                 idService.Create(),
                 "Plant 5",
@@ -117,7 +121,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2)),
+                Random.Shared.GetItems(portfolios, 2)
+            ),
             Plant.CreatePlant(
                 idService.Create(),
                 "Plant 6",
@@ -135,7 +140,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2)),
+                Random.Shared.GetItems(portfolios, 2)
+            ),
             Plant.CreatePlant(
                 idService.Create(),
                 "Plant 7",
@@ -153,7 +159,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2)),
+                Random.Shared.GetItems(portfolios, 2)
+            ),
             Plant.CreatePlant(
                 idService.Create(),
                 "Plant 8",
@@ -171,7 +178,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2)),
+                Random.Shared.GetItems(portfolios, 2)
+            ),
             Plant.CreatePlant(
                 idService.Create(),
                 "Plant 9",
@@ -189,7 +197,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2)),
+                Random.Shared.GetItems(portfolios, 2)
+            ),
             Plant.CreatePlant(
                 idService.Create(),
                 "Plant 10",
@@ -207,7 +216,8 @@ public static class PlantSeed
                 resourceTypes[rand.Next(resourceTypes.Length)].Id,
                 plantStatuses[rand.Next(plantStatuses.Length)].Id,
                 locations[rand.Next(locations.Length)].Id,
-                Random.Shared.GetItems(portfolios, 2))
+                Random.Shared.GetItems(portfolios, 2)
+            )
         ];
 
         await db.Plants.AddRangeAsync(plants);

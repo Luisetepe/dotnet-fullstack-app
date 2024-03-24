@@ -15,41 +15,61 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture)
     [InlineData(1, 5, "latitude", "desc", "5")]
     [InlineData(1, 5, "longitude", "asc", "on 2")]
     [InlineData(1, 5, "longitude", "desc", "3")]
-    public async Task Should_Return_Locations(int page, int pageSize, string sortBy, string sortDirection, string search)
+    public async Task Should_Return_Locations(
+        int page,
+        int pageSize,
+        string sortBy,
+        string sortDirection,
+        string search
+    )
     {
         //Arrange
+        var uidService = fixture.GetUniqueIdentifierService();
         var db = fixture.GetDbContext();
-        var locationsQuery = db.Locations
-            .AsNoTracking()
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize);
+        var locationsQuery = db
+            .Locations.AsNoTracking()
+            .Where(x => string.IsNullOrWhiteSpace(search) || x.Name.Contains(search));
 
         if (sortBy == "name")
         {
-            locationsQuery = locationsQuery.OrderBy(x => x.Name);
+            locationsQuery =
+                sortDirection == "asc"
+                    ? locationsQuery.OrderBy(x => x.Name).ThenBy(x => x.Id)
+                    : locationsQuery.OrderByDescending(x => x.Name).ThenBy(x => x.Id);
         }
         else if (sortBy == "latitude")
         {
-            locationsQuery = locationsQuery.OrderBy(x => x.Latitude);
+            locationsQuery =
+                sortDirection == "asc"
+                    ? locationsQuery.OrderBy(x => x.Latitude).ThenBy(x => x.Id)
+                    : locationsQuery.OrderByDescending(x => x.Latitude).ThenBy(x => x.Id);
         }
         else if (sortBy == "longitude")
         {
-            locationsQuery = locationsQuery.OrderBy(x => x.Longitude);
-        }
-        if (sortDirection == "desc")
-        {
-            locationsQuery = locationsQuery.Reverse();
-        }
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            locationsQuery = locationsQuery.Where(x => x.Name.Contains(search));
+            locationsQuery =
+                sortDirection == "asc"
+                    ? locationsQuery.OrderBy(x => x.Longitude).ThenBy(x => x.Id)
+                    : locationsQuery.OrderByDescending(x => x.Longitude).ThenBy(x => x.Id);
         }
 
-        var expectedLocations = await locationsQuery.ToArrayAsync();
+        var expectedLocations = (
+            await locationsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync()
+        )
+            .Select(x => new GetLocationsListResponseDto.Location
+            {
+                Id = uidService.ConvertToString(x.Id),
+                Name = x.Name,
+                Latitude = x.Latitude,
+                Longitude = x.Longitude
+            })
+            .ToArray();
 
         // Act
-        var (httpResponse, result) = await fixture.Client.GETAsync<GetLocationsListEndpoint, GetLocationsListRequest, GetLocationsListResponse>
-        (
+        var (httpResponse, result) = await fixture.Client.GETAsync<
+            GetLocationsListEndpoint,
+            GetLocationsListRequest,
+            GetLocationsListResponse
+        >(
             new GetLocationsListRequest
             {
                 PageNumber = page,
@@ -68,6 +88,6 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture)
         result.Message.Should().BeNull();
 
         result.Result.Should().NotBeNull();
-        result.Result!.Locations.Count().Should().Be(expectedLocations.Length);
+        result.Result!.Locations.Should().BeEquivalentTo(expectedLocations);
     }
 }

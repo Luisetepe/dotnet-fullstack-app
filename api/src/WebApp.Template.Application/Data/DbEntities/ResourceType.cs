@@ -27,11 +27,7 @@ public class ResourceType
     {
         ValidateCreationArguments(id, name);
 
-        return new ResourceType
-        {
-            Id = id,
-            Name = name
-        };
+        return new ResourceType { Id = id, Name = name };
     }
 
     private static void ValidateCreationArguments(long id, string name)

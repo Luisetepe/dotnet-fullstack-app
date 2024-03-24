@@ -21,6 +21,6 @@ public class GetLocationsListResponse : BaseResponse<GetLocationsListResponseDto
     public GetLocationsListResponse(GetLocationsListResponseDto result)
         : base(result) { }
 
-    public GetLocationsListResponse(string message) : base(message) { }
-
+    public GetLocationsListResponse(string message, StatusCode statusCode)
+        : base(message, statusCode) { }
 }

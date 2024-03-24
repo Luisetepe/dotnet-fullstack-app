@@ -38,7 +38,6 @@ public class Plant
     /* Private constructor for EF Core */
     private Plant() { }
 
-
     public static Plant CreatePlant(
         long id,
         string name,
@@ -56,7 +55,8 @@ public class Plant
         long resourceTypeId,
         long statusId,
         long locationId,
-        ICollection<Portfolio>? portfolios = null)
+        ICollection<Portfolio>? portfolios = null
+    )
     {
         ValidateCreationArguments(
             id,
@@ -115,7 +115,8 @@ public class Plant
         long plantTypeId,
         long resourceTypeId,
         long statusId,
-        long locationId)
+        long locationId
+    )
     {
         if (id <= 0)
             throw new DbEntityCreationException(nameof(Plant), nameof(Id));

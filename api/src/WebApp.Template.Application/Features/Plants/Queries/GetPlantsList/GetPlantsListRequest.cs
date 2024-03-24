@@ -8,11 +8,6 @@ public class GetPlantsListQuery : IRequest<GetPlantsListResponse>
     public GetPlantsListRequest Request { get; set; }
 }
 
-public record GetPlantsListRequest : SearchRequest
-{
-}
+public record GetPlantsListRequest : SearchRequest { }
 
-public class GetPlantsListRequestValidator : SearchRequestValidator<GetPlantsListRequest>
-{
-}
-
+public class GetPlantsListRequestValidator : SearchRequestValidator<GetPlantsListRequest> { }

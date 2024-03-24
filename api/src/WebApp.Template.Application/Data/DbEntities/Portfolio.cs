@@ -27,11 +27,7 @@ public class Portfolio
     {
         ValidateCreationArguments(id, name);
 
-        return new Portfolio
-        {
-            Id = id,
-            Name = name
-        };
+        return new Portfolio { Id = id, Name = name };
     }
 
     private static void ValidateCreationArguments(long id, string name)

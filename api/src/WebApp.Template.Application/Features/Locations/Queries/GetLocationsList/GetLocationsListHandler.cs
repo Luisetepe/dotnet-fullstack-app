@@ -9,9 +9,13 @@ using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Application.Features.Locations.Queries.GetLocationsList;
 
-public class GetLocationsListHandler(WebAppDbContext db, IUniqueIdentifierService identifierService) : IRequestHandler<GetLocationsListQuery, GetLocationsListResponse>
+public class GetLocationsListHandler(WebAppDbContext db, IUniqueIdentifierService identifierService)
+    : IRequestHandler<GetLocationsListQuery, GetLocationsListResponse>
 {
-    public async Task<GetLocationsListResponse> Handle(GetLocationsListQuery query, CancellationToken cancellationToken)
+    public async Task<GetLocationsListResponse> Handle(
+        GetLocationsListQuery query,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -37,26 +41,34 @@ public class GetLocationsListHandler(WebAppDbContext db, IUniqueIdentifierServic
                 TotalRows = totalRows,
                 TotalPages = (int)Math.Ceiling((double)totalRows / query.Request.PageSize)
             };
-            return new GetLocationsListResponse(new GetLocationsListResponseDto
-            {
-                Locations = locations,
-                Pagination = paginationInfo
-            });
+            return new GetLocationsListResponse(
+                new GetLocationsListResponseDto
+                {
+                    Locations = locations,
+                    Pagination = paginationInfo
+                }
+            );
+        }
+        catch (SearcException ex)
+        {
+            return new GetLocationsListResponse(ex.Message, StatusCode.ValidationError);
         }
         catch (Exception ex)
         {
-            return new GetLocationsListResponse(ex.Message);
+            return new GetLocationsListResponse(ex.Message, StatusCode.UnhandledError);
         }
     }
-
 
     private IQueryable<Location> BuildFilteredQuery(GetLocationsListQuery query)
     {
         Expression<Func<Location, object>> orderExpression = x => x.Name;
 
-        var filteredQuery = db.Locations
-            .AsNoTracking()
-            .Where(x => string.IsNullOrWhiteSpace(query.Request.Search) || x.Name.Contains(query.Request.Search));
+        var filteredQuery = db
+            .Locations.AsNoTracking()
+            .Where(x =>
+                string.IsNullOrWhiteSpace(query.Request.Search)
+                || x.Name.Contains(query.Request.Search)
+            );
 
         if (!string.IsNullOrWhiteSpace(query.Request.OrderBy))
         {
@@ -69,7 +81,8 @@ public class GetLocationsListHandler(WebAppDbContext db, IUniqueIdentifierServic
             };
         }
 
-        filteredQuery = query.Request.Order == "asc"
+        filteredQuery =
+            query.Request.Order == "asc"
                 ? filteredQuery.OrderBy(orderExpression).ThenBy(x => x.Id)
                 : filteredQuery.OrderByDescending(orderExpression).ThenByDescending(x => x.Id);
 

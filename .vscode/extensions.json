@@ -1,12 +1,14 @@
 {
 	"recommendations": [
-    "angular.ng-template",
-    "aaron-bond.better-comments",
-    "ms-dotnettools.csdevkit",
-    "ms-dotnettools.csharp",
-    "ms-dotnettools.vscode-dotnet-runtime",
-    "esbenp.prettier-vscode",
-    "biomejs.biome",
-    "esbenp.prettier-vscode",
-  ]
+		"angular.ng-template",
+		"aaron-bond.better-comments",
+		"ms-dotnettools.csdevkit",
+		"ms-dotnettools.csharp",
+		"ms-dotnettools.vscode-dotnet-runtime",
+		"esbenp.prettier-vscode",
+		"biomejs.biome",
+		"bradlc.vscode-tailwindcss",
+		"aliasadidev.nugetpackagemanagergui",
+		"csharpier.csharpier-vscode",
+	]
 }

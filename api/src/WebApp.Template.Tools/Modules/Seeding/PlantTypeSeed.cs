@@ -10,7 +10,7 @@ public static class PlantTypeSeed
     {
         // Create 5 new PlantType entities
         PlantType[] plantTypes =
-       [ 
+        [
             PlantType.CreatePlantType(idService.Create(), "Ground mount"),
             PlantType.CreatePlantType(idService.Create(), "Roof top"),
             PlantType.CreatePlantType(idService.Create(), "Floating"),

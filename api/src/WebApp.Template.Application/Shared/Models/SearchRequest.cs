@@ -12,7 +12,8 @@ public record SearchRequest
     public string? Search { get; init; }
 }
 
-public abstract class SearchRequestValidator<T> : Validator<T> where T : SearchRequest
+public abstract class SearchRequestValidator<T> : Validator<T>
+    where T : SearchRequest
 {
     private readonly string[] _validSortDirections = ["asc", "desc"];
 

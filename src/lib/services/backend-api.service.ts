@@ -5,8 +5,11 @@ import { Observable, catchError, map, throwError } from 'rxjs'
 import * as z from 'zod'
 
 export enum StatusCode {
-	Success = 0,
-	Error = 1
+	Success = 200,
+	UnhandledError = 500,
+	ValidationError = 400,
+	NotFoundError = 404,
+	UnauthorizedError = 401
 }
 
 export type BaseResponse<T> = {

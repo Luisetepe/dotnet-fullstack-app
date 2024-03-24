@@ -2,11 +2,15 @@ namespace WebApp.Template.Application.Shared.Models;
 
 public enum StatusCode
 {
-    Success = 0,
-    Error = 1,
+    Success = 200,
+    UnhandledError = 500,
+    ValidationError = 400,
+    NotFoundError = 404,
+    UnauthorizedError = 401
 }
 
-public class BaseResponse<T> where T : class
+public class BaseResponse<T>
+    where T : class
 {
     public StatusCode Status { get; set; }
     public string? Message { get; set; }
@@ -19,7 +23,7 @@ public class BaseResponse<T> where T : class
         Message = null;
     }
 
-    public BaseResponse(string message, StatusCode status = StatusCode.Error)
+    public BaseResponse(string message, StatusCode status = StatusCode.UnhandledError)
     {
         Status = status;
         Message = message;

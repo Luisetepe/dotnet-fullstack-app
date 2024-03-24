@@ -9,7 +9,7 @@ public static class LocationSeed
     public static async Task SeedLocations(WebAppDbContext db, IUniqueIdentifierService idService)
     {
         // Create 5 new Location entities
-        Location[] locations = 
+        Location[] locations =
         [
             Location.CreateLocation(idService.Create(), "Location 1", 150.123456m, -34.123456m),
             Location.CreateLocation(idService.Create(), "Location 2", -120.654321m, 45.654321m),

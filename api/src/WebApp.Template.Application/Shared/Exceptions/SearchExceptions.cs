@@ -1,9 +1,13 @@
 namespace WebApp.Template.Application.Shared.Exceptions;
 
-
-public class OrderByException : Exception
+public abstract class SearcException : Exception
 {
-    public OrderByException(string field) : base($"The field '{field}' is not supported for ordering")
-    {
-    }
+    public SearcException(string message)
+        : base(message) { }
+}
+
+public class OrderByException : SearcException
+{
+    public OrderByException(string field)
+        : base($"The field '{field}' is not supported for ordering") { }
 }

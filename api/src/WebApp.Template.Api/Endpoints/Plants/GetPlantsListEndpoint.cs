@@ -7,7 +7,8 @@ using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Api.Endpoints.Plants;
 
-public class GetPlantsListEndpoint(ISender mediator) : Endpoint<GetPlantsListRequest, GetPlantsListResponse>
+public class GetPlantsListEndpoint(ISender mediator)
+    : Endpoint<GetPlantsListRequest, GetPlantsListResponse>
 {
     public override void Configure()
     {
@@ -15,17 +16,14 @@ public class GetPlantsListEndpoint(ISender mediator) : Endpoint<GetPlantsListReq
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync([FromQuery] GetPlantsListRequest req, CancellationToken ct)
+    public override async Task HandleAsync(
+        [FromQuery] GetPlantsListRequest req,
+        CancellationToken ct
+    )
     {
         var response = await mediator.Send(new GetPlantsListQuery { Request = req }, ct);
 
-        if (response.Status != StatusCode.Success)
-        {
-            await SendAsync(response, 500, ct);
-            return;
-        }
-
-        await SendAsync(response, 200, ct);
+        await SendAsync(response, (int)response.Status, ct);
     }
 }
 
@@ -84,7 +82,10 @@ public class GetPlantsListEndpointSwagger : Summary<GetPlantsListEndpoint>
         Response<GetPlantsListResponse>(
             500,
             "An error occurred while getting the list of Plants",
-            example: new("An error occurred while getting the list of Plants")
+            example: new(
+                "An error occurred while getting the list of Plants",
+                StatusCode.UnhandledError
+            )
         );
     }
 }

@@ -5,7 +5,8 @@ using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Api.Endpoints.Dashboard;
 
-public class GetDashboardWidgetsDataEndpoint(ISender mediator) : EndpointWithoutRequest<GetDashboardWidgetsDataResponse>
+public class GetDashboardWidgetsDataEndpoint(ISender mediator)
+    : EndpointWithoutRequest<GetDashboardWidgetsDataResponse>
 {
     public override void Configure()
     {
@@ -16,13 +17,8 @@ public class GetDashboardWidgetsDataEndpoint(ISender mediator) : EndpointWithout
     public override async Task HandleAsync(CancellationToken ct)
     {
         var response = await mediator.Send(new GetDashboardWidgetsDataQuery { }, ct);
-        if (response.Status != StatusCode.Success)
-        {
-            await SendAsync(response, 500, ct);
-            return;
-        }
 
-        await SendAsync(response, 200, ct);
+        await SendAsync(response, (int)response.Status, ct);
     }
 }
 
@@ -41,11 +37,16 @@ public class GetDashboardWidgetsDataEndpointSwagger : Summary<GetDashboardWidget
                     Plants = 2,
                     SolarCapacity = 100,
                     StorageCapacity = 200
-                }));
+                }
+            )
+        );
         Response<GetDashboardWidgetsDataResponse>(
             500,
             "An error occurred while getting the data for the dashboard widgets.",
-            example: new("An error occurred while getting the data for the dashboard widgets")
+            example: new(
+                "An error occurred while getting the data for the dashboard widgets",
+                StatusCode.UnhandledError
+            )
         );
     }
 }

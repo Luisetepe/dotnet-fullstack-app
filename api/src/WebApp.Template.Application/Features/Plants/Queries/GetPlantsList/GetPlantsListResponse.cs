@@ -25,5 +25,6 @@ public class GetPlantsListResponse : BaseResponse<GetPlantsListResponseDto>
     public GetPlantsListResponse(GetPlantsListResponseDto result)
         : base(result) { }
 
-    public GetPlantsListResponse(string message) : base(message) { }
+    public GetPlantsListResponse(string message, StatusCode statusCode)
+        : base(message, statusCode) { }
 }

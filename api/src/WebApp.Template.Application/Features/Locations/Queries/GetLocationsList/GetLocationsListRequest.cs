@@ -8,10 +8,6 @@ public class GetLocationsListQuery : IRequest<GetLocationsListResponse>
     public GetLocationsListRequest Request { get; set; }
 }
 
-public record GetLocationsListRequest : SearchRequest
-{
-}
+public record GetLocationsListRequest : SearchRequest { }
 
-public class GetLocationsListRequestValidator : SearchRequestValidator<GetLocationsListRequest>
-{
-}
+public class GetLocationsListRequestValidator : SearchRequestValidator<GetLocationsListRequest> { }

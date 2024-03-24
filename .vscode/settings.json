@@ -16,7 +16,8 @@
 		"editor.defaultFormatter": "biomejs.biome"
 	},
 	"[csharp]": {
-		"editor.tabSize": 4
+		"editor.tabSize": 4,
+		"editor.defaultFormatter": "csharpier.csharpier-vscode"
 	},
 	"editor.codeActionsOnSave": {
 		"quickfix.biome": "explicit",

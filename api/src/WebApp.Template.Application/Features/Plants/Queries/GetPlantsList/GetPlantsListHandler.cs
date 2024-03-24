@@ -12,7 +12,10 @@ namespace WebApp.Template.Application.Features.Plants.Queries.GetPlantsList;
 public class GetPlantsListHandler(WebAppDbContext db, IUniqueIdentifierService identifierService)
     : IRequestHandler<GetPlantsListQuery, GetPlantsListResponse>
 {
-    public async Task<GetPlantsListResponse> Handle(GetPlantsListQuery query, CancellationToken cancellationToken)
+    public async Task<GetPlantsListResponse> Handle(
+        GetPlantsListQuery query,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -28,7 +31,10 @@ public class GetPlantsListHandler(WebAppDbContext db, IUniqueIdentifierService i
                     PlantId = x.PlantId,
                     UtilityCompany = x.UtilityCompany,
                     Status = x.Status.Name,
-                    Tags = x.Tags.Split(',', StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries),
+                    Tags = x.Tags.Split(
+                        ',',
+                        StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries
+                    ),
                     CapacityDc = x.CapacityDc,
                     Portfolios = x.Portfolios.Select(y => y.Name).ToArray()
                 })
@@ -43,15 +49,17 @@ public class GetPlantsListHandler(WebAppDbContext db, IUniqueIdentifierService i
                 TotalPages = (int)Math.Ceiling((double)totalRows / query.Request.PageSize)
             };
 
-            return new GetPlantsListResponse(new GetPlantsListResponseDto
-            {
-                Plants = plants,
-                Pagination = paginationInfo
-            });
+            return new GetPlantsListResponse(
+                new GetPlantsListResponseDto { Plants = plants, Pagination = paginationInfo }
+            );
+        }
+        catch (SearcException ex)
+        {
+            return new GetPlantsListResponse(ex.Message, StatusCode.ValidationError);
         }
         catch (Exception ex)
         {
-            return new GetPlantsListResponse(ex.Message);
+            return new GetPlantsListResponse(ex.Message, StatusCode.UnhandledError);
         }
     }
 
@@ -59,11 +67,14 @@ public class GetPlantsListHandler(WebAppDbContext db, IUniqueIdentifierService i
     {
         Expression<Func<Plant, object>> orderExpression = x => x.Name;
 
-        var filteredQuery = db.Plants
-            .Include(x => x.Status)
+        var filteredQuery = db
+            .Plants.Include(x => x.Status)
             .Include(x => x.Portfolios)
             .AsNoTracking()
-            .Where(x => string.IsNullOrWhiteSpace(query.Request.Search) || x.Name.Contains(query.Request.Search));
+            .Where(x =>
+                string.IsNullOrWhiteSpace(query.Request.Search)
+                || x.Name.Contains(query.Request.Search)
+            );
 
         if (!string.IsNullOrWhiteSpace(query.Request.OrderBy))
         {
@@ -75,7 +86,8 @@ public class GetPlantsListHandler(WebAppDbContext db, IUniqueIdentifierService i
             };
         }
 
-        filteredQuery = query.Request.Order == "asc"
+        filteredQuery =
+            query.Request.Order == "asc"
                 ? filteredQuery.OrderBy(orderExpression).ThenBy(x => x.Id)
                 : filteredQuery.OrderByDescending(orderExpression).ThenByDescending(x => x.Id);
 

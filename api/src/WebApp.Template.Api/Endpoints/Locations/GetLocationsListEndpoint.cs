@@ -6,7 +6,8 @@ using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Endpoints.Locations.GetLocationsList;
 
-public class GetLocationsListEndpoint(ISender mediator) : Endpoint<GetLocationsListRequest, GetLocationsListResponse>
+public class GetLocationsListEndpoint(ISender mediator)
+    : Endpoint<GetLocationsListRequest, GetLocationsListResponse>
 {
     public override void Configure()
     {
@@ -18,13 +19,7 @@ public class GetLocationsListEndpoint(ISender mediator) : Endpoint<GetLocationsL
     {
         var response = await mediator.Send(new GetLocationsListQuery { Request = req }, ct);
 
-        if (response.Status != StatusCode.Success)
-        {
-            await SendAsync(response, 500, ct);
-            return;
-        }
-
-        await SendAsync(response, 200, ct);
+        await SendAsync(response, (int)response.Status, ct);
     }
 }
 
@@ -43,36 +38,42 @@ public class GetLocationsListEndpointSwagger : Summary<GetLocationsListEndpoint>
         Response<GetLocationsListResponse>(
             200,
             "Success",
-            example: new(new GetLocationsListResponseDto
-            {
-                Locations = new[]
+            example: new(
+                new GetLocationsListResponseDto
                 {
-                    new GetLocationsListResponseDto.Location
+                    Locations = new[]
                     {
-                        Id = TsidCreator.GetTsid().ToString(),
-                        Name = "Location 1",
-                        Latitude = 1.1m,
-                        Longitude = 1.1m
+                        new GetLocationsListResponseDto.Location
+                        {
+                            Id = TsidCreator.GetTsid().ToString(),
+                            Name = "Location 1",
+                            Latitude = 1.1m,
+                            Longitude = 1.1m
+                        },
+                        new GetLocationsListResponseDto.Location
+                        {
+                            Id = TsidCreator.GetTsid().ToString(),
+                            Name = "Location 2",
+                            Latitude = 2.2m,
+                            Longitude = 2.2m
+                        }
                     },
-                    new GetLocationsListResponseDto.Location
+                    Pagination = new PaginationInfo
                     {
-                        Id = TsidCreator.GetTsid().ToString(),
-                        Name = "Location 2",
-                        Latitude = 2.2m,
-                        Longitude = 2.2m
+                        CurrentPageNumber = 1,
+                        CurrentPageSize = 10,
+                        TotalRows = 200,
                     }
-                },
-                Pagination = new PaginationInfo
-                {
-                    CurrentPageNumber = 1,
-                    CurrentPageSize = 10,
-                    TotalRows = 200,
                 }
-            })
+            )
         );
         Response<GetLocationsListResponse>(
             500,
-            "ERROR",
-            example: new("ERROR"));
+            "An error occurred while getting the list of Locations",
+            example: new(
+                "An error occurred while getting the list of Locations",
+                StatusCode.UnhandledError
+            )
+        );
     }
 }

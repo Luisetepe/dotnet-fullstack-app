@@ -8,10 +8,11 @@ namespace WebApp.Template.IntegrationTests.Features.Dashboard
     using WebApp.Template.Application.Shared.Models;
     using Xunit;
 
-    public class GetDashboardWidgetsDataEndpointTests(IntegrationTestFixture fixture, ITestOutputHelper outputHelper)
-        : TestClass<IntegrationTestFixture>(fixture, outputHelper)
+    public class GetDashboardWidgetsDataEndpointTests(
+        IntegrationTestFixture fixture,
+        ITestOutputHelper outputHelper
+    ) : TestClass<IntegrationTestFixture>(fixture, outputHelper)
     {
-
         [Fact]
         public async Task Should_Return_Dashboard_Widgets_Data()
         {
@@ -24,7 +25,10 @@ namespace WebApp.Template.IntegrationTests.Features.Dashboard
             var expectedStorageCapacity = await db.Plants.SumAsync(p => p.StorageCapacity);
 
             // Act
-            var (httpResponse, result) = await Fixture.Client.GETAsync<GetDashboardWidgetsDataEndpoint, GetDashboardWidgetsDataResponse>();
+            var (httpResponse, result) = await Fixture.Client.GETAsync<
+                GetDashboardWidgetsDataEndpoint,
+                GetDashboardWidgetsDataResponse
+            >();
 
             // Assert
             httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);

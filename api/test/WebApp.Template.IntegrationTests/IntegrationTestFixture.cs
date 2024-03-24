@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TSID.Creator.NET;
 using WebApp.Template.Application.Data.DbContexts;
+using WebApp.Template.Application.Data.Services;
 
 namespace WebApp.Template.IntegrationTests;
 
@@ -26,17 +27,22 @@ public class IntegrationTestFixture : AppFixture<Program>
         // replace the real database with a test database
         services.RemoveAll<DbContextOptions<WebAppDbContext>>();
         services.RemoveAll<WebAppDbContext>();
-        services.AddDbContext<WebAppDbContext>((sp, options) =>
-        {
-            var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("WebAppDb")!;
-            if (!connectionString.Contains("{:id}"))
+        services.AddDbContext<WebAppDbContext>(
+            (sp, options) =>
             {
-                throw new ArgumentException("Test database name connection string must contain {:id} placeholder.");
-            }
+                var connectionString = sp.GetRequiredService<IConfiguration>()
+                    .GetConnectionString("WebAppDb")!;
+                if (!connectionString.Contains("{:id}"))
+                {
+                    throw new ArgumentException(
+                        "Test database name connection string must contain {:id} placeholder."
+                    );
+                }
 
-            options.UseNpgsql(connectionString.Replace("{:id}", _testDatabaseId));
-            options.UseSnakeCaseNamingConvention();
-        });
+                options.UseNpgsql(connectionString.Replace("{:id}", _testDatabaseId));
+                options.UseSnakeCaseNamingConvention();
+            }
+        );
     }
 
     protected override async Task TearDownAsync()
@@ -52,5 +58,10 @@ public class IntegrationTestFixture : AppFixture<Program>
     public WebAppDbContext GetDbContext()
     {
         return Services.GetRequiredService<WebAppDbContext>();
+    }
+
+    public IUniqueIdentifierService GetUniqueIdentifierService()
+    {
+        return Services.GetRequiredService<IUniqueIdentifierService>();
     }
 }
