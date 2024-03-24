@@ -74,8 +74,8 @@ First, we need to prepare de Database with example data. For this kind of things
 ```jsonc
 // file -> api/src/WebApp.Template.Api/appsettings.Development.json
 "ConnectionStrings": {
-		"WebAppDb": "Host=localhost;Port=55000;Database=WebAppDb;Username=postgres;Password=postgrespw"
-	}
+  "WebAppDb": "Host=localhost;Port=55000;Database=WebAppDb;Username=postgres;Password=postgrespw"
+}
 ```
 
 Then you would be able to run the tool and seed the database:
