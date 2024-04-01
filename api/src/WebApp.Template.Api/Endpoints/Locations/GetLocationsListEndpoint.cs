@@ -1,5 +1,6 @@
 using FastEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using TSID.Creator.NET;
 using WebApp.Template.Application.Features.Locations.Queries.GetLocationsList;
 using WebApp.Template.Application.Shared.Models;
@@ -15,7 +16,10 @@ public class GetLocationsListEndpoint(ISender mediator)
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(GetLocationsListRequest req, CancellationToken ct)
+    public override async Task HandleAsync(
+        [FromQuery] GetLocationsListRequest req,
+        CancellationToken ct
+    )
     {
         var response = await mediator.Send(new GetLocationsListQuery { Request = req }, ct);
 

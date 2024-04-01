@@ -6,6 +6,7 @@ import { Chart } from 'chart.js/auto'
 import { NzIconModule } from 'ng-zorro-antd/icon'
 import { NzNotificationModule } from 'ng-zorro-antd/notification'
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton'
+import { DashboardResolverData } from './dashboard.resolver'
 
 @Component({
 	selector: 'app-dashboard-card',
@@ -50,7 +51,7 @@ export class DashboardComponent implements OnInit {
 
 	ngOnInit() {
 		// biome-ignore lint/style/noNonNullAssertion: it is safe to assume the data is present
-		this.dashboardData = this.activatedRoute.snapshot.data['dashboardData']! as DashboardData
+		this.dashboardData = this.activatedRoute.snapshot.data['pageData']! as DashboardResolverData
 		this.totalCapacity = formatNumber(
 			this.dashboardData.solarCapacity + this.dashboardData.storageCapacity,
 			this.locale

@@ -51,6 +51,7 @@
           <th nzColumnKey="tags">Tags</th>
           <th nzColumnKey="capacityDc">Capacity DC</th>
           <th nzColumnKey="portfolios">Portfolios</th>
+          <th class="w-28">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -63,9 +64,28 @@
             <td>{{ data.tags }}</td>
             <td>{{ data.capacityDc }}</td>
             <td>{{ data.portfolios }}</td>
+            <td>
+              <div class="flex justify-around">
+                <button
+                  nz-button
+                  nzType="primary"
+                  nzShape="circle"
+                  (click)="onRowEdit(data)">
+                  <span nz-icon nzType="edit"></span>
+                </button>
+                <button nz-button nzType="primary" nzShape="circle" nzDanger>
+                  <span nz-icon nzType="delete"></span>
+                </button>
+              </div>
+            </td>
           </tr>
         }
       </tbody>
     </nz-table>
   </nz-page-header-content>
 </nz-page-header>
+<app-plant-drawer
+  [drawerVisible]="drawerVisible"
+  [plant]="drawerPlant"
+  (drawerClosed)="onCancelDrawer()">
+</app-plant-drawer>

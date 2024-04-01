@@ -28,11 +28,10 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) { }
-
 app.UseFastEndpoints()
     .UseSwaggerGen(uiConfig: opt =>
     {
+        // This removes the botton 'Models' section from the swagger UI
         opt.DefaultModelsExpandDepth = -1;
     });
 app.UseCors();

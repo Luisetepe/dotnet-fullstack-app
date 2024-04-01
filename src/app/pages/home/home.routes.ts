@@ -17,7 +17,7 @@ export const HOME_ROUTES: Routes = [
 				path: 'dashboard',
 				component: DashboardComponent,
 				resolve: {
-					dashboardData: dashboardResolver
+					pageData: dashboardResolver
 				}
 			},
 			{

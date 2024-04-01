@@ -11,7 +11,8 @@ import { NzNotificationService } from 'ng-zorro-antd/notification'
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header'
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table'
 import { Subject, debounceTime, delay } from 'rxjs'
-import { DEFAULT_LOCATIONS_PAGE_SIZE, LocationDataDto, LocationsService } from './locations.service'
+import { LocationsResolverData } from './locations.resolver'
+import { LocationDataDto, LocationsService } from './locations.service'
 
 @Component({
 	selector: 'app-locations',
@@ -43,7 +44,7 @@ export class LocationsComponent {
 
 	ngOnInit() {
 		// biome-ignore lint/style/noNonNullAssertion: it is safe to assume the data is present
-		const data = this.activatedRoute.snapshot.data['locationsData']! as LocationDataDto
+		const data = this.activatedRoute.snapshot.data['pageData']! as LocationsResolverData
 		this.locations = data.locations
 		this.paginartionInfo = data.pagination
 

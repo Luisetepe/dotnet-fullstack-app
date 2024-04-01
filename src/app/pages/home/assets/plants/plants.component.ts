@@ -5,13 +5,21 @@ import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { NzBadgeModule } from 'ng-zorro-antd/badge'
 import { NzButtonModule } from 'ng-zorro-antd/button'
+import { NzDrawerModule } from 'ng-zorro-antd/drawer'
+import { NzFormModule } from 'ng-zorro-antd/form'
+import { NzGridModule } from 'ng-zorro-antd/grid'
 import { NzIconModule } from 'ng-zorro-antd/icon'
 import { NzInputModule } from 'ng-zorro-antd/input'
 import { NzNotificationService } from 'ng-zorro-antd/notification'
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header'
+import { NzSelectModule } from 'ng-zorro-antd/select'
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table'
-import { Subject, debounceTime, delay } from 'rxjs'
-import { PlantDataDto, PlantsService } from './plants.service'
+import { Subject, debounceTime, delay, finalize } from 'rxjs'
+import { PlantDrawerComponent } from './plant-drawer.component'
+import { PlantsResolverData } from './plants.resolver'
+import { PlantByIdDto, PlantGridDataDto, PlantsService } from './plants.service'
+
+type PlantRow = PlantGridDataDto['plants'][0]
 
 @Component({
 	selector: 'app-plants',
@@ -24,7 +32,12 @@ import { PlantDataDto, PlantsService } from './plants.service'
 		NzIconModule,
 		NzBadgeModule,
 		NzInputModule,
-		FormsModule
+		NzSelectModule,
+		NzDrawerModule,
+		NzGridModule,
+		NzFormModule,
+		FormsModule,
+		PlantDrawerComponent
 	],
 	templateUrl: './plants.component.html'
 })
@@ -37,14 +50,18 @@ export class PlantsComponent implements OnInit, OnDestroy {
 
 	searchText = ''
 	currentPage = 1
+	plants: PlantRow[] = []
+	paginartionInfo: PaginationInfo
+	drawerPlant: PlantByIdDto
+
 	firstTableLoad = false
 	loading = false
-	plants: PlantDataDto['plants'] = []
-	paginartionInfo: PaginationInfo
+	drawerVisible = false
 
 	ngOnInit() {
 		// biome-ignore lint/style/noNonNullAssertion: it is safe to assume the data is present
-		const data = this.activatedRoute.snapshot.data['plantsData']! as PlantDataDto
+		const data = this.activatedRoute.snapshot.data['pageData']! as PlantsResolverData
+
 		this.plants = data.plants
 		this.paginartionInfo = data.pagination
 
@@ -92,18 +109,49 @@ export class PlantsComponent implements OnInit, OnDestroy {
 		})
 	}
 
+	onRowEdit(row: PlantRow) {
+		this.loading = true
+		this.plantsService
+			.getPlantById(row.id)
+			.pipe(
+				delay(500),
+				finalize(() => {
+					this.loading = false
+				})
+			)
+			.subscribe({
+				next: (plant) => {
+					this.drawerPlant = plant
+					this.drawerVisible = true
+				},
+				error: () => {
+					this.notification.error(
+						'Error fetching plant data',
+						'An error occurred while fetching plant data. Please try again later.'
+					)
+				}
+			})
+	}
+
+	onCancelDrawer() {
+		this.drawerVisible = false
+	}
+
 	private loadPlants(params: SearchRequest) {
 		this.plantsService
 			.getPlantsList(params)
-			.pipe(delay(500))
+			.pipe(
+				delay(500),
+				finalize(() => {
+					this.loading = false
+				})
+			)
 			.subscribe({
 				next: (data) => {
 					this.plants = data.plants
 					this.paginartionInfo = data.pagination
-					this.loading = false
 				},
-				error: (error) => {
-					this.loading = false
+				error: () => {
 					this.notification.error(
 						'Error fetching plants data',
 						'An error occurred while fetching plants data. Please try again later.'

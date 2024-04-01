@@ -5,7 +5,9 @@ import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular
 import { NzNotificationService } from 'ng-zorro-antd/notification'
 import { EMPTY, catchError, delay, finalize } from 'rxjs'
 
-export const dashboardResolver: ResolveFn<DashboardData> = (
+export type DashboardResolverData = DashboardData
+
+export const dashboardResolver: ResolveFn<DashboardResolverData> = (
 	route: ActivatedRouteSnapshot,
 	state: RouterStateSnapshot
 ) => {

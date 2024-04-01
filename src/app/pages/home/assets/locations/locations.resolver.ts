@@ -3,9 +3,11 @@ import { inject } from '@angular/core'
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router'
 import { NzNotificationService } from 'ng-zorro-antd/notification'
 import { EMPTY, catchError, delay, finalize } from 'rxjs'
-import { DEFAULT_LOCATIONS_PAGE_SIZE, LocationDataDto, LocationsService } from './locations.service'
+import { LocationDataDto, LocationsService } from './locations.service'
 
-export const locationsResolver: ResolveFn<LocationDataDto> = (
+export type LocationsResolverData = LocationDataDto
+
+export const locationsResolver: ResolveFn<LocationsResolverData> = (
 	route: ActivatedRouteSnapshot,
 	state: RouterStateSnapshot
 ) => {
@@ -18,7 +20,7 @@ export const locationsResolver: ResolveFn<LocationDataDto> = (
 	return plantsService
 		.getLocationsList({
 			pageNumber: 1,
-			pageSize: DEFAULT_LOCATIONS_PAGE_SIZE
+			pageSize: 5
 		})
 		.pipe(
 			delay(500),

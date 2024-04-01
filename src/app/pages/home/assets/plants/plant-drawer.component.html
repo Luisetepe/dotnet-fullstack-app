@@ -1,0 +1,48 @@
+<nz-drawer
+  [nzMaskClosable]="false"
+  [nzWidth]="720"
+  [nzVisible]="drawerVisible()"
+  nzTitle="Create"
+  [nzFooter]="footerTpl"
+  (nzOnClose)="onCancelDrawer()">
+  <form
+    nz-form
+    id="editRowForm"
+    *nzDrawerContent
+    [formGroup]="editRowForm"
+    (ngSubmit)="onSubmitDrawer()">
+    <div nz-row [nzGutter]="8">
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzFor="name">Name</nz-form-label>
+          <nz-form-control nzErrorTip="Plant name is mandatory">
+            <input
+              nz-input
+              id="name"
+              formControlName="name"
+              placeholder="please enter plant name" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzFor="plantId">Plant ID</nz-form-label>
+          <nz-form-control nzErrorTip="PlantID is mandatory">
+            <input
+              nz-input
+              id="plantId"
+              formControlName="plantId"
+              placeholder="please enter plantID" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+
+  <ng-template #footerTpl>
+    <div class="float-right">
+      <button nz-button class="mr-2" (click)="onCancelDrawer()">Cancel</button>
+      <button nz-button nzType="primary" form="editRowForm">Submit</button>
+    </div>
+  </ng-template>
+</nz-drawer>

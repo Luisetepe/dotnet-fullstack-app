@@ -14,14 +14,14 @@ export const ASSETS_ROUTES: Routes = [
 		path: 'locations',
 		component: LocationsComponent,
 		resolve: {
-			locationsData: locationsResolver
+			pageData: locationsResolver
 		}
 	},
 	{
 		path: 'plants',
 		component: PlantsComponent,
 		resolve: {
-			plantsData: plantsResolver
+			pageData: plantsResolver
 		}
 	},
 	{

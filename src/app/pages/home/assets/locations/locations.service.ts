@@ -9,8 +9,6 @@ import { Injectable, inject } from '@angular/core'
 import { Observable, map } from 'rxjs'
 import * as z from 'zod'
 
-export const DEFAULT_LOCATIONS_PAGE_SIZE = 10
-
 const locationDataDtoSchema = z.object({
 	locations: z.array(
 		z.object({
