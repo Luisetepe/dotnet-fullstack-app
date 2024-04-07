@@ -1,4 +1,4 @@
-using WebApp.Template.Application.Data.Exceptions;
+using FluentValidation;
 
 namespace WebApp.Template.Application.Data.DbEntities;
 
@@ -18,7 +18,7 @@ public class Plant
     public int Voltage { get; private set; }
     public string AssetManager { get; private set; }
     public string Tags { get; private set; }
-    public string Notes { get; private set; }
+    public string? Notes { get; private set; }
 
     /* Foreign keys */
 
@@ -33,7 +33,7 @@ public class Plant
     public ResourceType ResourceType { get; init; }
     public PlantStatus Status { get; init; }
     public Location Location { get; init; }
-    public ICollection<Portfolio> Portfolios { get; init; }
+    public ICollection<Portfolio> Portfolios { get; private set; }
 
     /* Private constructor for EF Core */
     private Plant() { }
@@ -58,26 +58,7 @@ public class Plant
         ICollection<Portfolio>? portfolios = null
     )
     {
-        ValidateCreationArguments(
-            id,
-            name,
-            plantId,
-            capacityDc,
-            capacityAc,
-            storageCapacity,
-            projectCompany,
-            utilityCompany,
-            voltage,
-            assetManager,
-            tags,
-            notes,
-            plantTypeId,
-            resourceTypeId,
-            statusId,
-            locationId
-        );
-
-        return new Plant
+        var newPlant = new Plant
         {
             Id = id,
             Name = name,
@@ -97,12 +78,13 @@ public class Plant
             LocationId = locationId,
             Portfolios = portfolios ?? new List<Portfolio>()
         };
+
+        new PlantValidator().ValidateAndThrow(newPlant);
+
+        return newPlant;
     }
 
-    private static void ValidateCreationArguments(
-        long id,
-        string name,
-        string plantId,
+    public void UpdatePlant(
         decimal capacityDc,
         decimal capacityAc,
         decimal storageCapacity,
@@ -118,52 +100,48 @@ public class Plant
         long locationId
     )
     {
-        if (id <= 0)
-            throw new DbEntityCreationException(nameof(Plant), nameof(Id));
+        CapacityDc = capacityDc;
+        CapacityAc = capacityAc;
+        StorageCapacity = storageCapacity;
+        ProjectCompany = projectCompany;
+        UtilityCompany = utilityCompany;
+        Voltage = voltage;
+        AssetManager = assetManager;
+        Tags = tags;
+        Notes = notes;
+        PlantTypeId = plantTypeId;
+        ResourceTypeId = resourceTypeId;
+        StatusId = statusId;
+        LocationId = locationId;
 
-        if (name == string.Empty || name.Length > 100)
-            throw new DbEntityCreationException(nameof(Plant), nameof(Name));
+        new PlantValidator().ValidateAndThrow(this);
+    }
 
-        if (plantId == string.Empty || plantId.Length > 10)
-            throw new DbEntityCreationException(nameof(Plant), nameof(PlantId));
+    public void UpdatePortfolios(ICollection<Portfolio> portfolios)
+    {
+        Portfolios = portfolios;
+    }
+}
 
-        if (capacityDc < 0)
-            throw new DbEntityCreationException(nameof(Plant), nameof(CapacityDc));
-
-        if (capacityAc < 0)
-            throw new DbEntityCreationException(nameof(Plant), nameof(CapacityAc));
-
-        if (storageCapacity < 0)
-            throw new DbEntityCreationException(nameof(Plant), nameof(StorageCapacity));
-
-        if (projectCompany == string.Empty || projectCompany.Length > 100)
-            throw new DbEntityCreationException(nameof(Plant), nameof(ProjectCompany));
-
-        if (utilityCompany == string.Empty || utilityCompany.Length > 100)
-            throw new DbEntityCreationException(nameof(Plant), nameof(UtilityCompany));
-
-        if (voltage < 0)
-            throw new DbEntityCreationException(nameof(Plant), nameof(Voltage));
-
-        if (assetManager == string.Empty || assetManager.Length > 100)
-            throw new DbEntityCreationException(nameof(Plant), nameof(AssetManager));
-
-        if (tags == string.Empty || tags.Length > 150)
-            throw new DbEntityCreationException(nameof(Plant), nameof(Tags));
-
-        if (notes == string.Empty || notes.Length > 500)
-            throw new DbEntityCreationException(nameof(Plant), nameof(Notes));
-
-        if (plantTypeId <= 0)
-            throw new DbEntityCreationException(nameof(Plant), nameof(PlantTypeId));
-
-        if (resourceTypeId <= 0)
-            throw new DbEntityCreationException(nameof(Plant), nameof(ResourceTypeId));
-
-        if (statusId <= 0)
-            throw new DbEntityCreationException(nameof(Plant), nameof(StatusId));
-
-        if (locationId <= 0)
-            throw new DbEntityCreationException(nameof(Plant), nameof(LocationId));
+internal class PlantValidator : AbstractValidator<Plant>
+{
+    public PlantValidator()
+    {
+        RuleFor(p => p.Id).GreaterThan(0);
+        RuleFor(p => p.Name).NotEmpty().MaximumLength(100);
+        RuleFor(p => p.PlantId).NotEmpty().MaximumLength(10);
+        RuleFor(p => p.CapacityDc).GreaterThanOrEqualTo(0);
+        RuleFor(p => p.CapacityAc).GreaterThanOrEqualTo(0);
+        RuleFor(p => p.StorageCapacity).GreaterThanOrEqualTo(0);
+        RuleFor(p => p.ProjectCompany).NotEmpty().MaximumLength(100);
+        RuleFor(p => p.UtilityCompany).NotEmpty().MaximumLength(100);
+        RuleFor(p => p.Voltage).GreaterThanOrEqualTo(0);
+        RuleFor(p => p.AssetManager).NotEmpty().MaximumLength(100);
+        RuleFor(p => p.Tags).NotEmpty().MaximumLength(150);
+        RuleFor(p => p.Notes).MaximumLength(500).When(p => p.Notes != null);
+        RuleFor(p => p.PlantTypeId).GreaterThan(0);
+        RuleFor(p => p.ResourceTypeId).GreaterThan(0);
+        RuleFor(p => p.StatusId).GreaterThan(0);
+        RuleFor(p => p.LocationId).GreaterThan(0);
     }
 }

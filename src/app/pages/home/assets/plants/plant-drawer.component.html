@@ -1,8 +1,9 @@
 <nz-drawer
   [nzMaskClosable]="false"
+  [nzBodyStyle]="{ overflow: 'hidden' }"
   [nzWidth]="720"
   [nzVisible]="drawerVisible()"
-  nzTitle="Create"
+  [nzTitle]="drawerTitle()"
   [nzFooter]="footerTpl"
   (nzOnClose)="onCancelDrawer()">
   <form
@@ -36,6 +37,20 @@
           </nz-form-control>
         </nz-form-item>
       </div>
+    </div>
+
+    <div nz-row [nzGutter]="8">
+      <nz-form-item>
+        <nz-form-label nzFor="name">Plant Type</nz-form-label>
+        <nz-form-control nzErrorTip="Plant Type name is mandatory">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Select a plant type">
+            <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
     </div>
   </form>
 

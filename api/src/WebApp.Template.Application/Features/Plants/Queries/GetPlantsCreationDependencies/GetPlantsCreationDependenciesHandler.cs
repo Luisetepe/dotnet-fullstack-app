@@ -1,3 +1,4 @@
+using Ardalis.Result;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Data.DbContexts;
@@ -8,15 +9,19 @@ namespace WebApp.Template.Application.Features.Plants.Queries.GetPlantsCreationD
 public class GetPlantsCreationDependenciesHandler(
     WebAppDbContext dbContext,
     IUniqueIdentifierService identifierService
-) : IRequestHandler<GetPlantsCreationDependenciesQuery, GetPlantsCreationDependenciesResponse>
+)
+    : IRequestHandler<
+        GetPlantsCreationDependenciesQuery,
+        Result<GetPlantsCreationDependenciesResponse>
+    >
 {
-    public async Task<GetPlantsCreationDependenciesResponse> Handle(
+    public async Task<Result<GetPlantsCreationDependenciesResponse>> Handle(
         GetPlantsCreationDependenciesQuery query,
         CancellationToken cancellationToken
     )
     {
         var plantStatuses = await dbContext
-            .PlantStatuses.Select(x => new GetPlantsCreationDependenciesDto.Dependency
+            .PlantStatuses.Select(x => new GetPlantsCreationDependenciesResponse.Dependency
             {
                 Id = identifierService.ConvertToString(x.Id),
                 Name = x.Name
@@ -24,7 +29,7 @@ public class GetPlantsCreationDependenciesHandler(
             .ToListAsync(cancellationToken);
 
         var locations = await dbContext
-            .Locations.Select(x => new GetPlantsCreationDependenciesDto.Dependency
+            .Locations.Select(x => new GetPlantsCreationDependenciesResponse.Dependency
             {
                 Id = identifierService.ConvertToString(x.Id),
                 Name = x.Name
@@ -32,7 +37,7 @@ public class GetPlantsCreationDependenciesHandler(
             .ToListAsync(cancellationToken);
 
         var plantTypes = await dbContext
-            .PlantTypes.Select(x => new GetPlantsCreationDependenciesDto.Dependency
+            .PlantTypes.Select(x => new GetPlantsCreationDependenciesResponse.Dependency
             {
                 Id = identifierService.ConvertToString(x.Id),
                 Name = x.Name
@@ -40,7 +45,7 @@ public class GetPlantsCreationDependenciesHandler(
             .ToListAsync(cancellationToken);
 
         var resourceTypes = await dbContext
-            .ResourceTypes.Select(x => new GetPlantsCreationDependenciesDto.Dependency
+            .ResourceTypes.Select(x => new GetPlantsCreationDependenciesResponse.Dependency
             {
                 Id = identifierService.ConvertToString(x.Id),
                 Name = x.Name
@@ -48,14 +53,14 @@ public class GetPlantsCreationDependenciesHandler(
             .ToListAsync(cancellationToken);
 
         var portfolios = await dbContext
-            .Portfolios.Select(x => new GetPlantsCreationDependenciesDto.Dependency
+            .Portfolios.Select(x => new GetPlantsCreationDependenciesResponse.Dependency
             {
                 Id = identifierService.ConvertToString(x.Id),
                 Name = x.Name
             })
             .ToListAsync(cancellationToken);
 
-        var result = new GetPlantsCreationDependenciesDto
+        return new GetPlantsCreationDependenciesResponse
         {
             PlantStatuses = plantStatuses,
             Locations = locations,
@@ -63,7 +68,5 @@ public class GetPlantsCreationDependenciesHandler(
             ResourceTypes = resourceTypes,
             Portfolios = portfolios
         };
-
-        return new GetPlantsCreationDependenciesResponse(result);
     }
 }

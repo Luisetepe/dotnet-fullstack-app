@@ -1,3 +1,4 @@
+using FluentValidation;
 using WebApp.Template.Application.Data.Exceptions;
 
 namespace WebApp.Template.Application.Data.DbEntities;
@@ -25,17 +26,19 @@ public class ResourceType
     /// <exception cref="DbEntityCreationException">If any of the provided arguments where invalid.</exception>
     public static ResourceType CreateResourceType(long id, string name)
     {
-        ValidateCreationArguments(id, name);
+        var newResource = new ResourceType { Id = id, Name = name };
 
-        return new ResourceType { Id = id, Name = name };
+        new ResourceTypeValidator().ValidateAndThrow(newResource);
+
+        return newResource;
     }
+}
 
-    private static void ValidateCreationArguments(long id, string name)
+internal class ResourceTypeValidator : AbstractValidator<ResourceType>
+{
+    public ResourceTypeValidator()
     {
-        if (id <= 0)
-            throw new DbEntityCreationException(nameof(ResourceType), nameof(id));
-
-        if (string.IsNullOrWhiteSpace(name) || name.Length > 100)
-            throw new DbEntityCreationException(nameof(ResourceType), nameof(name));
+        RuleFor(x => x.Id).GreaterThan(0);
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
     }
 }

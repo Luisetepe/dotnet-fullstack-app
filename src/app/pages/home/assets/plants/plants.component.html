@@ -1,4 +1,4 @@
-<nz-page-header style="padding: 16px 16px 2px; background-color: white">
+<nz-page-header class="bg-white pb-1 pr-4 pt-4">
   <nz-page-header-title>
     <span>
       <span nz-icon nzType="reconciliation" nzTheme="outline"></span>
@@ -9,9 +9,11 @@
     <nz-button-group class="w-2/3">
       <nz-input-group [nzSuffix]="suffixIconSearch">
         <input
-          type="text"
-          [(ngModel)]="searchText"
           nz-input
+          type="text"
+          name="searchText"
+          autocomplete="off"
+          [(ngModel)]="searchText"
           placeholder="search plants by name..."
           (input)="onSearch($event)" />
       </nz-input-group>
@@ -28,7 +30,7 @@
       [nzLoading]="loading"
       [nzTotal]="paginartionInfo.totalRows"
       [nzPageSize]="paginartionInfo.currentPageSize"
-      [nzPageIndex]="currentPage"
+      [nzPageIndex]="paginartionInfo.currentPageNumber"
       (nzQueryParams)="onQueryParamsChange($event)"
       nzTableLayout="fixed">
       <thead>

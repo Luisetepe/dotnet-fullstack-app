@@ -1,3 +1,4 @@
+import { environment } from '@/environments/environment'
 import { PaginationInfo, SearchRequest } from '@/lib/services/backend-api.service'
 import { CommonModule } from '@angular/common'
 import { Component, OnDestroy, OnInit, inject } from '@angular/core'
@@ -49,7 +50,6 @@ export class PlantsComponent implements OnInit, OnDestroy {
 	private readonly debounceTimeMs = 350
 
 	searchText = ''
-	currentPage = 1
 	plants: PlantRow[] = []
 	paginartionInfo: PaginationInfo
 	drawerPlant: PlantByIdDto
@@ -82,7 +82,11 @@ export class PlantsComponent implements OnInit, OnDestroy {
 
 	performSearch(searchValue: string) {
 		this.loading = true
-		this.loadPlants({ search: searchValue, pageNumber: this.currentPage, pageSize: 5 })
+		this.loadPlants({
+			search: searchValue,
+			pageNumber: this.paginartionInfo.currentPageNumber,
+			pageSize: 5
+		})
 	}
 
 	onQueryParamsChange(params: NzTableQueryParams) {
@@ -96,7 +100,7 @@ export class PlantsComponent implements OnInit, OnDestroy {
 		const sortField = currentSort?.key || undefined
 		const sortOrder = currentSort?.value || undefined
 
-		this.currentPage = pageIndex
+		this.paginartionInfo.currentPageNumber = pageIndex
 		this.paginartionInfo.currentPageSize = pageSize
 		this.loading = true
 
@@ -114,7 +118,7 @@ export class PlantsComponent implements OnInit, OnDestroy {
 		this.plantsService
 			.getPlantById(row.id)
 			.pipe(
-				delay(500),
+				delay(environment.artificialApiDelay),
 				finalize(() => {
 					this.loading = false
 				})
@@ -141,7 +145,7 @@ export class PlantsComponent implements OnInit, OnDestroy {
 		this.plantsService
 			.getPlantsList(params)
 			.pipe(
-				delay(500),
+				delay(environment.artificialApiDelay),
 				finalize(() => {
 					this.loading = false
 				})

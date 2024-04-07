@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Ardalis.Result" Version="8.0.0" />
+      <PackageReference Include="Ardalis.Result.AspNetCore" Version="8.0.0" />
       <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
       <PackageReference Include="FastEndpoints" Version="5.23.0" />
       <PackageReference Include="MediatR" Version="12.2.0" />

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Features.Locations.Queries.GetLocationsList;
-using WebApp.Template.Application.Shared.Models;
 using WebApp.Template.Endpoints.Locations.GetLocationsList;
 
 namespace WebApp.Template.IntegrationTests.Features.Locations;
@@ -55,7 +54,7 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture)
         var expectedLocations = (
             await locationsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync()
         )
-            .Select(x => new GetLocationsListResponseDto.Location
+            .Select(x => new GetLocationsListResponse.Location
             {
                 Id = uidService.ConvertToString(x.Id),
                 Name = x.Name,
@@ -84,10 +83,6 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture)
         httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
         result.Should().NotBeNull();
-        result.Status.Should().Be(StatusCode.Success);
-        result.Message.Should().BeNull();
-
-        result.Result.Should().NotBeNull();
-        result.Result!.Locations.Should().BeEquivalentTo(expectedLocations);
+        result.Locations.Should().BeEquivalentTo(expectedLocations);
     }
 }

@@ -5,9 +5,11 @@ import {
 	Input,
 	OnInit,
 	Output,
+	computed,
 	effect,
 	inject,
-	input
+	input,
+	signal
 } from '@angular/core'
 import {
 	FormBuilder,
@@ -48,8 +50,10 @@ import { PlantByIdDto } from './plants.service'
 export class PlantDrawerComponent implements OnInit {
 	private readonly formBuilder = inject(FormBuilder)
 
-	drawerVisible = input(false)
+	drawerVisible = input.required<boolean>()
 	plant = input<PlantByIdDto>()
+
+	drawerTitle = computed(() => `Updating plant: '${this.plant()?.name}'`)
 
 	@Output() drawerClosed = new EventEmitter<boolean>()
 

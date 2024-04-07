@@ -8,7 +8,7 @@ public record PaginationInfo
     public int TotalPages { get; init; }
 }
 
-public record BasePaginatedDto
+public record BasePaginatedResponse
 {
     public PaginationInfo Pagination { get; init; }
 }

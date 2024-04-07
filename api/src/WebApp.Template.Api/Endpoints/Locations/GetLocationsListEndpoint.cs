@@ -1,3 +1,4 @@
+using Ardalis.Result.AspNetCore;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ public class GetLocationsListEndpoint(ISender mediator)
     {
         var response = await mediator.Send(new GetLocationsListQuery { Request = req }, ct);
 
-        await SendAsync(response, (int)response.Status, ct);
+        await SendResultAsync(response.ToMinimalApiResult());
     }
 }
 
@@ -42,42 +43,40 @@ public class GetLocationsListEndpointSwagger : Summary<GetLocationsListEndpoint>
         Response<GetLocationsListResponse>(
             200,
             "Success",
-            example: new(
-                new GetLocationsListResponseDto
-                {
-                    Locations = new[]
+            example: new()
+            {
+                Locations =
+                [
+                    new GetLocationsListResponse.Location
                     {
-                        new GetLocationsListResponseDto.Location
-                        {
-                            Id = TsidCreator.GetTsid().ToString(),
-                            Name = "Location 1",
-                            Latitude = 1.1m,
-                            Longitude = 1.1m
-                        },
-                        new GetLocationsListResponseDto.Location
-                        {
-                            Id = TsidCreator.GetTsid().ToString(),
-                            Name = "Location 2",
-                            Latitude = 2.2m,
-                            Longitude = 2.2m
-                        }
+                        Id = TsidCreator.GetTsid().ToString(),
+                        Name = "Location 1",
+                        Latitude = 1.1m,
+                        Longitude = 1.1m
                     },
-                    Pagination = new PaginationInfo
+                    new GetLocationsListResponse.Location
                     {
-                        CurrentPageNumber = 1,
-                        CurrentPageSize = 10,
-                        TotalRows = 200,
+                        Id = TsidCreator.GetTsid().ToString(),
+                        Name = "Location 2",
+                        Latitude = 2.2m,
+                        Longitude = 2.2m
                     }
+                ],
+                Pagination = new PaginationInfo
+                {
+                    CurrentPageNumber = 1,
+                    CurrentPageSize = 10,
+                    TotalRows = 200,
                 }
-            )
+            }
         );
         Response<GetLocationsListResponse>(
             500,
-            "An error occurred while getting the list of Locations",
-            example: new(
-                "An error occurred while getting the list of Locations",
-                StatusCode.UnhandledError
-            )
+            "An error occurred while getting the list of Locations"
+        // example: new(
+        //     "An error occurred while getting the list of Locations",
+        //     StatusCode.UnhandledError
+        // )
         );
     }
 }

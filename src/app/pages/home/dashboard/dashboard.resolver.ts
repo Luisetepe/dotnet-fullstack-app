@@ -1,4 +1,5 @@
 import { DashboardData, DashboardService } from '@/app/pages/home/dashboard/dashboard.service'
+import { environment } from '@/environments/environment'
 import { AppStore } from '@/lib/stores/app.store'
 import { inject } from '@angular/core'
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router'
@@ -18,12 +19,11 @@ export const dashboardResolver: ResolveFn<DashboardResolverData> = (
 	appStore.startRouteLoading('Loading dashboard data...')
 
 	return dashboardService.getDashboardData().pipe(
-		delay(500),
+		delay(environment.artificialApiDelay),
 		finalize(() => {
 			appStore.finishRouteLoading()
 		}),
 		catchError((error) => {
-			console.error('Error fetching dashboard data:', error)
 			appStore.finishRouteLoading()
 			notification.error(
 				'Error fetching dashboard data',

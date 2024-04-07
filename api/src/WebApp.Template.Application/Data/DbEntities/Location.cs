@@ -1,4 +1,4 @@
-using WebApp.Template.Application.Data.Exceptions;
+using FluentValidation;
 
 namespace WebApp.Template.Application.Data.DbEntities;
 
@@ -20,34 +20,27 @@ public class Location
 
     public static Location CreateLocation(long id, string name, decimal longitude, decimal latitude)
     {
-        ValidateCreationArguments(id, name, longitude, latitude);
-
-        return new Location
+        var newLocation = new Location
         {
             Id = id,
             Name = name,
             Longitude = longitude,
             Latitude = latitude
         };
+
+        new LocationValidator().ValidateAndThrow(newLocation);
+
+        return newLocation;
     }
+}
 
-    private static void ValidateCreationArguments(
-        long id,
-        string name,
-        decimal longitude,
-        decimal latitude
-    )
+internal class LocationValidator : AbstractValidator<Location>
+{
+    public LocationValidator()
     {
-        if (id <= 0)
-            throw new DbEntityCreationException(nameof(Location), nameof(id));
-
-        if (string.IsNullOrWhiteSpace(name) || name.Length > 100)
-            throw new DbEntityCreationException(nameof(Location), nameof(name));
-
-        if (longitude is < -180 or > 180)
-            throw new DbEntityCreationException(nameof(Location), nameof(longitude));
-
-        if (latitude is < -90 or > 90)
-            throw new DbEntityCreationException(nameof(Location), nameof(latitude));
+        RuleFor(x => x.Id).GreaterThan(0);
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.Longitude).InclusiveBetween(-180, 180);
+        RuleFor(x => x.Latitude).InclusiveBetween(-90, 90);
     }
 }

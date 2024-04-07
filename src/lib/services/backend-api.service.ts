@@ -4,20 +4,6 @@ import { Injectable, inject } from '@angular/core'
 import { Observable, catchError, map, throwError } from 'rxjs'
 import * as z from 'zod'
 
-export enum StatusCode {
-	Success = 200,
-	UnhandledError = 500,
-	ValidationError = 400,
-	NotFoundError = 404,
-	UnauthorizedError = 401
-}
-
-export type BaseResponse<T> = {
-	status: StatusCode
-	message?: string
-	result?: T
-}
-
 export const paginationInfoSchema = z.object({
 	currentPageNumber: z.number(),
 	currentPageSize: z.number(),
@@ -46,10 +32,10 @@ export class BackendApiService {
 
 	get<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
 		const options = { params, headers, observe: 'response' } as const
-		return this.http.get<BaseResponse<T>>(`${this.baseUrl}/${url}`, options).pipe(
+		return this.http.get<T>(`${this.baseUrl}/${url}`, options).pipe(
 			map((response) => {
 				// biome-ignore lint/style/noNonNullAssertion: It is safe to assume a body is present
-				return response.body?.result!
+				return response.body!
 			}),
 			catchError(handleApiError)
 		)
@@ -58,10 +44,10 @@ export class BackendApiService {
 	// biome-ignore lint/suspicious/noExplicitAny: This method is intentionally generic
 	post<T>(url: string, body: any, headers?: HttpHeaders): Observable<T> {
 		const options = { headers, observe: 'response' } as const
-		return this.http.post<BaseResponse<T>>(`${this.baseUrl}/${url}`, body, options).pipe(
+		return this.http.post<T>(`${this.baseUrl}/${url}`, body, options).pipe(
 			map((response) => {
 				// biome-ignore lint/style/noNonNullAssertion: It is safe to assume a body is present
-				return response.body?.result!
+				return response.body!
 			}),
 			catchError(handleApiError)
 		)
@@ -78,8 +64,8 @@ function handleApiError(error: HttpErrorResponse) {
 		// The backend returned an unsuccessful response code.
 		// The response body may contain clues as to what went wrong,
 
-		const backendError = error.error as BaseResponse<null>
-		errorMessage = backendError.message ?? 'An error occurred on the server side.'
+		const backendError = error.error as { detail: string }
+		errorMessage = `An server-side error occurred: ${backendError.detail ?? error.message}`
 	}
 
 	console.error(errorMessage)

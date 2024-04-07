@@ -1,14 +1,14 @@
+using Ardalis.Result;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Data.DbContexts;
-using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Application.Features.Dashboard.Queries.GetDashboardWidgetsData;
 
 public class GetDashboardWidgetsDataHandler(WebAppDbContext db)
-    : IRequestHandler<GetDashboardWidgetsDataQuery, GetDashboardWidgetsDataResponse>
+    : IRequestHandler<GetDashboardWidgetsDataQuery, Result<GetDashboardWidgetsDataResponse>>
 {
-    public async Task<GetDashboardWidgetsDataResponse> Handle(
+    public async Task<Result<GetDashboardWidgetsDataResponse>> Handle(
         GetDashboardWidgetsDataQuery request,
         CancellationToken cancellationToken
     )
@@ -23,21 +23,19 @@ public class GetDashboardWidgetsDataHandler(WebAppDbContext db)
                 cancellationToken
             );
 
-            var response = new GetDashboardWidgetsDataResponse(
-                new GetDashboardWidgetsDataResponseDto
-                {
-                    Locations = locations,
-                    Plants = plants,
-                    SolarCapacity = solarCapacity,
-                    StorageCapacity = storageCapacity
-                }
-            );
+            var response = new GetDashboardWidgetsDataResponse
+            {
+                Locations = locations,
+                Plants = plants,
+                SolarCapacity = solarCapacity,
+                StorageCapacity = storageCapacity
+            };
 
             return response;
         }
         catch (Exception ex)
         {
-            return new GetDashboardWidgetsDataResponse(ex.Message, StatusCode.UnhandledError);
+            return Result.CriticalError(ex.Message);
         }
     }
 }

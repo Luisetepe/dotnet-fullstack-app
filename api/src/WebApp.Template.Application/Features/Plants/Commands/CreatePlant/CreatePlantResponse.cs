@@ -1,13 +1,7 @@
-namespace WebApp.Template.Application.Features.Plants.Queries.GetPlantById;
+namespace WebApp.Template.Application.Features.Plants.Commands.CreatePlant;
 
-public record GetPlantByIdResponse
+public record CreatePlantResponse
 {
-    public record Dependency
-    {
-        public string Id { get; init; }
-        public string Name { get; init; }
-    }
-
     public string Id { get; init; }
     public string Name { get; init; }
     public string PlantId { get; init; }
@@ -20,10 +14,8 @@ public record GetPlantByIdResponse
     public string AssetManager { get; init; }
     public string Tags { get; init; }
     public string? Notes { get; init; }
-
-    public Dependency PlantType { get; init; }
-    public Dependency ResourceType { get; init; }
-    public Dependency Status { get; init; }
-    public Dependency Location { get; init; }
-    public IReadOnlyCollection<Dependency> Portfolios { get; init; }
+    public string PlantTypeId { get; init; }
+    public string ResourceTypeId { get; init; }
+    public string StatusId { get; init; }
+    public string LocationId { get; init; }
 }

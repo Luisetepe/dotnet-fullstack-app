@@ -2,7 +2,7 @@ using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Application.Features.Plants.Queries.GetPlantsList;
 
-public record GetPlantsListResponseDto : BasePaginatedDto
+public record GetPlantsListResponse : BasePaginatedResponse
 {
     public record Plant
     {
@@ -17,14 +17,4 @@ public record GetPlantsListResponseDto : BasePaginatedDto
     }
 
     public IReadOnlyCollection<Plant> Plants { get; init; }
-}
-
-public class GetPlantsListResponse : BaseResponse<GetPlantsListResponseDto>
-{
-    [System.Text.Json.Serialization.JsonConstructor]
-    public GetPlantsListResponse(GetPlantsListResponseDto result)
-        : base(result) { }
-
-    public GetPlantsListResponse(string message, StatusCode statusCode)
-        : base(message, statusCode) { }
 }

@@ -1,3 +1,4 @@
+using FluentValidation;
 using WebApp.Template.Application.Data.Exceptions;
 
 namespace WebApp.Template.Application.Data.DbEntities;
@@ -22,20 +23,22 @@ public class Portfolio
     /// <param name="id">The portfolio's id.</param>
     /// <param name="name">The portfolio's name.</param>
     /// <returns>A new <see cref="Portfolio"/> entity.</returns>
-    /// <exception cref="DbEntityCreationException">If any of the provided arguments where invalid.</exception>
+    /// <exception cref="ValidationError">If any of the provided arguments where invalid.</exception>
     public static Portfolio CreatePortfolio(long id, string name)
     {
-        ValidateCreationArguments(id, name);
+        var newPortfolio = new Portfolio { Id = id, Name = name };
 
-        return new Portfolio { Id = id, Name = name };
+        new PortfolioValidator().ValidateAndThrow(newPortfolio);
+
+        return newPortfolio;
     }
+}
 
-    private static void ValidateCreationArguments(long id, string name)
+internal class PortfolioValidator : AbstractValidator<Portfolio>
+{
+    public PortfolioValidator()
     {
-        if (id <= 0)
-            throw new DbEntityCreationException(nameof(Portfolio), nameof(id));
-
-        if (string.IsNullOrWhiteSpace(name) || name.Length > 100)
-            throw new DbEntityCreationException(nameof(Portfolio), nameof(name));
+        RuleFor(x => x.Id).GreaterThan(0);
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
     }
 }

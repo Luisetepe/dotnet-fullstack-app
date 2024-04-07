@@ -5,18 +5,15 @@ namespace WebApp.Template.IntegrationTests.Features.Dashboard
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using WebApp.Template.Application.Features.Dashboard.Queries.GetDashboardWidgetsData;
-    using WebApp.Template.Application.Shared.Models;
     using Xunit;
 
-    public class GetDashboardWidgetsDataEndpointTests(
-        IntegrationTestFixture fixture,
-        ITestOutputHelper outputHelper
-    ) : TestClass<IntegrationTestFixture>(fixture, outputHelper)
+    public class GetDashboardWidgetsDataEndpointTests(IntegrationTestFixture fixture)
+        : TestBase<IntegrationTestFixture>
     {
         [Fact]
         public async Task Should_Return_Dashboard_Widgets_Data()
         {
-            var db = Fixture.GetDbContext();
+            var db = fixture.GetDbContext();
 
             // Arrange
             var expectedLocations = await db.Locations.CountAsync();
@@ -25,7 +22,7 @@ namespace WebApp.Template.IntegrationTests.Features.Dashboard
             var expectedStorageCapacity = await db.Plants.SumAsync(p => p.StorageCapacity);
 
             // Act
-            var (httpResponse, result) = await Fixture.Client.GETAsync<
+            var (httpResponse, result) = await fixture.Client.GETAsync<
                 GetDashboardWidgetsDataEndpoint,
                 GetDashboardWidgetsDataResponse
             >();
@@ -34,14 +31,10 @@ namespace WebApp.Template.IntegrationTests.Features.Dashboard
             httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
             result.Should().NotBeNull();
-            result.Status.Should().Be(StatusCode.Success);
-            result.Message.Should().BeNull();
-
-            result.Result.Should().NotBeNull();
-            result.Result!.Locations.Should().Be(expectedLocations);
-            result.Result!.Plants.Should().Be(expectedPlants);
-            result.Result!.SolarCapacity.Should().Be(expectedSolarCapacity);
-            result.Result!.StorageCapacity.Should().Be(expectedStorageCapacity);
+            result.Locations.Should().Be(expectedLocations);
+            result.Plants.Should().Be(expectedPlants);
+            result.SolarCapacity.Should().Be(expectedSolarCapacity);
+            result.StorageCapacity.Should().Be(expectedStorageCapacity);
         }
     }
 }

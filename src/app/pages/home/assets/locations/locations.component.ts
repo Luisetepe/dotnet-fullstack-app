@@ -1,3 +1,4 @@
+import { environment } from '@/environments/environment'
 import { PaginationInfo, SearchRequest } from '@/lib/services/backend-api.service'
 import { CommonModule } from '@angular/common'
 import { Component, inject } from '@angular/core'
@@ -99,7 +100,7 @@ export class LocationsComponent {
 	private loadPlants(params: SearchRequest) {
 		this.plantsService
 			.getLocationsList(params)
-			.pipe(delay(500))
+			.pipe(delay(environment.artificialApiDelay))
 			.subscribe({
 				next: (data) => {
 					this.locations = data.locations

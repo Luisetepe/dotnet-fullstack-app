@@ -1,3 +1,4 @@
+using FluentValidation;
 using WebApp.Template.Application.Data.Exceptions;
 
 namespace WebApp.Template.Application.Data.DbEntities;
@@ -22,20 +23,22 @@ public class PlantType
     /// <param name="id">The plant type's id.</param>
     /// <param name="name">The plant type's name.</param>
     /// <returns>A new <see cref="PlantType"/> entity.</returns>
-    /// <exception cref="DbEntityCreationException">If any of the provided arguments where invalid.</exception>
+    /// <exception cref="ValidationError">If any of the provided arguments where invalid.</exception>
     public static PlantType CreatePlantType(long id, string name)
     {
-        ValidateCreationArguments(id, name);
+        var newType = new PlantType { Id = id, Name = name };
 
-        return new PlantType { Id = id, Name = name };
+        new PlantTypeValidator().ValidateAndThrow(newType);
+
+        return newType;
     }
+}
 
-    private static void ValidateCreationArguments(long id, string name)
+internal class PlantTypeValidator : AbstractValidator<PlantType>
+{
+    public PlantTypeValidator()
     {
-        if (id <= 0)
-            throw new DbEntityCreationException(nameof(PlantType), nameof(id));
-
-        if (string.IsNullOrWhiteSpace(name) || name.Length > 100)
-            throw new DbEntityCreationException(nameof(PlantType), nameof(name));
+        RuleFor(x => x.Id).GreaterThan(0);
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
     }
 }

@@ -1,3 +1,4 @@
+import { environment } from '@/environments/environment'
 import { AppStore } from '@/lib/stores/app.store'
 import { inject } from '@angular/core'
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router'
@@ -20,15 +21,14 @@ export const locationsResolver: ResolveFn<LocationsResolverData> = (
 	return plantsService
 		.getLocationsList({
 			pageNumber: 1,
-			pageSize: 5
+			pageSize: environment.defaultGridPageSize
 		})
 		.pipe(
-			delay(500),
+			delay(environment.artificialApiDelay),
 			finalize(() => {
 				appStore.finishRouteLoading()
 			}),
 			catchError((error) => {
-				console.error('Error fetching locations data:', error)
 				appStore.finishRouteLoading()
 				notification.error(
 					'Error fetching locations data',

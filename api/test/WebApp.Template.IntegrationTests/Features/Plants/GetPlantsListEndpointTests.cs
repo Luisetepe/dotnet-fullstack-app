@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Api.Endpoints.Plants;
 using WebApp.Template.Application.Features.Plants.Queries.GetPlantsList;
-using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.IntegrationTests.Features.Plants;
 
@@ -62,7 +61,7 @@ public class GetPlantsListEndpointTests(IntegrationTestFixture fixture)
         var expectedPlants = (
             await plantsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync()
         )
-            .Select(x => new GetPlantsListResponseDto.Plant
+            .Select(x => new GetPlantsListResponse.Plant
             {
                 Id = uidService.ConvertToString(x.Id),
                 PlantId = x.PlantId,
@@ -98,10 +97,6 @@ public class GetPlantsListEndpointTests(IntegrationTestFixture fixture)
         httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
         result.Should().NotBeNull();
-        result.Status.Should().Be(StatusCode.Success);
-        result.Message.Should().BeNull();
-
-        result.Result.Should().NotBeNull();
-        result.Result!.Plants.Should().BeEquivalentTo(expectedPlants);
+        result.Plants.Should().BeEquivalentTo(expectedPlants);
     }
 }
