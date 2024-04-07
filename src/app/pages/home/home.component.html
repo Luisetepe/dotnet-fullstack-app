@@ -2,21 +2,27 @@
   <nz-sider
     class="relative z-50 min-h-screen border-r-4 shadow-xl drop-shadow-xl"
     nzWidth="232px"
-    nzTheme="light">
-    <div class="relative mb-12 mt-12 h-32 overflow-hidden leading-10">
+    nzTheme="dark">
+    <div
+      class="relative mb-12 mt-12 flex h-40 justify-center overflow-hidden leading-10">
       <a href="https://ng.ant.design/" target="_blank">
         <img
-          class="inline-block h-32 w-full align-middle"
-          src="assets/images/FRV.jpg"
+          class="inline-block h-40 w-full align-middle"
+          src="assets/images/logo-light.png"
           alt="logo" />
       </a>
     </div>
-    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="false" class="mt-16">
+    <ul
+      nz-menu
+      nzMode="inline"
+      nzTheme="dark"
+      [nzInlineCollapsed]="false"
+      class="mt-16">
       @for (route of this.routes; track route.label) {
         <!--If it is a flat route-->
         @if (route.path) {
           <li nz-menu-item nzMatchRouter [routerLink]="[route.path]">
-            <span class="!text-lg" nz-icon nzType="{{ route.icon }}"></span>
+            <span nz-icon nzType="{{ route.icon }}"></span>
             <span class="text-lg">{{ route.label }}</span>
           </li>
         } @else {
@@ -30,10 +36,7 @@
             <ul>
               @for (subRoute of route.children; track subRoute.label) {
                 <li nz-menu-item nzMatchRouter [routerLink]="[subRoute.path]">
-                  <span
-                    class="!text-lg"
-                    nz-icon
-                    nzType="{{ subRoute.icon }}"></span>
+                  <span nz-icon nzType="{{ subRoute.icon }}"></span>
                   <span class="text-lg">{{ subRoute.label }}</span>
                 </li>
               }
