@@ -1,3 +1,5 @@
+using Ardalis.Result;
+using Ardalis.Result.FluentValidation;
 using FluentValidation;
 using WebApp.Template.Application.Data.Exceptions;
 
@@ -24,11 +26,15 @@ public class PlantStatus
     /// <param name="name">The plant status' name.</param>
     /// <returns>A new <see cref="PlantStatus"/> entity.</returns>
     /// <exception cref="ValidationException">If any of the provided arguments where invalid.</exception>
-    public static PlantStatus CreatePlantStatus(long id, string name)
+    public static Result<PlantStatus> CreatePlantStatus(long id, string name)
     {
         var newStatus = new PlantStatus { Id = id, Name = name };
 
-        new PlantStatusValidator().ValidateAndThrow(newStatus);
+        var validation = new PlantStatusValidator().Validate(newStatus);
+        if (!validation.IsValid)
+        {
+            return Result.Invalid(validation.AsErrors());
+        }
 
         return newStatus;
     }

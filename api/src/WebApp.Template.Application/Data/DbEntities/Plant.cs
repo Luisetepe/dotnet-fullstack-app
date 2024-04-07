@@ -1,3 +1,6 @@
+using System.Diagnostics.Metrics;
+using Ardalis.Result;
+using Ardalis.Result.FluentValidation;
 using FluentValidation;
 
 namespace WebApp.Template.Application.Data.DbEntities;
@@ -38,7 +41,7 @@ public class Plant
     /* Private constructor for EF Core */
     private Plant() { }
 
-    public static Plant CreatePlant(
+    public static Result<Plant> CreatePlant(
         long id,
         string name,
         string plantId,
@@ -79,12 +82,16 @@ public class Plant
             Portfolios = portfolios ?? new List<Portfolio>()
         };
 
-        new PlantValidator().ValidateAndThrow(newPlant);
+        var validation = new PlantValidator().Validate(newPlant);
+        if (!validation.IsValid)
+        {
+            return Result.Invalid(validation.AsErrors());
+        }
 
         return newPlant;
     }
 
-    public void UpdatePlant(
+    public Result UpdatePlant(
         decimal capacityDc,
         decimal capacityAc,
         decimal storageCapacity,
@@ -114,7 +121,13 @@ public class Plant
         StatusId = statusId;
         LocationId = locationId;
 
-        new PlantValidator().ValidateAndThrow(this);
+        var validation = new PlantValidator().Validate(this);
+        if (!validation.IsValid)
+        {
+            return Result.Invalid(validation.AsErrors());
+        }
+
+        return Result.Success();
     }
 
     public void UpdatePortfolios(ICollection<Portfolio> portfolios)

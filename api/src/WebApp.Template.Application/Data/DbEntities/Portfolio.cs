@@ -1,3 +1,5 @@
+using Ardalis.Result;
+using Ardalis.Result.FluentValidation;
 using FluentValidation;
 using WebApp.Template.Application.Data.Exceptions;
 
@@ -24,11 +26,15 @@ public class Portfolio
     /// <param name="name">The portfolio's name.</param>
     /// <returns>A new <see cref="Portfolio"/> entity.</returns>
     /// <exception cref="ValidationError">If any of the provided arguments where invalid.</exception>
-    public static Portfolio CreatePortfolio(long id, string name)
+    public static Result<Portfolio> CreatePortfolio(long id, string name)
     {
         var newPortfolio = new Portfolio { Id = id, Name = name };
 
-        new PortfolioValidator().ValidateAndThrow(newPortfolio);
+        var validation = new PortfolioValidator().Validate(newPortfolio);
+        if (!validation.IsValid)
+        {
+            return Result.Invalid(validation.AsErrors());
+        }
 
         return newPortfolio;
     }

@@ -36,7 +36,7 @@ public class UpdatePlantHandler(
                 .Portfolios.Where(p => portfolioIds.Contains(p.Id))
                 .ToArrayAsync(cancellationToken);
 
-            plant.UpdatePlant(
+            var updateResult = plant.UpdatePlant(
                 command.Request.CapacityDc,
                 command.Request.CapacityAc,
                 command.Request.StorageCapacity,
@@ -51,6 +51,12 @@ public class UpdatePlantHandler(
                 idToNumber(command.Request.StatusId),
                 idToNumber(command.Request.LocationId)
             );
+
+            if (!updateResult.IsSuccess)
+            {
+                return Result.Invalid(updateResult.ValidationErrors.ToArray());
+            }
+
             plant.UpdatePortfolios(portfolios);
 
             await dbContext.SaveChangesAsync(cancellationToken);

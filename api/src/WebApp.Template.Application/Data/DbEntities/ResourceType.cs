@@ -1,3 +1,5 @@
+using Ardalis.Result;
+using Ardalis.Result.FluentValidation;
 using FluentValidation;
 using WebApp.Template.Application.Data.Exceptions;
 
@@ -24,11 +26,15 @@ public class ResourceType
     /// <param name="name">The resource type's name.</param>
     /// <returns>A new <see cref="ResourceType"/> entity.</returns>
     /// <exception cref="DbEntityCreationException">If any of the provided arguments where invalid.</exception>
-    public static ResourceType CreateResourceType(long id, string name)
+    public static Result<ResourceType> CreateResourceType(long id, string name)
     {
         var newResource = new ResourceType { Id = id, Name = name };
 
-        new ResourceTypeValidator().ValidateAndThrow(newResource);
+        var validation = new ResourceTypeValidator().Validate(newResource);
+        if (!validation.IsValid)
+        {
+            return Result.Invalid(validation.AsErrors());
+        }
 
         return newResource;
     }

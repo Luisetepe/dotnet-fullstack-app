@@ -27,7 +27,7 @@ public class CreatePlantHandler(
                 .Portfolios.Where(p => portfolioIds.Contains(p.Id))
                 .ToArrayAsync(cancellationToken);
 
-            var newPlant = Plant.CreatePlant(
+            var newPlantResult = Plant.CreatePlant(
                 identifierService.Create(),
                 command.Request.Name,
                 command.Request.PlantId,
@@ -47,6 +47,10 @@ public class CreatePlantHandler(
                 portfolios
             );
 
+            if (!newPlantResult.IsSuccess)
+                return Result.Invalid(newPlantResult.ValidationErrors.ToArray());
+
+            var newPlant = newPlantResult.Value;
             await dbContext.Plants.AddAsync(newPlant, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
 

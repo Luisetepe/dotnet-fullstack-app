@@ -50,7 +50,7 @@ For the dotnet REST Api you only need the latest `.Net SDK`:
 
 For database, you just need to have a PostgreSQL database available wherever you want and configure the Connection String as an environment variable as its described in the `Local Development` section.
 
-I usually use docker for these things, so install a Docker engine if you haven't already (I recommend using [Rancher Desktop](https://rancherdesktop.io/)), create a virtual volume to save the database data, and spinup a PostgreSQL container:
+I usually use docker for these things, so install a Docker engine if you haven't already (I recommend using [Rancher Desktop](https://rancherdesktop.io/)), create a virtual volume to save the database data, and spin up a PostgreSQL container:
 
 ```powershell
 docker volume create pgData

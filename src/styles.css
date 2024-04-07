@@ -8,5 +8,9 @@
 @tailwind utilities;
 
 .ant-table-thead > tr > th  {
-    @apply !font-semibold
+    font-weight: 600 !important;
+}
+
+.ant-table-column-sorter-down, .ant-table-column-sorter-up {
+    font-size: 13px;
 }

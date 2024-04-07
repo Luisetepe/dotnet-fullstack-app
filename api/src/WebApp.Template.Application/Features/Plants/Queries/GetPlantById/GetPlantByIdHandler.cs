@@ -29,9 +29,7 @@ public class GetPlantByIdHandler(
                 .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
             if (plant is null)
-            {
                 return Result.NotFound($"Plant with ID {query.Request.Id} could not be found.");
-            }
 
             return new GetPlantByIdResponse
             {

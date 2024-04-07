@@ -1,3 +1,5 @@
+using Ardalis.Result;
+using Ardalis.Result.FluentValidation;
 using FluentValidation;
 using WebApp.Template.Application.Data.Exceptions;
 
@@ -24,11 +26,15 @@ public class PlantType
     /// <param name="name">The plant type's name.</param>
     /// <returns>A new <see cref="PlantType"/> entity.</returns>
     /// <exception cref="ValidationError">If any of the provided arguments where invalid.</exception>
-    public static PlantType CreatePlantType(long id, string name)
+    public static Result<PlantType> CreatePlantType(long id, string name)
     {
         var newType = new PlantType { Id = id, Name = name };
 
-        new PlantTypeValidator().ValidateAndThrow(newType);
+        var validation = new PlantTypeValidator().Validate(newType);
+        if (!validation.IsValid)
+        {
+            return Result.Invalid(validation.AsErrors());
+        }
 
         return newType;
     }

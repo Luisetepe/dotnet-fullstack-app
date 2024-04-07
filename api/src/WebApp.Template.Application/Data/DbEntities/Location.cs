@@ -28,7 +28,7 @@ public class Location
             Latitude = latitude
         };
 
-        new LocationValidator().ValidateAndThrow(newLocation);
+        new LocationValidator().Validate(newLocation);
 
         return newLocation;
     }
