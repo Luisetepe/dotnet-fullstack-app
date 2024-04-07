@@ -1,12 +1,12 @@
 using TSID.Creator.NET;
 
-namespace WebApp.Template.Application.Data.Services;
+namespace WebApp.Template.Application.Services.Identity;
 
 public class UniqueIdentifierService : IUniqueIdentifierService
 {
-    public long Create()
+    public string Create()
     {
-        return TsidCreator.GetTsid().ToLong();
+        return TsidCreator.GetTsid().ToString();
     }
 
     public string ConvertToString(long id)

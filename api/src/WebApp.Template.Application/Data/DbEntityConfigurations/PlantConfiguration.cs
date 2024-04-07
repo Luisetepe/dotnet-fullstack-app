@@ -13,7 +13,7 @@ public class PlantConfiguration : IEntityTypeConfiguration<Plant>
         builder.HasKey(x => x.Id);
         builder.HasIndex(x => x.Name).IsUnique();
 
-        builder.Property(x => x.Id).HasColumnType("bigint").IsRequired();
+        builder.Property(x => x.Id).HasColumnType("varchar(50)").IsRequired();
         builder.Property(x => x.Name).HasColumnType("varchar(100)").IsRequired();
         builder.Property(x => x.PlantId).HasColumnType("varchar(20)").IsRequired();
         builder.Property(x => x.ProjectCompany).HasColumnType("varchar(100)").IsRequired();
@@ -21,15 +21,17 @@ public class PlantConfiguration : IEntityTypeConfiguration<Plant>
         builder.Property(x => x.Tags).HasColumnType("varchar(100)").IsRequired();
         builder.Property(x => x.AssetManager).HasColumnType("varchar(100)").IsRequired();
         builder.Property(x => x.Notes).HasColumnType("varchar(500)").IsRequired();
+        builder.Property(x => x.CapacityDc).HasColumnType("numeric").IsRequired();
+        builder.Property(x => x.CapacityAc).HasColumnType("numeric").IsRequired();
 
         /* Foreign keys */
 
-        builder.Property(x => x.StatusId).HasColumnType("bigint").IsRequired();
-        builder.Property(x => x.LocationId).HasColumnType("bigint").IsRequired();
-        builder.Property(x => x.PlantTypeId).HasColumnType("bigint").IsRequired();
-        builder.Property(x => x.ResourceTypeId).HasColumnType("bigint").IsRequired();
+        builder.Property(x => x.StatusId).HasColumnType("varchar(50)").IsRequired();
+        builder.Property(x => x.LocationId).HasColumnType("varchar(50)").IsRequired();
+        builder.Property(x => x.PlantTypeId).HasColumnType("varchar(50)").IsRequired();
+        builder.Property(x => x.ResourceTypeId).HasColumnType("varchar(50)").IsRequired();
 
-        /* Navigational properties */
+        /* Relationships */
 
         builder
             .HasOne(x => x.Status)
@@ -42,21 +44,7 @@ public class PlantConfiguration : IEntityTypeConfiguration<Plant>
             .HasOne(x => x.ResourceType)
             .WithMany(x => x.Plants)
             .OnDelete(DeleteBehavior.Restrict);
-        builder
-            .HasMany(x => x.Portfolios)
-            .WithMany(x => x.Plants)
-            .UsingEntity(
-                "portfolio_plants",
-                l =>
-                    l.HasOne(typeof(Portfolio))
-                        .WithMany()
-                        .HasForeignKey("portfolio_id")
-                        .OnDelete(DeleteBehavior.Restrict),
-                r =>
-                    r.HasOne(typeof(Plant))
-                        .WithMany()
-                        .HasForeignKey("plant_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-            );
+
+        builder.HasMany(x => x.Portfolios).WithMany(x => x.Plants);
     }
 }

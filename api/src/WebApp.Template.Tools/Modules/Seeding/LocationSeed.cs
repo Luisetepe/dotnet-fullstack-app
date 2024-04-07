@@ -1,6 +1,6 @@
 using WebApp.Template.Application.Data.DbContexts;
 using WebApp.Template.Application.Data.DbEntities;
-using WebApp.Template.Application.Data.Services;
+using WebApp.Template.Application.Services.Identity;
 
 namespace WebApp.Template.Tools.Modules.Seeding;
 

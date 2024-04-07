@@ -12,7 +12,7 @@ public class PlantStatusConfiguration : IEntityTypeConfiguration<PlantStatus>
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id).HasColumnType("bigint").IsRequired();
+        builder.Property(x => x.Id).HasColumnType("varchar(50)").IsRequired();
         builder.Property(x => x.Name).HasColumnType("varchar(100)").IsRequired();
     }
 }

@@ -10,7 +10,7 @@ namespace WebApp.Template.Application.Data.DbEntities;
 /// </summary>
 public class Portfolio
 {
-    public long Id { get; init; }
+    public string Id { get; init; }
     public string Name { get; init; }
 
     /* Navigation properties */
@@ -26,7 +26,7 @@ public class Portfolio
     /// <param name="name">The portfolio's name.</param>
     /// <returns>A new <see cref="Portfolio"/> entity.</returns>
     /// <exception cref="ValidationError">If any of the provided arguments where invalid.</exception>
-    public static Result<Portfolio> CreatePortfolio(long id, string name)
+    public static Result<Portfolio> CreatePortfolio(string id, string name)
     {
         var newPortfolio = new Portfolio { Id = id, Name = name };
 
@@ -44,7 +44,7 @@ internal class PortfolioValidator : AbstractValidator<Portfolio>
 {
     public PortfolioValidator()
     {
-        RuleFor(x => x.Id).GreaterThan(0);
+        RuleFor(x => x.Id).NotEmpty();
         RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
     }
 }

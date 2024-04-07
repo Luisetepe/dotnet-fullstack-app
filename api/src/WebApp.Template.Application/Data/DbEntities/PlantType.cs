@@ -10,7 +10,7 @@ namespace WebApp.Template.Application.Data.DbEntities;
 /// </summary>
 public class PlantType
 {
-    public long Id { get; init; }
+    public string Id { get; init; }
     public string Name { get; init; }
 
     /* Navigation properties */
@@ -26,7 +26,7 @@ public class PlantType
     /// <param name="name">The plant type's name.</param>
     /// <returns>A new <see cref="PlantType"/> entity.</returns>
     /// <exception cref="ValidationError">If any of the provided arguments where invalid.</exception>
-    public static Result<PlantType> CreatePlantType(long id, string name)
+    public static Result<PlantType> CreatePlantType(string id, string name)
     {
         var newType = new PlantType { Id = id, Name = name };
 
@@ -44,7 +44,7 @@ internal class PlantTypeValidator : AbstractValidator<PlantType>
 {
     public PlantTypeValidator()
     {
-        RuleFor(x => x.Id).GreaterThan(0);
+        RuleFor(x => x.Id).NotEmpty();
         RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
     }
 }

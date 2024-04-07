@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Data.DbContexts;
-using WebApp.Template.Application.Data.Services;
+using WebApp.Template.Application.Services.Crypto;
+using WebApp.Template.Application.Services.Identity;
 
 namespace WebApp.Template.Tools.Modules.Seeding;
 
@@ -16,31 +17,29 @@ public static class SeedingModule
             .Options;
 
         await using var db = new WebAppDbContext(options);
-        await db.Database.EnsureDeletedAsync();
-        await db.Database.EnsureCreatedAsync();
 
-        return await SeedDatabase(db, uuidGenerator);
+        return await SeedDatabase(db);
     }
 
     public static async Task<ModuleResponse> Run(WebAppDbContext db)
     {
+        return await SeedDatabase(db);
+    }
+
+    private static async Task<ModuleResponse> SeedDatabase(WebAppDbContext db)
+    {
         var uuidGenerator = new UniqueIdentifierService();
+        var cryptoService = new CryptoService();
 
         await db.Database.EnsureDeletedAsync();
         await db.Database.EnsureCreatedAsync();
-
-        return await SeedDatabase(db, uuidGenerator);
-    }
-
-    private static async Task<ModuleResponse> SeedDatabase(
-        WebAppDbContext db,
-        IUniqueIdentifierService uuidGenerator
-    )
-    {
         await using var transaction = await db.Database.BeginTransactionAsync();
 
         try
         {
+            // Load identity related data
+            await IdentitySeed.SeedUsers(db, uuidGenerator, cryptoService);
+
             // Load first to avoid FK constraint errors
             await LocationSeed.SeedLocations(db, uuidGenerator);
             await PlantTypeSeed.SeedPlantTypes(db, uuidGenerator);

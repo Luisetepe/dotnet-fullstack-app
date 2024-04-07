@@ -14,7 +14,9 @@ export class AppStore {
 	}
 
 	startRouteLoading(loadingMessage?: string) {
-		this.loadingMessageId = this.messageService.loading(loadingMessage ?? 'Loading...').messageId
+		this.loadingMessageId = this.messageService.loading(loadingMessage ?? 'Loading...', {
+			nzDuration: 0
+		}).messageId
 		this.routeLoading.set(true)
 	}
 

@@ -24,7 +24,7 @@ export const plantsResolver: ResolveFn<PlantsResolverData> = (
 			pageSize: environment.defaultGridPageSize
 		})
 		.pipe(
-			delay(environment.artificialApiDelay),
+			delay(environment.artificialNavigationDelay),
 			pipe(
 				map((plantsResult) => ({
 					plants: plantsResult.plants,

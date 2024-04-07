@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebApp.Template.Application.Data.DbContexts;
-using WebApp.Template.Application.Data.Services;
+using WebApp.Template.Application.Services.Crypto;
+using WebApp.Template.Application.Services.Identity;
 
 namespace WebApp.Template.Application;
 
@@ -25,6 +26,7 @@ public static class DependencyInjection
         );
 
         services.AddSingleton<IUniqueIdentifierService, UniqueIdentifierService>();
+        services.AddScoped<ICryptoService, CryptoService>();
 
         return services;
     }

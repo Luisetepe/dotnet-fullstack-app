@@ -2,14 +2,11 @@ using Ardalis.Result;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Data.DbContexts;
-using WebApp.Template.Application.Data.Services;
 
 namespace WebApp.Template.Application.Features.Plants.Queries.GetPlantById;
 
-public class GetPlantByIdHandler(
-    WebAppDbContext dbContext,
-    IUniqueIdentifierService identifierService
-) : IRequestHandler<GetPlantByIdQuery, Result<GetPlantByIdResponse>>
+public class GetPlantByIdHandler(WebAppDbContext dbContext)
+    : IRequestHandler<GetPlantByIdQuery, Result<GetPlantByIdResponse>>
 {
     public async Task<Result<GetPlantByIdResponse>> Handle(
         GetPlantByIdQuery query,
@@ -18,22 +15,22 @@ public class GetPlantByIdHandler(
     {
         try
         {
-            var id = identifierService.ConvertToNumber(query.Request.Id);
-
             var plant = await dbContext
                 .Plants.Include(p => p.PlantType)
                 .Include(p => p.ResourceType)
                 .Include(p => p.Status)
                 .Include(p => p.Location)
                 .Include(p => p.Portfolios)
-                .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+                .FirstOrDefaultAsync(p => p.Id == query.Request.Id, cancellationToken);
 
             if (plant is null)
+            {
                 return Result.NotFound($"Plant with ID {query.Request.Id} could not be found.");
+            }
 
             return new GetPlantByIdResponse
             {
-                Id = identifierService.ConvertToString(plant.Id),
+                Id = plant.Id,
                 Name = plant.Name,
                 PlantId = plant.PlantId,
                 CapacityDc = plant.CapacityDc,
@@ -47,28 +44,28 @@ public class GetPlantByIdHandler(
                 Notes = plant.Notes,
                 PlantType = new GetPlantByIdResponse.Dependency
                 {
-                    Id = identifierService.ConvertToString(plant.PlantType.Id),
+                    Id = plant.PlantType.Id,
                     Name = plant.PlantType.Name
                 },
                 ResourceType = new GetPlantByIdResponse.Dependency
                 {
-                    Id = identifierService.ConvertToString(plant.ResourceType.Id),
+                    Id = plant.ResourceType.Id,
                     Name = plant.ResourceType.Name
                 },
                 Status = new GetPlantByIdResponse.Dependency
                 {
-                    Id = identifierService.ConvertToString(plant.Status.Id),
+                    Id = plant.Status.Id,
                     Name = plant.Status.Name
                 },
                 Location = new GetPlantByIdResponse.Dependency
                 {
-                    Id = identifierService.ConvertToString(plant.Location.Id),
+                    Id = plant.Location.Id,
                     Name = plant.Location.Name
                 },
                 Portfolios = plant
                     .Portfolios.Select(portfolio => new GetPlantByIdResponse.Dependency
                     {
-                        Id = identifierService.ConvertToString(portfolio.Id),
+                        Id = portfolio.Id,
                         Name = portfolio.Name
                     })
                     .ToArray()

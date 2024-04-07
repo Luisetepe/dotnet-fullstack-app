@@ -3,14 +3,12 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Data.DbContexts;
 using WebApp.Template.Application.Data.DbEntities;
-using WebApp.Template.Application.Data.Services;
+using WebApp.Template.Application.Services.Identity;
 
 namespace WebApp.Template.Application.Features.Plants.Commands.CreatePlant;
 
-public class CreatePlantHandler(
-    WebAppDbContext dbContext,
-    IUniqueIdentifierService identifierService
-) : IRequestHandler<CreatePlantCommand, Result<CreatePlantResponse>>
+public class CreatePlantHandler(WebAppDbContext dbContext, IUniqueIdentifierService idService)
+    : IRequestHandler<CreatePlantCommand, Result<CreatePlantResponse>>
 {
     public async Task<Result<CreatePlantResponse>> Handle(
         CreatePlantCommand command,
@@ -19,16 +17,12 @@ public class CreatePlantHandler(
     {
         try
         {
-            var idToNumber = identifierService.ConvertToNumber;
-            var idToString = identifierService.ConvertToString;
-
-            var portfolioIds = command.Request.PortfolioIds.Select(idToNumber).ToArray();
             var portfolios = await dbContext
-                .Portfolios.Where(p => portfolioIds.Contains(p.Id))
+                .Portfolios.Where(p => command.Request.PortfolioIds.Contains(p.Id))
                 .ToArrayAsync(cancellationToken);
 
             var newPlantResult = Plant.CreatePlant(
-                identifierService.Create(),
+                idService.Create(),
                 command.Request.Name,
                 command.Request.PlantId,
                 command.Request.CapacityDc,
@@ -40,15 +34,17 @@ public class CreatePlantHandler(
                 command.Request.AssetManager,
                 command.Request.Tags,
                 command.Request.Notes,
-                idToNumber(command.Request.PlantTypeId),
-                idToNumber(command.Request.ResourceTypeId),
-                idToNumber(command.Request.StatusId),
-                idToNumber(command.Request.LocationId),
+                command.Request.PlantTypeId,
+                command.Request.ResourceTypeId,
+                command.Request.StatusId,
+                command.Request.LocationId,
                 portfolios
             );
 
             if (!newPlantResult.IsSuccess)
+            {
                 return Result.Invalid(newPlantResult.ValidationErrors.ToArray());
+            }
 
             var newPlant = newPlantResult.Value;
             await dbContext.Plants.AddAsync(newPlant, cancellationToken);
@@ -56,7 +52,7 @@ public class CreatePlantHandler(
 
             return new CreatePlantResponse
             {
-                Id = idToString(newPlant.Id),
+                Id = newPlant.Id,
                 Name = newPlant.Name,
                 PlantId = newPlant.PlantId,
                 CapacityDc = newPlant.CapacityDc,
@@ -68,10 +64,10 @@ public class CreatePlantHandler(
                 AssetManager = newPlant.AssetManager,
                 Tags = newPlant.Tags,
                 Notes = newPlant.Notes,
-                PlantTypeId = idToString(newPlant.PlantTypeId),
-                ResourceTypeId = idToString(newPlant.ResourceTypeId),
-                StatusId = idToString(newPlant.StatusId),
-                LocationId = idToString(newPlant.LocationId),
+                PlantTypeId = newPlant.PlantTypeId,
+                ResourceTypeId = newPlant.ResourceTypeId,
+                LocationId = newPlant.LocationId,
+                StatusId = newPlant.StatusId,
             };
         }
         catch (Exception ex)

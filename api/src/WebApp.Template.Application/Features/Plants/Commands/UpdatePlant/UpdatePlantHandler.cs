@@ -2,14 +2,12 @@ using Ardalis.Result;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Data.DbContexts;
-using WebApp.Template.Application.Data.Services;
+using WebApp.Template.Application.Services.Identity;
 
 namespace WebApp.Template.Application.Features.Plants.Commands.UpdatePlant;
 
-public class UpdatePlantHandler(
-    WebAppDbContext dbContext,
-    IUniqueIdentifierService identifierService
-) : IRequestHandler<UpdatePlantCommand, Result>
+public class UpdatePlantHandler(WebAppDbContext dbContext, IUniqueIdentifierService idService)
+    : IRequestHandler<UpdatePlantCommand, Result>
 {
     public async Task<Result> Handle(
         UpdatePlantCommand command,
@@ -20,20 +18,18 @@ public class UpdatePlantHandler(
         {
             var plant = await dbContext
                 .Plants.Include(p => p.Portfolios)
-                .SingleOrDefaultAsync(
-                    p => p.Id == identifierService.ConvertToNumber(command.Request.Id),
-                    cancellationToken
-                );
+                .SingleOrDefaultAsync(p => p.Id == command.Request.Id, cancellationToken);
 
             if (plant == null)
+            {
                 return Result.NotFound($"Plant with ID {command.Request.Id} could not be found.");
+            }
 
-            var idToNumber = identifierService.ConvertToNumber;
-            var idToString = identifierService.ConvertToString;
+            var idToNumber = idService.ConvertToNumber;
+            var idToString = idService.ConvertToString;
 
-            var portfolioIds = command.Request.PortfolioIds.Select(idToNumber).ToArray();
             var portfolios = await dbContext
-                .Portfolios.Where(p => portfolioIds.Contains(p.Id))
+                .Portfolios.Where(p => command.Request.PortfolioIds.Contains(p.Id))
                 .ToArrayAsync(cancellationToken);
 
             var updateResult = plant.UpdatePlant(
@@ -46,10 +42,10 @@ public class UpdatePlantHandler(
                 command.Request.AssetManager,
                 command.Request.Tags,
                 command.Request.Notes,
-                idToNumber(command.Request.PlantTypeId),
-                idToNumber(command.Request.ResourceTypeId),
-                idToNumber(command.Request.StatusId),
-                idToNumber(command.Request.LocationId)
+                command.Request.PlantTypeId,
+                command.Request.ResourceTypeId,
+                command.Request.StatusId,
+                command.Request.LocationId
             );
 
             if (!updateResult.IsSuccess)

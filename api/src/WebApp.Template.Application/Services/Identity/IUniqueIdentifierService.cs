@@ -1,8 +1,8 @@
-namespace WebApp.Template.Application.Data.Services;
+namespace WebApp.Template.Application.Services.Identity;
 
 public interface IUniqueIdentifierService
 {
-    public long Create();
+    public string Create();
     string ConvertToString(long id);
     long ConvertToNumber(string id);
 }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TSID.Creator.NET;
 using WebApp.Template.Application.Data.DbContexts;
-using WebApp.Template.Application.Data.Services;
+using WebApp.Template.Application.Services.Identity;
 
 namespace WebApp.Template.IntegrationTests;
 
@@ -19,6 +19,8 @@ public class IntegrationTestFixture : AppFixture<Program>
         await using var scope = Services.CreateAsyncScope();
 
         var db = scope.ServiceProvider.GetRequiredService<WebAppDbContext>();
+        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
         await Tools.Modules.Seeding.SeedingModule.Run(db);
     }
 

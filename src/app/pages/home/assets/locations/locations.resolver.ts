@@ -24,7 +24,7 @@ export const locationsResolver: ResolveFn<LocationsResolverData> = (
 			pageSize: environment.defaultGridPageSize
 		})
 		.pipe(
-			delay(environment.artificialApiDelay),
+			delay(environment.artificialNavigationDelay),
 			finalize(() => {
 				appStore.finishRouteLoading()
 			}),

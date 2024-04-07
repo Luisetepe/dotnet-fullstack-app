@@ -7,7 +7,7 @@ namespace WebApp.Template.Application.Data.DbEntities;
 /// </summary>
 public class Location
 {
-    public long Id { get; init; }
+    public string Id { get; init; }
     public string Name { get; init; }
     public decimal Longitude { get; init; }
     public decimal Latitude { get; init; }
@@ -18,7 +18,12 @@ public class Location
     /* Private constructor for EF Core */
     private Location() { }
 
-    public static Location CreateLocation(long id, string name, decimal longitude, decimal latitude)
+    public static Location CreateLocation(
+        string id,
+        string name,
+        decimal longitude,
+        decimal latitude
+    )
     {
         var newLocation = new Location
         {
@@ -38,7 +43,7 @@ internal class LocationValidator : AbstractValidator<Location>
 {
     public LocationValidator()
     {
-        RuleFor(x => x.Id).GreaterThan(0);
+        RuleFor(x => x.Id).NotEmpty();
         RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
         RuleFor(x => x.Longitude).InclusiveBetween(-180, 180);
         RuleFor(x => x.Latitude).InclusiveBetween(-90, 90);

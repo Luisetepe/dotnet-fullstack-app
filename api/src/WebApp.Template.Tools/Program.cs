@@ -24,9 +24,10 @@ app.AddCommand(
             return;
         }
 
-        var response = await SeedingModule.Run(
-            configuration.GetValue<string>("WebAppDb") ?? throw new ArgumentNullException()
-        );
+        var connectionString =
+            configuration.GetValue<string>("WebAppDb") ?? throw new ArgumentNullException();
+
+        var response = await SeedingModule.Run(connectionString);
         Console.WriteLine(response.Message);
     }
 );

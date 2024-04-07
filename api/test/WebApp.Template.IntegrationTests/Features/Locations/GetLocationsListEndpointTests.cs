@@ -23,7 +23,6 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture)
     )
     {
         //Arrange
-        var uidService = fixture.GetUniqueIdentifierService();
         var db = fixture.GetDbContext();
         var locationsQuery = db
             .Locations.AsNoTracking()
@@ -56,7 +55,7 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture)
         )
             .Select(x => new GetLocationsListResponse.Location
             {
-                Id = uidService.ConvertToString(x.Id),
+                Id = x.Id,
                 Name = x.Name,
                 Latitude = x.Latitude,
                 Longitude = x.Longitude

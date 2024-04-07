@@ -1,4 +1,5 @@
 using FastEndpoints;
+using FastEndpoints.Security;
 using FastEndpoints.Swagger;
 using WebApp.Template.Application;
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder
     .Services.AddFastEndpoints()
+    .AddAuthenticationCookie(validFor: TimeSpan.FromMinutes(10))
+    .AddAuthorization()
     .SwaggerDocument(opt =>
     {
         opt.DocumentSettings = s =>
@@ -22,18 +25,22 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(conf =>
     {
-        conf.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        conf.WithOrigins("http://localhost:4200").AllowCredentials();
+        conf.AllowAnyMethod().AllowAnyHeader();
     });
 });
 
 var app = builder.Build();
 
-app.UseFastEndpoints()
+app.UseAuthentication()
+    .UseAuthorization()
+    .UseFastEndpoints()
     .UseSwaggerGen(uiConfig: opt =>
     {
         // This removes the botton 'Models' section from the swagger UI
         opt.DefaultModelsExpandDepth = -1;
     });
+
 app.UseCors();
 
 app.Run();

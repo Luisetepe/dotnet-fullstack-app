@@ -21,7 +21,6 @@ public class GetPlantsListEndpointTests(IntegrationTestFixture fixture)
     )
     {
         //Arrange
-        var uidService = fixture.GetUniqueIdentifierService();
         var db = fixture.GetDbContext();
         var plantsQuery = db
             .Plants.Include(x => x.Status)
@@ -63,7 +62,7 @@ public class GetPlantsListEndpointTests(IntegrationTestFixture fixture)
         )
             .Select(x => new GetPlantsListResponse.Plant
             {
-                Id = uidService.ConvertToString(x.Id),
+                Id = x.Id,
                 PlantId = x.PlantId,
                 Name = x.Name,
                 UtilityCompany = x.UtilityCompany,

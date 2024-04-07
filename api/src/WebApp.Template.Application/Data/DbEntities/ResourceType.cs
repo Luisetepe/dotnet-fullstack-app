@@ -10,7 +10,7 @@ namespace WebApp.Template.Application.Data.DbEntities;
 /// </summary>
 public class ResourceType
 {
-    public long Id { get; init; }
+    public string Id { get; init; }
     public string Name { get; init; }
 
     /* Navigation properties */
@@ -26,7 +26,7 @@ public class ResourceType
     /// <param name="name">The resource type's name.</param>
     /// <returns>A new <see cref="ResourceType"/> entity.</returns>
     /// <exception cref="DbEntityCreationException">If any of the provided arguments where invalid.</exception>
-    public static Result<ResourceType> CreateResourceType(long id, string name)
+    public static Result<ResourceType> CreateResourceType(string id, string name)
     {
         var newResource = new ResourceType { Id = id, Name = name };
 
@@ -44,7 +44,7 @@ internal class ResourceTypeValidator : AbstractValidator<ResourceType>
 {
     public ResourceTypeValidator()
     {
-        RuleFor(x => x.Id).GreaterThan(0);
+        RuleFor(x => x.Id).NotEmpty();
         RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
     }
 }

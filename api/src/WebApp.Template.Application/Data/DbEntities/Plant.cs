@@ -1,4 +1,3 @@
-using System.Diagnostics.Metrics;
 using Ardalis.Result;
 using Ardalis.Result.FluentValidation;
 using FluentValidation;
@@ -10,7 +9,7 @@ namespace WebApp.Template.Application.Data.DbEntities;
 /// </summary>
 public class Plant
 {
-    public long Id { get; init; }
+    public string Id { get; init; }
     public string Name { get; init; }
     public string PlantId { get; init; }
     public decimal CapacityDc { get; private set; }
@@ -25,10 +24,10 @@ public class Plant
 
     /* Foreign keys */
 
-    public long PlantTypeId { get; private set; }
-    public long ResourceTypeId { get; private set; }
-    public long StatusId { get; private set; }
-    public long LocationId { get; private set; }
+    public string PlantTypeId { get; private set; }
+    public string ResourceTypeId { get; private set; }
+    public string StatusId { get; private set; }
+    public string LocationId { get; private set; }
 
     /* Navigational properties */
 
@@ -42,7 +41,7 @@ public class Plant
     private Plant() { }
 
     public static Result<Plant> CreatePlant(
-        long id,
+        string id,
         string name,
         string plantId,
         decimal capacityDc,
@@ -54,10 +53,10 @@ public class Plant
         string assetManager,
         string tags,
         string notes,
-        long plantTypeId,
-        long resourceTypeId,
-        long statusId,
-        long locationId,
+        string plantTypeId,
+        string resourceTypeId,
+        string statusId,
+        string locationId,
         ICollection<Portfolio>? portfolios = null
     )
     {
@@ -79,7 +78,7 @@ public class Plant
             ResourceTypeId = resourceTypeId,
             StatusId = statusId,
             LocationId = locationId,
-            Portfolios = portfolios ?? new List<Portfolio>()
+            Portfolios = portfolios ?? []
         };
 
         var validation = new PlantValidator().Validate(newPlant);
@@ -101,10 +100,10 @@ public class Plant
         string assetManager,
         string tags,
         string notes,
-        long plantTypeId,
-        long resourceTypeId,
-        long statusId,
-        long locationId
+        string plantTypeId,
+        string resourceTypeId,
+        string statusId,
+        string locationId
     )
     {
         CapacityDc = capacityDc;
@@ -140,7 +139,7 @@ internal class PlantValidator : AbstractValidator<Plant>
 {
     public PlantValidator()
     {
-        RuleFor(p => p.Id).GreaterThan(0);
+        RuleFor(p => p.Id).NotEmpty();
         RuleFor(p => p.Name).NotEmpty().MaximumLength(100);
         RuleFor(p => p.PlantId).NotEmpty().MaximumLength(10);
         RuleFor(p => p.CapacityDc).GreaterThanOrEqualTo(0);
@@ -152,9 +151,9 @@ internal class PlantValidator : AbstractValidator<Plant>
         RuleFor(p => p.AssetManager).NotEmpty().MaximumLength(100);
         RuleFor(p => p.Tags).NotEmpty().MaximumLength(150);
         RuleFor(p => p.Notes).MaximumLength(500).When(p => p.Notes != null);
-        RuleFor(p => p.PlantTypeId).GreaterThan(0);
-        RuleFor(p => p.ResourceTypeId).GreaterThan(0);
-        RuleFor(p => p.StatusId).GreaterThan(0);
-        RuleFor(p => p.LocationId).GreaterThan(0);
+        RuleFor(p => p.PlantTypeId).NotEmpty();
+        RuleFor(p => p.ResourceTypeId).NotEmpty();
+        RuleFor(p => p.StatusId).NotEmpty();
+        RuleFor(p => p.LocationId).NotEmpty();
     }
 }

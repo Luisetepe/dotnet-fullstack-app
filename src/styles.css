@@ -14,3 +14,7 @@
 .ant-table-column-sorter-down, .ant-table-column-sorter-up {
     font-size: 13px;
 }
+
+.ant-message-custom-content {
+    font-size: 16px;
+}
