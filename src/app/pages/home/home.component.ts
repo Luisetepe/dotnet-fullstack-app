@@ -53,7 +53,13 @@ type BreadcrumSegment = {
 		RouterOutlet,
 		NzSpinComponent
 	],
-	templateUrl: './home.component.html'
+	templateUrl: './home.component.html',
+	styles: [
+		`::ng-deep .ant-menu-submenu .anticon, .ant-menu-item .anticon {
+			font-size: 1.125rem!important;
+			line-height: 1.75rem!important;
+		}`
+	]
 })
 export class HomeComponent implements OnInit {
 	private location = inject(Location)

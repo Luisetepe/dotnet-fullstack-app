@@ -32,6 +32,7 @@ export class BackendApiService {
 
 	get<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
 		const options = { params, headers, observe: 'response' } as const
+
 		return this.http.get<T>(`${this.baseUrl}/${url}`, options).pipe(
 			map((response) => {
 				// biome-ignore lint/style/noNonNullAssertion: It is safe to assume a body is present
@@ -42,8 +43,9 @@ export class BackendApiService {
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: This method is intentionally generic
-	post<T>(url: string, body: any, headers?: HttpHeaders): Observable<T> {
-		const options = { headers, observe: 'response' } as const
+	post<T>(url: string, body: any, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
+		const options = { params, headers, observe: 'response' } as const
+
 		return this.http.post<T>(`${this.baseUrl}/${url}`, body, options).pipe(
 			map((response) => {
 				// biome-ignore lint/style/noNonNullAssertion: It is safe to assume a body is present
@@ -64,7 +66,7 @@ function handleApiError(error: HttpErrorResponse) {
 		// The backend returned an unsuccessful response code.
 		// The response body may contain clues as to what went wrong,
 
-		const backendError = error.error as { detail: string }
+		const backendError = error.error as { detail?: string }
 		errorMessage = `An server-side error occurred: ${backendError.detail ?? error.message}`
 	}
 
