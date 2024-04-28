@@ -21,9 +21,7 @@ public static class DependencyInjection
             options.UseSnakeCaseNamingConvention();
         });
 
-        services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())
-        );
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
         services.AddSingleton<IUniqueIdentifierService, UniqueIdentifierService>();
         services.AddScoped<ICryptoService, CryptoService>();

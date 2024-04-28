@@ -18,12 +18,7 @@ public class Location
     /* Private constructor for EF Core */
     private Location() { }
 
-    public static Location CreateLocation(
-        string id,
-        string name,
-        decimal longitude,
-        decimal latitude
-    )
+    public static Location CreateLocation(string id, string name, decimal longitude, decimal latitude)
     {
         var newLocation = new Location
         {

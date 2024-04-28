@@ -40,10 +40,7 @@ public class PlantConfiguration : IEntityTypeConfiguration<Plant>
             .OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.Location).WithMany(x => x.Plants).OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.PlantType).WithMany(x => x.Plants).OnDelete(DeleteBehavior.Restrict);
-        builder
-            .HasOne(x => x.ResourceType)
-            .WithMany(x => x.Plants)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.ResourceType).WithMany(x => x.Plants).OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(x => x.Portfolios).WithMany(x => x.Plants);
     }

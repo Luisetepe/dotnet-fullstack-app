@@ -1,14 +1,14 @@
-using Ardalis.Result.AspNetCore;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TSID.Creator.NET;
+using WebApp.Template.Api.Extensions;
 using WebApp.Template.Application.Features.Plants.Queries.GetPlantById;
+using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Api.Endpoints.Plants;
 
-public class GetPlantByIdEndpoint(ISender mediator)
-    : Endpoint<GetPlantByIdRequest, GetPlantByIdResponse>
+public class GetPlantByIdEndpoint(ISender mediator) : Endpoint<GetPlantByIdRequest, GetPlantByIdResponse>
 {
     public override void Configure()
     {
@@ -16,14 +16,11 @@ public class GetPlantByIdEndpoint(ISender mediator)
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(
-        [FromQuery] GetPlantByIdRequest req,
-        CancellationToken ct
-    )
+    public override async Task HandleAsync([FromQuery] GetPlantByIdRequest req, CancellationToken ct)
     {
         var response = await mediator.Send(new GetPlantByIdQuery { Request = req }, ct);
 
-        await SendResultAsync(response.ToMinimalApiResult());
+        await SendResultAsync(response.ToApiResult());
     }
 }
 
@@ -33,12 +30,12 @@ public class GetPlantByIdEndpointSwagger : Summary<GetPlantByIdEndpoint>
     {
         var exampleId = TsidCreator.GetTsid().ToString();
 
-        Summary = "GetPlantById";
+        Summary = "Gets a plant by id.";
         ExampleRequest = new GetPlantByIdRequest { Id = exampleId };
-        Response<GetPlantByIdResponse>(
+        Response(
             200,
-            "Success",
-            example: new()
+            "The plant was retrieved successfully.",
+            example: new GetPlantByIdResponse
             {
                 Id = exampleId,
                 Name = "PlantName",
@@ -52,50 +49,27 @@ public class GetPlantByIdEndpointSwagger : Summary<GetPlantByIdEndpoint>
                 AssetManager = "AssetManager",
                 Tags = "Tags",
                 Notes = "Notes",
-                PlantType = new GetPlantByIdResponse.Dependency
-                {
-                    Id = TsidCreator.GetTsid().ToString(),
-                    Name = "PlantType"
-                },
-                ResourceType = new GetPlantByIdResponse.Dependency
-                {
-                    Id = TsidCreator.GetTsid().ToString(),
-                    Name = "ResourceType"
-                },
-                Status = new GetPlantByIdResponse.Dependency
-                {
-                    Id = TsidCreator.GetTsid().ToString(),
-                    Name = "Status"
-                },
-                Location = new GetPlantByIdResponse.Dependency
-                {
-                    Id = TsidCreator.GetTsid().ToString(),
-                    Name = "Location"
-                },
+                PlantType = new() { Id = TsidCreator.GetTsid().ToString(), Name = "PlantType" },
+                ResourceType = new() { Id = TsidCreator.GetTsid().ToString(), Name = "ResourceType" },
+                Status = new() { Id = TsidCreator.GetTsid().ToString(), Name = "Status" },
+                Location = new() { Id = TsidCreator.GetTsid().ToString(), Name = "Location" },
                 Portfolios =
                 [
-                    new GetPlantByIdResponse.Dependency
-                    {
-                        Id = TsidCreator.GetTsid().ToString(),
-                        Name = "Portfolio 1"
-                    },
-                    new GetPlantByIdResponse.Dependency
-                    {
-                        Id = TsidCreator.GetTsid().ToString(),
-                        Name = "Portfolio 2"
-                    }
+                    new() { Id = TsidCreator.GetTsid().ToString(), Name = "Portfolio 1" },
+                    new() { Id = TsidCreator.GetTsid().ToString(), Name = "Portfolio 2" }
                 ]
             }
         );
-        Response<GetPlantByIdResponse>(
+        Response(
+            400,
+            "One or more errors occurred while getting the plant.",
+            example: ExampleResponses.ExampleValidaitonError(new() { ["Id"] = ["Id must not be empty"] })
+        );
+        Response(
             404,
-            $"Could not find plant with the provided id."
-        // example: new($"Could not find plant with id '{exampleId}'.", StatusCode.NotFoundError)
+            $"Could not find plant with the provided id.",
+            example: ExampleResponses.ExampleNotFound($"Plant with ID {exampleId} could not be found.")
         );
-        Response<GetPlantByIdResponse>(
-            500,
-            "An error ocurred while getting the plant."
-        // example: new("An error ocurred while getting the plant.", StatusCode.UnhandledError)
-        );
+        Response(500, "An error ocurred while getting the plant.", example: ExampleResponses.ExampleCriticalError);
     }
 }

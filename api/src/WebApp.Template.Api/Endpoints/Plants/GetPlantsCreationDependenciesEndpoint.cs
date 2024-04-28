@@ -1,8 +1,9 @@
-using Ardalis.Result.AspNetCore;
 using FastEndpoints;
 using MediatR;
 using TSID.Creator.NET;
+using WebApp.Template.Api.Extensions;
 using WebApp.Template.Application.Features.Plants.Queries.GetPlantsCreationDependencies;
+using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Api.Endpoints.Plants;
 
@@ -19,7 +20,7 @@ public class GetPlantsCreationDependenciesEndpointEndpoint(ISender mediator)
     {
         var response = await mediator.Send(new GetPlantsCreationDependenciesQuery(), ct);
 
-        await SendResultAsync(response.ToMinimalApiResult());
+        await SendResultAsync(response.ToApiResult());
     }
 }
 
@@ -61,13 +62,10 @@ public class GetPlantsCreationDependenciesEndpointEndpointSwagger
                 ]
             }
         );
-        Response<GetPlantsCreationDependenciesResponse>(
+        Response(
             500,
-            "An error ocurred while getting the dependencies required to create a plant."
-        // example: new(
-        //     "An error ocurred while getting the dependencies required to create a plant.",
-        //     StatusCode.UnhandledError
-        // )
+            "An error ocurred while getting the dependencies required to create a plant.",
+            example: ExampleResponses.ExampleCriticalError
         );
     }
 }

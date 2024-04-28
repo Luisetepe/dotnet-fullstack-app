@@ -1,15 +1,13 @@
-using Ardalis.Result.AspNetCore;
 using FastEndpoints;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using TSID.Creator.NET;
+using WebApp.Template.Api.Extensions;
 using WebApp.Template.Application.Features.Locations.Queries.GetLocationsList;
 using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Endpoints.Locations.GetLocationsList;
 
-public class GetLocationsListEndpoint(ISender mediator)
-    : Endpoint<GetLocationsListRequest, GetLocationsListResponse>
+public class GetLocationsListEndpoint(ISender mediator) : Endpoint<GetLocationsListRequest, GetLocationsListResponse>
 {
     public override void Configure()
     {
@@ -17,14 +15,11 @@ public class GetLocationsListEndpoint(ISender mediator)
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(
-        [FromQuery] GetLocationsListRequest req,
-        CancellationToken ct
-    )
+    public override async Task HandleAsync(GetLocationsListRequest req, CancellationToken ct)
     {
         var response = await mediator.Send(new GetLocationsListQuery { Request = req }, ct);
 
-        await SendResultAsync(response.ToMinimalApiResult());
+        await SendResultAsync(response.ToApiResult());
     }
 }
 
@@ -40,10 +35,10 @@ public class GetLocationsListEndpointSwagger : Summary<GetLocationsListEndpoint>
             Search = "Location 1",
             OrderBy = "name"
         };
-        Response<GetLocationsListResponse>(
+        Response(
             200,
             "Success",
-            example: new()
+            example: new GetLocationsListResponse
             {
                 Locations =
                 [
@@ -70,13 +65,15 @@ public class GetLocationsListEndpointSwagger : Summary<GetLocationsListEndpoint>
                 }
             }
         );
-        Response<GetLocationsListResponse>(
+        Response(
+            400,
+            "One or more validation errors occurred while getting the list of Locations.",
+            example: ExampleResponses.ExampleSearchValidationError
+        );
+        Response(
             500,
-            "An error occurred while getting the list of Locations"
-        // example: new(
-        //     "An error occurred while getting the list of Locations",
-        //     StatusCode.UnhandledError
-        // )
+            "An error occurred while getting the list of Locations.",
+            example: ExampleResponses.ExampleCriticalError
         );
     }
 }

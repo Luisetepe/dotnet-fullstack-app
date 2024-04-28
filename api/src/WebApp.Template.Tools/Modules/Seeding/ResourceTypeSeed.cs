@@ -6,10 +6,7 @@ namespace WebApp.Template.Tools.Modules.Seeding;
 
 public static class ResourceTypeSeed
 {
-    public static async Task SeedResourceTypes(
-        WebAppDbContext db,
-        IUniqueIdentifierService idService
-    )
+    public static async Task SeedResourceTypes(WebAppDbContext db, IUniqueIdentifierService idService)
     {
         // Create 5 new ResourceType entities
         ResourceType[] resourceTypes =

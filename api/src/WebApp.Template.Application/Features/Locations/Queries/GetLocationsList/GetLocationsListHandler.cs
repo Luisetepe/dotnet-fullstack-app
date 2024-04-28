@@ -48,11 +48,7 @@ public class GetLocationsListHandler(WebAppDbContext db)
                 TotalPages = (int)Math.Ceiling((double)totalRows / query.Request.PageSize)
             };
 
-            return new GetLocationsListResponse
-            {
-                Locations = locations,
-                Pagination = paginationInfo
-            };
+            return new GetLocationsListResponse { Locations = locations, Pagination = paginationInfo };
         }
         catch (Exception ex)
         {
@@ -66,10 +62,7 @@ public class GetLocationsListHandler(WebAppDbContext db)
 
         var filteredQuery = db
             .Locations.AsNoTracking()
-            .Where(x =>
-                string.IsNullOrWhiteSpace(query.Request.Search)
-                || x.Name.Contains(query.Request.Search)
-            );
+            .Where(x => string.IsNullOrWhiteSpace(query.Request.Search) || x.Name.Contains(query.Request.Search));
 
         if (!string.IsNullOrWhiteSpace(query.Request.OrderBy))
         {

@@ -9,10 +9,7 @@ namespace WebApp.Template.Application.Features.Plants.Commands.UpdatePlant;
 public class UpdatePlantHandler(WebAppDbContext dbContext, IUniqueIdentifierService idService)
     : IRequestHandler<UpdatePlantCommand, Result>
 {
-    public async Task<Result> Handle(
-        UpdatePlantCommand command,
-        CancellationToken cancellationToken
-    )
+    public async Task<Result> Handle(UpdatePlantCommand command, CancellationToken cancellationToken)
     {
         try
         {

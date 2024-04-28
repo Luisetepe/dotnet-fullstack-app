@@ -7,8 +7,7 @@ namespace WebApp.Template.IntegrationTests.Features.Dashboard
     using WebApp.Template.Application.Features.Dashboard.Queries.GetDashboardWidgetsData;
     using Xunit;
 
-    public class GetDashboardWidgetsDataEndpointTests(IntegrationTestFixture fixture)
-        : TestBase<IntegrationTestFixture>
+    public class GetDashboardWidgetsDataEndpointTests(IntegrationTestFixture fixture) : TestBase<IntegrationTestFixture>
     {
         [Fact]
         public async Task Should_Return_Dashboard_Widgets_Data()

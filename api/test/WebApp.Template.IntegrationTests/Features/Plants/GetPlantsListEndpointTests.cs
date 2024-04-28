@@ -4,21 +4,14 @@ using WebApp.Template.Application.Features.Plants.Queries.GetPlantsList;
 
 namespace WebApp.Template.IntegrationTests.Features.Plants;
 
-public class GetPlantsListEndpointTests(IntegrationTestFixture fixture)
-    : TestBase<IntegrationTestFixture>
+public class GetPlantsListEndpointTests(IntegrationTestFixture fixture) : TestBase<IntegrationTestFixture>
 {
     [Theory]
     [InlineData(1, 5, "name", "asc", "ant")]
     [InlineData(1, 5, "name", "desc", "")]
     [InlineData(1, 5, "status", "asc", "")]
     [InlineData(1, 5, "status", "desc", "5")]
-    public async Task Should_Return_Plants(
-        int page,
-        int pageSize,
-        string sortBy,
-        string sortDirection,
-        string search
-    )
+    public async Task Should_Return_Plants(int page, int pageSize, string sortBy, string sortDirection, string search)
     {
         //Arrange
         var db = fixture.GetDbContext();
@@ -57,9 +50,7 @@ public class GetPlantsListEndpointTests(IntegrationTestFixture fixture)
                     : plantsQuery.OrderByDescending(x => x.CapacityDc).ThenBy(x => x.Id);
         }
 
-        var expectedPlants = (
-            await plantsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync()
-        )
+        var expectedPlants = (await plantsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync())
             .Select(x => new GetPlantsListResponse.Plant
             {
                 Id = x.Id,
@@ -67,10 +58,7 @@ public class GetPlantsListEndpointTests(IntegrationTestFixture fixture)
                 Name = x.Name,
                 UtilityCompany = x.UtilityCompany,
                 Status = x.Status.Name,
-                Tags = x.Tags.Split(
-                    ',',
-                    StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries
-                ),
+                Tags = x.Tags.Split(',', StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries),
                 CapacityDc = x.CapacityDc,
                 Portfolios = x.Portfolios.Select(y => y.Name).ToArray()
             })

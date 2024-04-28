@@ -10,9 +10,7 @@ app.AddCommand(
     "seed",
     async (IConfiguration configuration) =>
     {
-        Console.Write(
-            "Configured database is going to be destroyed and re-created. Are you sure? (y/n): "
-        );
+        Console.Write("Configured database is going to be destroyed and re-created. Are you sure? (y/n): ");
 
         var key = Console.ReadKey();
         Console.Read();
@@ -24,8 +22,7 @@ app.AddCommand(
             return;
         }
 
-        var connectionString =
-            configuration.GetValue<string>("WebAppDb") ?? throw new ArgumentNullException();
+        var connectionString = configuration.GetValue<string>("WebAppDb") ?? throw new ArgumentNullException();
 
         var response = await SeedingModule.Run(connectionString);
         Console.WriteLine(response.Message);

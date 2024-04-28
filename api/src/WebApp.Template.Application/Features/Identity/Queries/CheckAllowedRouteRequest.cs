@@ -21,6 +21,6 @@ public class CheckAllowedRouteRequestValidator : Validator<CheckAllowedRouteRequ
 {
     public CheckAllowedRouteRequestValidator()
     {
-        RuleFor(x => x.Route).NotEmpty();
+        RuleFor(x => x.Route).NotEmpty().WithMessage("The 'route' field is required.");
     }
 }

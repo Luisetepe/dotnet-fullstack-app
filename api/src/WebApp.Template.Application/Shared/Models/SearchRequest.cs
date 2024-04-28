@@ -19,8 +19,8 @@ public abstract class SearchRequestValidator<T> : Validator<T>
 
     public SearchRequestValidator()
     {
-        RuleFor(x => x.PageSize).GreaterThan(0);
-        RuleFor(x => x.PageNumber).GreaterThan(0);
-        RuleFor(x => x.Order).Must(x => _validSortDirections.Contains(x));
+        RuleFor(x => x.PageSize).GreaterThan(0).WithMessage("pageSize must be greater than 0");
+        RuleFor(x => x.PageNumber).GreaterThan(0).WithMessage("pageNumber must be greater than 0");
+        RuleFor(x => x.Order).Must(x => _validSortDirections.Contains(x)).WithMessage("order must be 'asc' or 'desc'");
     }
 }

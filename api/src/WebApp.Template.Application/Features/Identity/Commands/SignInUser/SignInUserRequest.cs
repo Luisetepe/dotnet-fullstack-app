@@ -20,7 +20,11 @@ public class SignInUserRequestValidator : Validator<SignInUserRequest>
 {
     public SignInUserRequestValidator()
     {
-        RuleFor(p => p.Email).NotEmpty().EmailAddress();
-        RuleFor(p => p.Password).NotEmpty();
+        RuleFor(p => p.Email)
+            .NotEmpty()
+            .WithMessage("The 'email' field is required.")
+            .EmailAddress()
+            .WithMessage("The 'email' field is not a valid email address.");
+        RuleFor(p => p.Password).NotEmpty().WithMessage("The 'password' field is required.");
     }
 }

@@ -1,15 +1,13 @@
-using Ardalis.Result.AspNetCore;
 using FastEndpoints;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using TSID.Creator.NET;
+using WebApp.Template.Api.Extensions;
 using WebApp.Template.Application.Features.Plants.Queries.GetPlantsList;
 using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Api.Endpoints.Plants;
 
-public class GetPlantsListEndpoint(ISender mediator)
-    : Endpoint<GetPlantsListRequest, GetPlantsListResponse>
+public class GetPlantsListEndpoint(ISender mediator) : Endpoint<GetPlantsListRequest, GetPlantsListResponse>
 {
     public override void Configure()
     {
@@ -17,14 +15,11 @@ public class GetPlantsListEndpoint(ISender mediator)
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(
-        [FromQuery] GetPlantsListRequest req,
-        CancellationToken ct
-    )
+    public override async Task HandleAsync(GetPlantsListRequest req, CancellationToken ct)
     {
         var response = await mediator.Send(new GetPlantsListQuery { Request = req }, ct);
 
-        await SendResultAsync(response.ToMinimalApiResult());
+        await SendResultAsync(response.ToApiResult());
     }
 }
 
@@ -40,10 +35,10 @@ public class GetPlantsListEndpointSwagger : Summary<GetPlantsListEndpoint>
             Search = "Plant 1",
             OrderBy = "name",
         };
-        Response<GetPlantsListResponse>(
+        Response(
             200,
             "A list of the Plants in the system",
-            example: new()
+            example: new GetPlantsListResponse
             {
                 Plants =
                 [
@@ -78,13 +73,15 @@ public class GetPlantsListEndpointSwagger : Summary<GetPlantsListEndpoint>
                 }
             }
         );
-        Response<GetPlantsListResponse>(
+        Response(
+            400,
+            "One or more validation errors occurred while getting the list of Plants",
+            example: ExampleResponses.ExampleSearchValidationError
+        );
+        Response(
             500,
-            "An error occurred while getting the list of Plants"
-        // example: new(
-        //     "An error occurred while getting the list of Plants",
-        //     StatusCode.UnhandledError
-        // )
+            "An error occurred while getting the list of Plants",
+            example: ExampleResponses.ExampleCriticalError
         );
     }
 }

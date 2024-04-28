@@ -4,8 +4,7 @@ using WebApp.Template.Endpoints.Locations.GetLocationsList;
 
 namespace WebApp.Template.IntegrationTests.Features.Locations;
 
-public class GetLocationsListEndpointTests(IntegrationTestFixture fixture)
-    : TestBase<IntegrationTestFixture>
+public class GetLocationsListEndpointTests(IntegrationTestFixture fixture) : TestBase<IntegrationTestFixture>
 {
     [Theory]
     [InlineData(1, 5, "name", "asc", "Loc")]
@@ -50,9 +49,7 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture)
                     : locationsQuery.OrderByDescending(x => x.Longitude).ThenBy(x => x.Id);
         }
 
-        var expectedLocations = (
-            await locationsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync()
-        )
+        var expectedLocations = (await locationsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync())
             .Select(x => new GetLocationsListResponse.Location
             {
                 Id = x.Id,

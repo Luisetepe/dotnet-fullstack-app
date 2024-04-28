@@ -32,13 +32,10 @@ public class IntegrationTestFixture : AppFixture<Program>
         services.AddDbContext<WebAppDbContext>(
             (sp, options) =>
             {
-                var connectionString = sp.GetRequiredService<IConfiguration>()
-                    .GetConnectionString("WebAppDb")!;
+                var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("WebAppDb")!;
                 if (!connectionString.Contains("{:id}"))
                 {
-                    throw new ArgumentException(
-                        "Test database name connection string must contain {:id} placeholder."
-                    );
+                    throw new ArgumentException("Test database name connection string must contain {:id} placeholder.");
                 }
 
                 options.UseNpgsql(connectionString.Replace("{:id}", _testDatabaseId));

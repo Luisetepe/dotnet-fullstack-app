@@ -14,10 +14,7 @@ public class SignInUserHandler(
     IUniqueIdentifierService idService
 ) : IRequestHandler<SignInUserCommand, Result<SignInUserResponse>>
 {
-    public async Task<Result<SignInUserResponse>> Handle(
-        SignInUserCommand command,
-        CancellationToken cancellationToken
-    )
+    public async Task<Result<SignInUserResponse>> Handle(SignInUserCommand command, CancellationToken cancellationToken)
     {
         try
         {

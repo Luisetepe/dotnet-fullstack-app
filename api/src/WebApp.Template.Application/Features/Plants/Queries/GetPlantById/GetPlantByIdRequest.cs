@@ -19,6 +19,6 @@ public class GetPlantByIdRequestValidator : Validator<GetPlantByIdRequest>
 {
     public GetPlantByIdRequestValidator()
     {
-        RuleFor(p => p.Id).NotEmpty();
+        RuleFor(p => p.Id).NotEmpty().WithMessage("The 'id' field is required.");
     }
 }
