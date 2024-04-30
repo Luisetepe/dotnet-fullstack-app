@@ -1,25 +1,31 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using TSID.Creator.NET;
+using Testcontainers.PostgreSql;
 using WebApp.Template.Application.Data.DbContexts;
-using WebApp.Template.Application.Services.Identity;
 
 namespace WebApp.Template.IntegrationTests;
 
 public class IntegrationTestFixture : AppFixture<Program>
 {
-    private readonly string _testDatabaseId = TsidCreator.GetTsid().ToString();
+    private PostgreSqlContainer _postgres = null!;
+
+    protected override async Task PreSetupAsync()
+    {
+        _postgres = new PostgreSqlBuilder()
+            .WithImage("postgres:16-alpine")
+            .WithDatabase("webapp_template_test")
+            .Build();
+
+        await _postgres.StartAsync();
+    }
 
     protected override async Task SetupAsync()
     {
         // place one-time setup code here for every test class
 
         await using var scope = Services.CreateAsyncScope();
-
         var db = scope.ServiceProvider.GetRequiredService<WebAppDbContext>();
-        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
         await Tools.Modules.Seeding.SeedingModule.Run(db);
     }
@@ -30,37 +36,22 @@ public class IntegrationTestFixture : AppFixture<Program>
         services.RemoveAll<DbContextOptions<WebAppDbContext>>();
         services.RemoveAll<WebAppDbContext>();
         services.AddDbContext<WebAppDbContext>(
-            (sp, options) =>
+            (options) =>
             {
-                var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("WebAppDb")!;
-                if (!connectionString.Contains("{:id}"))
-                {
-                    throw new ArgumentException("Test database name connection string must contain {:id} placeholder.");
-                }
-
-                options.UseNpgsql(connectionString.Replace("{:id}", _testDatabaseId));
+                options.UseNpgsql(_postgres.GetConnectionString());
                 options.UseSnakeCaseNamingConvention();
             }
         );
     }
 
-    protected override async Task TearDownAsync()
-    {
-        // do cleanups here for every test class
+    // protected override async Task TearDownAsync()
+    // {
+    // do cleanups here for every test class
 
-        await using var scope = Services.CreateAsyncScope();
-
-        var db = scope.ServiceProvider.GetRequiredService<WebAppDbContext>();
-        await db.Database.EnsureDeletedAsync();
-    }
+    // }
 
     public WebAppDbContext GetDbContext()
     {
         return Services.GetRequiredService<WebAppDbContext>();
-    }
-
-    public IUniqueIdentifierService GetUniqueIdentifierService()
-    {
-        return Services.GetRequiredService<IUniqueIdentifierService>();
     }
 }
