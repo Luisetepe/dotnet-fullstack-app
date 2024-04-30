@@ -107,3 +107,11 @@ pnpm run start:api
 ```
 
 You can access the web app at `http://localhost:4200` and the swagger page for the REST Api at `http://localhost:5224/swagger`
+
+## Tests
+
+For now, there are only backend integration tests, which will spin up a postgres docker container using [TestContainers](https://testcontainers.com/) library. To run them:
+
+```powershell
+pnpm run test:api
+```

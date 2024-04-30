@@ -9,6 +9,7 @@
 		"watch:api": "dotnet watch run --project api/src/WebApp.Template.Api",
 		"build:app": "ng build",
 		"test:app": "ng test",
+		"test:api": "dotnet test api/test/WebApp.Template.IntegrationTests",
 		"db:seed": "dotnet run --project api/src/WebApp.Template.Tools seed",
 		"check": "biome check .",
 		"check:safe": "biome check --apply ."
