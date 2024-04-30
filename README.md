@@ -62,7 +62,7 @@ docker run -d --name local-postgres -p 55000:5432 -e POSTGRES_PASSWORD=postgresp
 
 ## Local development
 
-First, we need to prepare de Database with example data. For this kind of things, I've created a C# console app inside the dotnet Solution that will run some tasks depending of the parameter we pass when executing it. For now it only reacts to the `seed` parameter, so once you have your PostgreSQL accessible, configure the connection string inside both files (I'm using the ones that I set up earlier with docker, the '`Database`' field is the name of tyour database, use whatever you want):
+First, we need to prepare the Database with example data. For this kind of things, I've created a C# console app inside the dotnet Solution that will run some tasks depending of the parameter we pass when executing it. For now it only reacts to the `seed` parameter, so once you have your PostgreSQL accessible, configure the connection string inside both files (I'm using the ones that I set up earlier with docker, the '`Database`' field is the name of tyour database, use whatever you want):
 
 ```jsonc
 // file -> api/src/WebApp.Template.Tools/appsettings.json
@@ -84,7 +84,7 @@ Then you would be able to run the tool and seed the database:
 dotnet run --project api/src/WebApp.Template.Tools seed
 ```
 
-The tool should ask you to confirm you want to earse whatever there was in the database and re-create it.
+The tool should ask you to confirm you want to erase whatever there was in the database and re-create it.
 
 Now we can move on into starting both our Angular dev server and .Net dev server. I'm using scripts inside the `package.json` file to centralize these common tasks, so you dont have to go changing directory in order to run the frontend or the backend.
 
