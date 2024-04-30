@@ -1,3 +1,4 @@
+using Ardalis.Result;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Template.Application.Data.DbContexts;
 using WebApp.Template.Application.Services.Crypto;
@@ -7,7 +8,7 @@ namespace WebApp.Template.Tools.Modules.Seeding;
 
 public static class SeedingModule
 {
-    public static async Task<ModuleResponse> Run(string connectionString)
+    public static async Task<Result> Run(string connectionString)
     {
         var uuidGenerator = new UniqueIdentifierService();
 
@@ -21,12 +22,12 @@ public static class SeedingModule
         return await SeedDatabase(db);
     }
 
-    public static async Task<ModuleResponse> Run(WebAppDbContext db)
+    public static async Task<Result> Run(WebAppDbContext db)
     {
         return await SeedDatabase(db);
     }
 
-    private static async Task<ModuleResponse> SeedDatabase(WebAppDbContext db)
+    private static async Task<Result> SeedDatabase(WebAppDbContext db)
     {
         var uuidGenerator = new UniqueIdentifierService();
         var cryptoService = new CryptoService();
@@ -56,9 +57,9 @@ public static class SeedingModule
         {
             await transaction.RollbackAsync();
 
-            return new ModuleResponse(false, "Seeding failed. Exception:\n" + e.Message);
+            return Result.CriticalError("Seeding failed. Exception:\n" + e.Message);
         }
 
-        return new ModuleResponse(true, "Seeding complete.");
+        return Result.Success();
     }
 }

@@ -15,17 +15,24 @@ app.AddCommand(
         var key = Console.ReadKey();
         Console.Read();
 
+        Console.WriteLine();
         if (key.Key != ConsoleKey.Y)
         {
-            Console.WriteLine();
             Console.WriteLine("Aborting...");
             return;
         }
 
-        var connectionString = configuration.GetValue<string>("WebAppDb") ?? throw new ArgumentNullException();
+        var connectionString = configuration.GetValue<string>("WebAppDb");
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            Console.WriteLine("Connection string not found in appsettings.json");
+            return;
+        }
 
         var response = await SeedingModule.Run(connectionString);
-        Console.WriteLine(response.Message);
+
+        Console.WriteLine(response.IsSuccess ? "Seeding successful" : $"Errors:\n{response.Errors}");
     }
 );
 app.Run();
