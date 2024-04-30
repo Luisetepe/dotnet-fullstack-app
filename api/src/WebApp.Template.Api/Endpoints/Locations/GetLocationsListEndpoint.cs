@@ -27,7 +27,8 @@ public class GetLocationsListEndpointSwagger : Summary<GetLocationsListEndpoint>
 {
     public GetLocationsListEndpointSwagger()
     {
-        Summary = "GetLocationsList";
+        Summary = "Gets a list of Locations.";
+        Description = "This endpoint is used to get a list of Locations.";
         ExampleRequest = new GetLocationsListRequest
         {
             PageSize = 10,

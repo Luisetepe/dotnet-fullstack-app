@@ -33,6 +33,7 @@ public class UpdatePlantEndpointSwagger : Summary<UpdatePlantEndpoint>
         var locationId = TsidCreator.GetTsid().ToString();
 
         Summary = "Updates an existing plant.";
+        Description = "This endpoint is used to update an existing plant.";
         ExampleRequest = new UpdatePlantRequest
         {
             Id = TsidCreator.GetTsid().ToString(),

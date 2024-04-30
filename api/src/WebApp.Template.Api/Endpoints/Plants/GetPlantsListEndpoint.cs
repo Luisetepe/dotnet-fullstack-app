@@ -28,6 +28,7 @@ public class GetPlantsListEndpointSwagger : Summary<GetPlantsListEndpoint>
     public GetPlantsListEndpointSwagger()
     {
         Summary = "Gets a list of plants";
+        Description = "This endpoint is used to get a list of plants";
         ExampleRequest = new GetPlantsListRequest
         {
             PageSize = 10,

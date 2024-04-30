@@ -33,6 +33,7 @@ public class CreatePlantEndpointSwagger : Summary<CreatePlantEndpoint>
         var locationId = TsidCreator.GetTsid().ToString();
 
         Summary = "Creates a new plant.";
+        Description = "This endpoint is used to create a new plant.";
         ExampleRequest = new CreatePlantRequest
         {
             Name = "Plant Name",

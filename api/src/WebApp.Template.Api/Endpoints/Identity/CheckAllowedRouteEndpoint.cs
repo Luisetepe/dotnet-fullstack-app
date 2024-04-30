@@ -26,6 +26,7 @@ public class CheckAllowedRouteEndpointSwagger : Summary<CheckAllowedRouteEndpoin
     public CheckAllowedRouteEndpointSwagger()
     {
         Summary = "Checks if the user is allowed to access a route.";
+        Description = "This endpoint is used to check if the user is allowed to access a route.";
         ExampleRequest = new CheckAllowedRouteRequest { Route = "/home/assets/plants/" };
         Response(200, "The user is allowed to access the route.");
         Response(403, "The user is not allowed to access the route.");

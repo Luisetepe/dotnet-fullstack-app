@@ -31,6 +31,7 @@ public class GetPlantByIdEndpointSwagger : Summary<GetPlantByIdEndpoint>
         var exampleId = TsidCreator.GetTsid().ToString();
 
         Summary = "Gets a plant by id.";
+        Description = "This endpoint is used to get a plant by id.";
         ExampleRequest = new GetPlantByIdRequest { Id = exampleId };
         Response(
             200,

@@ -27,6 +27,7 @@ public class GetDashboardWidgetsDataEndpointSwagger : Summary<GetDashboardWidget
     public GetDashboardWidgetsDataEndpointSwagger()
     {
         Summary = "Gets an object representing the data for the dashboard widgets.";
+        Description = "This endpoint is used to get the data for the dashboard widgets.";
         Response(
             200,
             "An object representing the data for the dashboard widgets.",

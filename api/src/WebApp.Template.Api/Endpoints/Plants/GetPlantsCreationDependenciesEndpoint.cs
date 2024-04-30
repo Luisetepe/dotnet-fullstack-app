@@ -30,6 +30,7 @@ public class GetPlantsCreationDependenciesEndpointEndpointSwagger
     public GetPlantsCreationDependenciesEndpointEndpointSwagger()
     {
         Summary = "Gets the dependencies required to create a plant.";
+        Description = "This endpoint is used to get the dependencies required to create a plant.";
         Response<GetPlantsCreationDependenciesResponse>(
             200,
             "The dependencies required to create a plant.",

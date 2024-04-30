@@ -59,6 +59,7 @@ public class SignInUserEndpointSwagger : Summary<SignInUserEndpoint>
     public SignInUserEndpointSwagger()
     {
         Summary = "Signs in a user.";
+        Description = "This endpoint is used to sign in a user.";
         ExampleRequest = new SignInUserRequest { Email = "example@domain.com", Password = "password" };
         Response(
             200,
