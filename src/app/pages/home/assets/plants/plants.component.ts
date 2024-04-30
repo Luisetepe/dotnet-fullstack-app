@@ -54,7 +54,9 @@ export class PlantsComponent implements OnInit, OnDestroy {
 	paginartionInfo: PaginationInfo
 	drawerPlant: PlantByIdDto
 
-	firstTableLoad = false
+	// This flag is used to prevent the grid from reloading when pagination is set manually
+	gridManuallyChanged = false
+
 	loading = false
 	drawerVisible = false
 
@@ -64,6 +66,7 @@ export class PlantsComponent implements OnInit, OnDestroy {
 
 		this.plants = data.plants
 		this.paginartionInfo = data.pagination
+		this.gridManuallyChanged = true
 
 		this.searchSubject.pipe(debounceTime(this.debounceTimeMs)).subscribe((searchValue) => {
 			this.performSearch(searchValue)
@@ -82,16 +85,20 @@ export class PlantsComponent implements OnInit, OnDestroy {
 
 	performSearch(searchValue: string) {
 		this.loading = true
-		this.loadPlants({
-			search: searchValue,
-			pageNumber: this.paginartionInfo.currentPageNumber,
-			pageSize: 5
-		})
+		this.loadPlants(
+			{
+				search: searchValue,
+				pageNumber: 1,
+				pageSize: this.paginartionInfo.currentPageSize
+			},
+			true
+		)
 	}
 
 	onQueryParamsChange(params: NzTableQueryParams) {
-		if (!this.firstTableLoad) {
-			this.firstTableLoad = true
+		// This check is used to prevent the grid from reloading when pagination is set manually
+		if (this.gridManuallyChanged) {
+			this.gridManuallyChanged = false
 			return
 		}
 
@@ -141,7 +148,7 @@ export class PlantsComponent implements OnInit, OnDestroy {
 		this.drawerVisible = false
 	}
 
-	private loadPlants(params: SearchRequest) {
+	private loadPlants(params: SearchRequest, resetPagination = false) {
 		this.plantsService
 			.getPlantsList(params)
 			.pipe(
@@ -153,7 +160,11 @@ export class PlantsComponent implements OnInit, OnDestroy {
 			.subscribe({
 				next: (data) => {
 					this.plants = data.plants
-					this.paginartionInfo = data.pagination
+
+					if (resetPagination) {
+						this.paginartionInfo = data.pagination
+						this.gridManuallyChanged = true
+					}
 				},
 				error: () => {
 					this.notification.error(

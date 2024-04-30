@@ -47,15 +47,15 @@ public class GetLocationsListEndpointSwagger : Summary<GetLocationsListEndpoint>
                     {
                         Id = TsidCreator.GetTsid().ToString(),
                         Name = "Location 1",
-                        Latitude = 1.1m,
-                        Longitude = 1.1m
+                        Latitude = 1.1,
+                        Longitude = 1.1
                     },
                     new GetLocationsListResponse.Location
                     {
                         Id = TsidCreator.GetTsid().ToString(),
                         Name = "Location 2",
-                        Latitude = 2.2m,
-                        Longitude = 2.2m
+                        Latitude = 2.2,
+                        Longitude = 2.2
                     }
                 ],
                 Pagination = new PaginationInfo

@@ -12,7 +12,7 @@ public record GetPlantsListResponse : BasePaginatedResponse
         public string UtilityCompany { get; init; }
         public string Status { get; init; }
         public IReadOnlyCollection<string> Tags { get; init; }
-        public decimal CapacityDc { get; init; }
+        public double CapacityDc { get; init; }
         public IReadOnlyCollection<string> Portfolios { get; init; }
     }
 

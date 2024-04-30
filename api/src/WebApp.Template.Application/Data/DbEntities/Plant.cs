@@ -12,9 +12,9 @@ public class Plant
     public string Id { get; init; }
     public string Name { get; init; }
     public string PlantId { get; init; }
-    public decimal CapacityDc { get; private set; }
-    public decimal CapacityAc { get; private set; }
-    public decimal StorageCapacity { get; private set; }
+    public double CapacityDc { get; private set; }
+    public double CapacityAc { get; private set; }
+    public double StorageCapacity { get; private set; }
     public string ProjectCompany { get; private set; }
     public string UtilityCompany { get; private set; }
     public int Voltage { get; private set; }
@@ -44,9 +44,9 @@ public class Plant
         string id,
         string name,
         string plantId,
-        decimal capacityDc,
-        decimal capacityAc,
-        decimal storageCapacity,
+        double capacityDc,
+        double capacityAc,
+        double storageCapacity,
         string projectCompany,
         string utilityCompany,
         int voltage,
@@ -91,9 +91,9 @@ public class Plant
     }
 
     public Result UpdatePlant(
-        decimal capacityDc,
-        decimal capacityAc,
-        decimal storageCapacity,
+        double capacityDc,
+        double capacityAc,
+        double storageCapacity,
         string projectCompany,
         string utilityCompany,
         int voltage,

@@ -4,6 +4,6 @@ public record GetDashboardWidgetsDataResponse
 {
     public int Plants { get; init; }
     public int Locations { get; init; }
-    public decimal SolarCapacity { get; init; }
-    public decimal StorageCapacity { get; init; }
+    public double SolarCapacity { get; init; }
+    public double StorageCapacity { get; init; }
 }

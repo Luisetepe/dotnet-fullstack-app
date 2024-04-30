@@ -11,7 +11,7 @@ import { NzInputModule } from 'ng-zorro-antd/input'
 import { NzNotificationService } from 'ng-zorro-antd/notification'
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header'
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table'
-import { Subject, debounceTime, delay } from 'rxjs'
+import { Subject, debounceTime, delay, finalize } from 'rxjs'
 import { LocationsResolverData } from './locations.resolver'
 import { LocationDataDto, LocationsService } from './locations.service'
 
@@ -37,8 +37,10 @@ export class LocationsComponent {
 	private readonly searchSubject = new Subject<string>()
 	private readonly debounceTimeMs = 350
 
+	// This flag is used to prevent the grid from reloading when pagination is set manually
+	gridManuallyChanged = false
+
 	searchText = ''
-	firstTableLoad = false
 	loading = false
 	locations: LocationDataDto['locations'] = []
 	paginartionInfo: PaginationInfo
@@ -46,8 +48,10 @@ export class LocationsComponent {
 	ngOnInit() {
 		// biome-ignore lint/style/noNonNullAssertion: it is safe to assume the data is present
 		const data = this.activatedRoute.snapshot.data['pageData']! as LocationsResolverData
+
 		this.locations = data.locations
 		this.paginartionInfo = data.pagination
+		this.gridManuallyChanged = true
 
 		this.searchSubject.pipe(debounceTime(this.debounceTimeMs)).subscribe((searchValue) => {
 			this.performSearch(searchValue)
@@ -66,16 +70,20 @@ export class LocationsComponent {
 
 	performSearch(searchValue: string) {
 		this.loading = true
-		this.loadPlants({
-			search: searchValue,
-			pageNumber: this.paginartionInfo.currentPageNumber,
-			pageSize: this.paginartionInfo.currentPageSize
-		})
+		this.loadPlants(
+			{
+				search: searchValue,
+				pageNumber: 1,
+				pageSize: this.paginartionInfo.currentPageSize
+			},
+			true
+		)
 	}
 
 	onQueryParamsChange(params: NzTableQueryParams) {
-		if (!this.firstTableLoad) {
-			this.firstTableLoad = true
+		// This check is used to prevent the grid from reloading when pagination is set manually
+		if (this.gridManuallyChanged) {
+			this.gridManuallyChanged = false
 			return
 		}
 
@@ -97,18 +105,25 @@ export class LocationsComponent {
 		})
 	}
 
-	private loadPlants(params: SearchRequest) {
+	private loadPlants(params: SearchRequest, resetPagination = false) {
 		this.plantsService
 			.getLocationsList(params)
-			.pipe(delay(environment.artificialApiDelay))
+			.pipe(
+				delay(environment.artificialApiDelay),
+				finalize(() => {
+					this.loading = false
+				})
+			)
 			.subscribe({
 				next: (data) => {
 					this.locations = data.locations
-					this.paginartionInfo = data.pagination
-					this.loading = false
+
+					if (resetPagination) {
+						this.paginartionInfo = data.pagination
+						this.gridManuallyChanged = true
+					}
 				},
 				error: (error) => {
-					this.loading = false
 					this.notification.error(
 						'Error fetching locations data',
 						'An error occurred while fetching locations data. Please try again later.'

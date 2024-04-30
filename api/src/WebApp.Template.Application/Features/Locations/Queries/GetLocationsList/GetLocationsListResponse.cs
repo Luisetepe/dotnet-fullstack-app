@@ -8,8 +8,8 @@ public record GetLocationsListResponse : BasePaginatedResponse
     {
         public string Id { get; init; }
         public string Name { get; init; }
-        public decimal Longitude { get; init; }
-        public decimal Latitude { get; init; }
+        public double Longitude { get; init; }
+        public double Latitude { get; init; }
     }
 
     public IReadOnlyCollection<Location> Locations { get; init; }

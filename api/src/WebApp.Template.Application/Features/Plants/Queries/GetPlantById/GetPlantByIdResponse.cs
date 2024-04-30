@@ -11,9 +11,9 @@ public record GetPlantByIdResponse
     public string Id { get; init; }
     public string Name { get; init; }
     public string PlantId { get; init; }
-    public decimal CapacityDc { get; init; }
-    public decimal CapacityAc { get; init; }
-    public decimal StorageCapacity { get; init; }
+    public double CapacityDc { get; init; }
+    public double CapacityAc { get; init; }
+    public double StorageCapacity { get; init; }
     public string ProjectCompany { get; init; }
     public string UtilityCompany { get; init; }
     public int Voltage { get; init; }

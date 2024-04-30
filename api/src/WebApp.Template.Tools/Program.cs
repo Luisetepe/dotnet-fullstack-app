@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Cocona;
 using Microsoft.Extensions.Configuration;
 using WebApp.Template.Tools.Modules.Seeding;
@@ -32,7 +33,9 @@ app.AddCommand(
 
         var response = await SeedingModule.Run(connectionString);
 
-        Console.WriteLine(response.IsSuccess ? "Seeding successful" : $"Errors:\n{response.Errors}");
+        Console.WriteLine(
+            response.IsSuccess ? "Seeding successful" : $"Errors:\n{JsonSerializer.Serialize(response.Errors)}"
+        );
     }
 );
 app.Run();

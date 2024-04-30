@@ -37,9 +37,9 @@ public class UpdatePlantEndpointSwagger : Summary<UpdatePlantEndpoint>
         ExampleRequest = new UpdatePlantRequest
         {
             Id = TsidCreator.GetTsid().ToString(),
-            CapacityDc = 100.5m,
-            CapacityAc = 200.5m,
-            StorageCapacity = 300.5m,
+            CapacityDc = 100.5,
+            CapacityAc = 200.5,
+            StorageCapacity = 300.5,
             ProjectCompany = "Project Company",
             UtilityCompany = "Utility Company",
             Voltage = 400,

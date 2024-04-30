@@ -13,9 +13,9 @@ public class UpdatePlantCommand : IRequest<Result>
 public record UpdatePlantRequest
 {
     public string Id { get; set; }
-    public decimal CapacityDc { get; init; }
-    public decimal CapacityAc { get; init; }
-    public decimal StorageCapacity { get; init; }
+    public double CapacityDc { get; init; }
+    public double CapacityAc { get; init; }
+    public double StorageCapacity { get; init; }
     public string ProjectCompany { get; init; }
     public string UtilityCompany { get; init; }
     public int Voltage { get; init; }

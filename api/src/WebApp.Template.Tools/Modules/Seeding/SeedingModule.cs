@@ -40,7 +40,6 @@ public static class SeedingModule
         {
             // Load identity related data
             await IdentitySeed.SeedUsers(db, uuidGenerator, cryptoService);
-
             // Load first to avoid FK constraint errors
             await LocationSeed.SeedLocations(db, uuidGenerator);
             await PlantTypeSeed.SeedPlantTypes(db, uuidGenerator);
@@ -57,7 +56,7 @@ public static class SeedingModule
         {
             await transaction.RollbackAsync();
 
-            return Result.CriticalError("Seeding failed. Exception:\n" + e.Message);
+            return Result.CriticalError("Seeding failed. Exception:\n" + e.InnerException?.Message ?? e.Message);
         }
 
         return Result.Success();
