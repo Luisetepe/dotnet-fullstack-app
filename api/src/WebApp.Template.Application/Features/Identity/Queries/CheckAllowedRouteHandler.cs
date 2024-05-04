@@ -5,9 +5,13 @@ using WebApp.Template.Application.Data.DbContexts;
 
 namespace WebApp.Template.Application.Features.Identity.Queries.CheckAllowedRoute;
 
-public class CheckAllowedRouteHandler(WebAppDbContext dbContext) : IRequestHandler<CheckAllowedRouteQuery, Result>
+public class CheckAllowedRouteHandler(WebAppDbContext dbContext)
+    : IRequestHandler<CheckAllowedRouteQuery, Result>
 {
-    public async Task<Result> Handle(CheckAllowedRouteQuery query, CancellationToken cancellationToken)
+    public async Task<Result> Handle(
+        CheckAllowedRouteQuery query,
+        CancellationToken cancellationToken
+    )
     {
         var route = await dbContext
             .AppRoutes.Include(r => r.UserRoles)

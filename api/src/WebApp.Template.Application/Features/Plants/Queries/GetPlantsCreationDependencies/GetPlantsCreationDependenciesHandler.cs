@@ -6,7 +6,10 @@ using WebApp.Template.Application.Data.DbContexts;
 namespace WebApp.Template.Application.Features.Plants.Queries.GetPlantsCreationDependencies;
 
 public class GetPlantsCreationDependenciesHandler(WebAppDbContext dbContext)
-    : IRequestHandler<GetPlantsCreationDependenciesQuery, Result<GetPlantsCreationDependenciesResponse>>
+    : IRequestHandler<
+        GetPlantsCreationDependenciesQuery,
+        Result<GetPlantsCreationDependenciesResponse>
+    >
 {
     public async Task<Result<GetPlantsCreationDependenciesResponse>> Handle(
         GetPlantsCreationDependenciesQuery query,

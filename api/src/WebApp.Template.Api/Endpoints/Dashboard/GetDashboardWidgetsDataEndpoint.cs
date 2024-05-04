@@ -6,7 +6,8 @@ using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Api.Endpoints.Dashboard;
 
-public class GetDashboardWidgetsDataEndpoint(ISender mediator) : EndpointWithoutRequest<GetDashboardWidgetsDataResponse>
+public class GetDashboardWidgetsDataEndpoint(ISender mediator)
+    : EndpointWithoutRequest<GetDashboardWidgetsDataResponse>
 {
     public override void Configure()
     {

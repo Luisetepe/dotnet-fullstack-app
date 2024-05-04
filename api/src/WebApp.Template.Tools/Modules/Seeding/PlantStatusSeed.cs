@@ -6,7 +6,10 @@ namespace WebApp.Template.Tools.Modules.Seeding;
 
 public static class PlantStatusSeed
 {
-    public static async Task SeedPlantStatuses(WebAppDbContext db, IUniqueIdentifierService idService)
+    public static async Task SeedPlantStatuses(
+        WebAppDbContext db,
+        IUniqueIdentifierService idService
+    )
     {
         // Create 5 new PlantStatus entities
         PlantStatus[] plantStatuses =

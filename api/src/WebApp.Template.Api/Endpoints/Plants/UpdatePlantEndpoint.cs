@@ -62,7 +62,10 @@ public class UpdatePlantEndpointSwagger : Summary<UpdatePlantEndpoint>
                     ["id"] = ["The 'id' field is required."],
                     ["capacityDc"] = ["The 'capacityDc' field must be greater than or equal to 0."],
                     ["capacityAc"] = ["The 'capacityAc' field must be greater than or equal to 0."],
-                    ["storageCapacity"] = ["The 'storageCapacity' field must be greater than or equal to 0."],
+                    ["storageCapacity"] =
+                    [
+                        "The 'storageCapacity' field must be greater than or equal to 0."
+                    ],
                     ["projectCompany"] = ["The 'projectCompany' field is required."],
                     ["utilityCompany"] = ["The 'utilityCompany' field is required."],
                     ["voltage"] = ["The 'voltage' field must be greater than or equal to 0."],
@@ -75,6 +78,10 @@ public class UpdatePlantEndpointSwagger : Summary<UpdatePlantEndpoint>
                 }
             )
         );
-        Response(500, "An error occurred while updating the plant.", example: ExampleResponses.ExampleCriticalError);
+        Response(
+            500,
+            "An error occurred while updating the plant.",
+            example: ExampleResponses.ExampleCriticalError
+        );
     }
 }

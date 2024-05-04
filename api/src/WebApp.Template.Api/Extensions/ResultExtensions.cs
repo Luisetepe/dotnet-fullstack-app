@@ -6,11 +6,16 @@ namespace WebApp.Template.Api.Extensions;
 
 internal static class ResultExtensions
 {
-    internal static Microsoft.AspNetCore.Http.IResult ToApiResult(this Ardalis.Result.IResult result)
+    internal static Microsoft.AspNetCore.Http.IResult ToApiResult(
+        this Ardalis.Result.IResult result
+    )
     {
         return result.Status switch
         {
-            ResultStatus.Ok => typeof(Result).IsInstanceOfType(result) ? Results.Ok() : Results.Ok(result.GetValue()),
+            ResultStatus.Ok
+                => typeof(Result).IsInstanceOfType(result)
+                    ? Results.Ok()
+                    : Results.Ok(result.GetValue()),
             ResultStatus.NotFound => NotFoundEntity(result),
             ResultStatus.Unauthorized => Results.Unauthorized(),
             ResultStatus.Forbidden => Results.Forbid(),
@@ -19,11 +24,16 @@ internal static class ResultExtensions
             ResultStatus.Conflict => ConflictEntity(result),
             ResultStatus.Unavailable => UnavailableEntity(result),
             ResultStatus.CriticalError => CriticalEntity(result),
-            _ => throw new NotSupportedException($"Result {result.Status} conversion is not supported."),
+            _
+                => throw new NotSupportedException(
+                    $"Result {result.Status} conversion is not supported."
+                ),
         };
     }
 
-    private static Microsoft.AspNetCore.Http.IResult UnprocessableEntity(Ardalis.Result.IResult result)
+    private static Microsoft.AspNetCore.Http.IResult UnprocessableEntity(
+        Ardalis.Result.IResult result
+    )
     {
         var stringBuilder = new StringBuilder("Next error(s) occurred:");
         foreach (string error in result.Errors)
@@ -32,7 +42,11 @@ internal static class ResultExtensions
         }
 
         return Results.UnprocessableEntity(
-            new ProblemDetails { Title = "Something went wrong.", Detail = stringBuilder.ToString() }
+            new ProblemDetails
+            {
+                Title = "Something went wrong.",
+                Detail = stringBuilder.ToString()
+            }
         );
     }
 
@@ -47,7 +61,11 @@ internal static class ResultExtensions
             }
 
             return Results.NotFound(
-                new ProblemDetails { Title = "Resource not found.", Detail = stringBuilder.ToString() }
+                new ProblemDetails
+                {
+                    Title = "Resource not found.",
+                    Detail = stringBuilder.ToString()
+                }
             );
         }
 
@@ -65,7 +83,11 @@ internal static class ResultExtensions
             }
 
             return Results.Conflict(
-                new ProblemDetails { Title = "There was a conflict.", Detail = stringBuilder.ToString() }
+                new ProblemDetails
+                {
+                    Title = "There was a conflict.",
+                    Detail = stringBuilder.ToString()
+                }
             );
         }
 
@@ -95,7 +117,9 @@ internal static class ResultExtensions
         return Results.StatusCode(500);
     }
 
-    private static Microsoft.AspNetCore.Http.IResult UnavailableEntity(Ardalis.Result.IResult result)
+    private static Microsoft.AspNetCore.Http.IResult UnavailableEntity(
+        Ardalis.Result.IResult result
+    )
     {
         var stringBuilder = new StringBuilder("Next error(s) occurred:");
         if (result.Errors.Any())
@@ -118,7 +142,9 @@ internal static class ResultExtensions
         return Results.StatusCode(503);
     }
 
-    private static Microsoft.AspNetCore.Http.IResult ValidationErrorEntity(Ardalis.Result.IResult result)
+    private static Microsoft.AspNetCore.Http.IResult ValidationErrorEntity(
+        Ardalis.Result.IResult result
+    )
     {
         var details = new
         {

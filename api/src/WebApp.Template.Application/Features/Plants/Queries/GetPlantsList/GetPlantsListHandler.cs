@@ -36,7 +36,10 @@ public class GetPlantsListHandler(WebAppDbContext db)
                     PlantId = x.PlantId,
                     UtilityCompany = x.UtilityCompany,
                     Status = x.Status.Name,
-                    Tags = x.Tags.Split(',', StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries),
+                    Tags = x.Tags.Split(
+                        ',',
+                        StringSplitOptions.TrimEntries & StringSplitOptions.RemoveEmptyEntries
+                    ),
                     CapacityDc = x.CapacityDc,
                     Portfolios = x.Portfolios.Select(y => y.Name).ToArray()
                 })
@@ -67,7 +70,10 @@ public class GetPlantsListHandler(WebAppDbContext db)
             .Plants.Include(x => x.Status)
             .Include(x => x.Portfolios)
             .AsNoTracking()
-            .Where(x => string.IsNullOrWhiteSpace(query.Request.Search) || x.Name.Contains(query.Request.Search));
+            .Where(x =>
+                string.IsNullOrWhiteSpace(query.Request.Search)
+                || x.Name.Contains(query.Request.Search)
+            );
 
         if (!string.IsNullOrWhiteSpace(query.Request.OrderBy))
         {

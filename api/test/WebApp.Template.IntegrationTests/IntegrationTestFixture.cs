@@ -8,14 +8,14 @@ namespace WebApp.Template.IntegrationTests;
 
 public class IntegrationTestFixture : AppFixture<Program>
 {
+    private const string dbImage = "postgres:16-alpine";
+    private const string dbName = "webapp_template_test";
+
     private PostgreSqlContainer _postgres = null!;
 
     protected override async Task PreSetupAsync()
     {
-        _postgres = new PostgreSqlBuilder()
-            .WithImage("postgres:16-alpine")
-            .WithDatabase("webapp_template_test")
-            .Build();
+        _postgres = new PostgreSqlBuilder().WithImage(dbImage).WithDatabase(dbName).Build();
 
         await _postgres.StartAsync();
     }
@@ -44,11 +44,12 @@ public class IntegrationTestFixture : AppFixture<Program>
         );
     }
 
-    // protected override async Task TearDownAsync()
-    // {
-    // do cleanups here for every test class
+    protected override Task TearDownAsync()
+    {
+        // do cleanups here for every test class
 
-    // }
+        return Task.CompletedTask;
+    }
 
     public WebAppDbContext GetDbContext()
     {

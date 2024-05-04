@@ -56,7 +56,9 @@ public static class SeedingModule
         {
             await transaction.RollbackAsync();
 
-            return Result.CriticalError("Seeding failed. Exception:\n" + e.InnerException?.Message ?? e.Message);
+            return Result.CriticalError(
+                "Seeding failed. Exception:\n" + e.InnerException?.Message ?? e.Message
+            );
         }
 
         return Result.Success();

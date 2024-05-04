@@ -47,12 +47,16 @@ public class UpdatePlantRequestValidator : Validator<UpdatePlantRequest>
             .NotEmpty()
             .WithMessage("The 'projectCompany' field is required.")
             .MaximumLength(100)
-            .WithMessage("The 'projectCompany' field must be less than or equal to 100 characters.");
+            .WithMessage(
+                "The 'projectCompany' field must be less than or equal to 100 characters."
+            );
         RuleFor(p => p.UtilityCompany)
             .NotEmpty()
             .WithMessage("The 'utilityCompany' field is required.")
             .MaximumLength(100)
-            .WithMessage("The 'utilityCompany' field must be less than or equal to 100 characters.");
+            .WithMessage(
+                "The 'utilityCompany' field must be less than or equal to 100 characters."
+            );
         RuleFor(p => p.Voltage)
             .GreaterThanOrEqualTo(0)
             .WithMessage("The 'voltage' field must be greater than or equal to 0.");
@@ -71,7 +75,9 @@ public class UpdatePlantRequestValidator : Validator<UpdatePlantRequest>
             .When(p => p.Notes != null)
             .WithMessage("The 'notes' field must be less than or equal to 500 characters.");
         RuleFor(p => p.PlantTypeId).NotEmpty().WithMessage("The 'plantTypeId' field is required.");
-        RuleFor(p => p.ResourceTypeId).NotEmpty().WithMessage("The 'resourceTypeId' field is required.");
+        RuleFor(p => p.ResourceTypeId)
+            .NotEmpty()
+            .WithMessage("The 'resourceTypeId' field is required.");
         RuleFor(p => p.StatusId).NotEmpty().WithMessage("The 'statusId' field is required.");
         RuleFor(p => p.LocationId).NotEmpty().WithMessage("The 'locationId' field is required.");
     }

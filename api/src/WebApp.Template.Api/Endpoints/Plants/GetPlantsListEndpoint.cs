@@ -7,7 +7,8 @@ using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Api.Endpoints.Plants;
 
-public class GetPlantsListEndpoint(ISender mediator) : Endpoint<GetPlantsListRequest, GetPlantsListResponse>
+public class GetPlantsListEndpoint(ISender mediator)
+    : Endpoint<GetPlantsListRequest, GetPlantsListResponse>
 {
     public override void Configure()
     {

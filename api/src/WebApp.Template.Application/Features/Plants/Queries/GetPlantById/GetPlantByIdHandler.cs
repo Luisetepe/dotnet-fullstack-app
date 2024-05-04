@@ -8,7 +8,10 @@ namespace WebApp.Template.Application.Features.Plants.Queries.GetPlantById;
 public class GetPlantByIdHandler(WebAppDbContext dbContext)
     : IRequestHandler<GetPlantByIdQuery, Result<GetPlantByIdResponse>>
 {
-    public async Task<Result<GetPlantByIdResponse>> Handle(GetPlantByIdQuery query, CancellationToken cancellationToken)
+    public async Task<Result<GetPlantByIdResponse>> Handle(
+        GetPlantByIdQuery query,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -49,8 +52,16 @@ public class GetPlantByIdHandler(WebAppDbContext dbContext)
                     Id = plant.ResourceType.Id,
                     Name = plant.ResourceType.Name
                 },
-                Status = new GetPlantByIdResponse.Dependency { Id = plant.Status.Id, Name = plant.Status.Name },
-                Location = new GetPlantByIdResponse.Dependency { Id = plant.Location.Id, Name = plant.Location.Name },
+                Status = new GetPlantByIdResponse.Dependency
+                {
+                    Id = plant.Status.Id,
+                    Name = plant.Status.Name
+                },
+                Location = new GetPlantByIdResponse.Dependency
+                {
+                    Id = plant.Location.Id,
+                    Name = plant.Location.Name
+                },
                 Portfolios = plant
                     .Portfolios.Select(portfolio => new GetPlantByIdResponse.Dependency
                     {

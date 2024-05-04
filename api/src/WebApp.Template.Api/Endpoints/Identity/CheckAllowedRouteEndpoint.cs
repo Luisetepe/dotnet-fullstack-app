@@ -15,7 +15,10 @@ public class CheckAllowedRouteEndpoint(ISender mediator) : Endpoint<CheckAllowed
 
     public override async Task HandleAsync(CheckAllowedRouteRequest req, CancellationToken ct)
     {
-        var response = await mediator.Send(new CheckAllowedRouteQuery { Request = req, User = User }, ct);
+        var response = await mediator.Send(
+            new CheckAllowedRouteQuery { Request = req, User = User },
+            ct
+        );
 
         await SendResultAsync(response.ToApiResult());
     }
@@ -33,7 +36,9 @@ public class CheckAllowedRouteEndpointSwagger : Summary<CheckAllowedRouteEndpoin
         Response(
             400,
             "The route is not valid.",
-            example: ExampleResponses.ExampleValidaitonError(new() { ["Route"] = ["The 'route' field is required."] })
+            example: ExampleResponses.ExampleValidaitonError(
+                new() { ["Route"] = ["The 'route' field is required."] }
+            )
         );
         Response(
             500,

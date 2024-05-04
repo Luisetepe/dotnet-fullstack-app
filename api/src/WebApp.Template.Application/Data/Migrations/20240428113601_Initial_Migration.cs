@@ -169,7 +169,10 @@ namespace WebApp.Template.Application.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_app_route_user_role", x => new { x.role_routes_id, x.user_roles_id });
+                    table.PrimaryKey(
+                        "pk_app_route_user_role",
+                        x => new { x.role_routes_id, x.user_roles_id }
+                    );
                     table.ForeignKey(
                         name: "fk_app_route_user_role_app_routes_role_routes_id",
                         column: x => x.role_routes_id,
@@ -220,7 +223,10 @@ namespace WebApp.Template.Application.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_plant_portfolio", x => new { x.plants_id, x.portfolios_id });
+                    table.PrimaryKey(
+                        "pk_plant_portfolio",
+                        x => new { x.plants_id, x.portfolios_id }
+                    );
                     table.ForeignKey(
                         name: "fk_plant_portfolio_plants_plants_id",
                         column: x => x.plants_id,
@@ -266,7 +272,12 @@ namespace WebApp.Template.Application.Data.Migrations
                 column: "user_roles_id"
             );
 
-            migrationBuilder.CreateIndex(name: "ix_app_routes_path", table: "app_routes", column: "path", unique: true);
+            migrationBuilder.CreateIndex(
+                name: "ix_app_routes_path",
+                table: "app_routes",
+                column: "path",
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_plant_portfolio_portfolios_id",
@@ -274,11 +285,24 @@ namespace WebApp.Template.Application.Data.Migrations
                 column: "portfolios_id"
             );
 
-            migrationBuilder.CreateIndex(name: "ix_plants_location_id", table: "plants", column: "location_id");
+            migrationBuilder.CreateIndex(
+                name: "ix_plants_location_id",
+                table: "plants",
+                column: "location_id"
+            );
 
-            migrationBuilder.CreateIndex(name: "ix_plants_name", table: "plants", column: "name", unique: true);
+            migrationBuilder.CreateIndex(
+                name: "ix_plants_name",
+                table: "plants",
+                column: "name",
+                unique: true
+            );
 
-            migrationBuilder.CreateIndex(name: "ix_plants_plant_type_id", table: "plants", column: "plant_type_id");
+            migrationBuilder.CreateIndex(
+                name: "ix_plants_plant_type_id",
+                table: "plants",
+                column: "plant_type_id"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_plants_resource_type_id",
@@ -286,15 +310,37 @@ namespace WebApp.Template.Application.Data.Migrations
                 column: "resource_type_id"
             );
 
-            migrationBuilder.CreateIndex(name: "ix_plants_status_id", table: "plants", column: "status_id");
+            migrationBuilder.CreateIndex(
+                name: "ix_plants_status_id",
+                table: "plants",
+                column: "status_id"
+            );
 
-            migrationBuilder.CreateIndex(name: "ix_user_roles_name", table: "user_roles", column: "name", unique: true);
+            migrationBuilder.CreateIndex(
+                name: "ix_user_roles_name",
+                table: "user_roles",
+                column: "name",
+                unique: true
+            );
 
-            migrationBuilder.CreateIndex(name: "ix_user_sessions_user_id", table: "user_sessions", column: "user_id");
+            migrationBuilder.CreateIndex(
+                name: "ix_user_sessions_user_id",
+                table: "user_sessions",
+                column: "user_id"
+            );
 
-            migrationBuilder.CreateIndex(name: "ix_users_email", table: "users", column: "email", unique: true);
+            migrationBuilder.CreateIndex(
+                name: "ix_users_email",
+                table: "users",
+                column: "email",
+                unique: true
+            );
 
-            migrationBuilder.CreateIndex(name: "ix_users_role_id", table: "users", column: "role_id");
+            migrationBuilder.CreateIndex(
+                name: "ix_users_role_id",
+                table: "users",
+                column: "role_id"
+            );
         }
 
         /// <inheritdoc />

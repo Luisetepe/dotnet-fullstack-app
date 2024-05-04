@@ -22,8 +22,18 @@ public static class IdentitySeed
         AppRoute[] roleRoutes =
         [
             AppRoute.CreateUserRoleRoute(idService.Create(), "Dashboard", "/home/dashboard", roles),
-            AppRoute.CreateUserRoleRoute(idService.Create(), "Locations", "/home/assets/locations", roles),
-            AppRoute.CreateUserRoleRoute(idService.Create(), "Plants", "/home/assets/plants", [roles[0]]),
+            AppRoute.CreateUserRoleRoute(
+                idService.Create(),
+                "Locations",
+                "/home/assets/locations",
+                roles
+            ),
+            AppRoute.CreateUserRoleRoute(
+                idService.Create(),
+                "Plants",
+                "/home/assets/plants",
+                [roles[0]]
+            ),
         ];
 
         User[] users = Enumerable

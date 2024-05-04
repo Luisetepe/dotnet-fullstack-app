@@ -15,7 +15,8 @@ public record SignInUserApiResponse
     public string Email { get; init; }
 }
 
-public class SignInUserEndpoint(ISender mediator) : Endpoint<SignInUserRequest, SignInUserApiResponse>
+public class SignInUserEndpoint(ISender mediator)
+    : Endpoint<SignInUserRequest, SignInUserApiResponse>
 {
     public override void Configure()
     {
@@ -60,7 +61,11 @@ public class SignInUserEndpointSwagger : Summary<SignInUserEndpoint>
     {
         Summary = "Signs in a user.";
         Description = "This endpoint is used to sign in a user.";
-        ExampleRequest = new SignInUserRequest { Email = "example@domain.com", Password = "password" };
+        ExampleRequest = new SignInUserRequest
+        {
+            Email = "example@domain.com",
+            Password = "password"
+        };
         Response(
             200,
             "Success",
@@ -83,6 +88,10 @@ public class SignInUserEndpointSwagger : Summary<SignInUserEndpoint>
                 }
             )
         );
-        Response(500, "An error occurred while signing in the user.", example: ExampleResponses.ExampleCriticalError);
+        Response(
+            500,
+            "An error occurred while signing in the user.",
+            example: ExampleResponses.ExampleCriticalError
+        );
     }
 }

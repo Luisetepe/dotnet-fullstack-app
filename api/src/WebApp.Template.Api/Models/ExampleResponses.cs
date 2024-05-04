@@ -27,7 +27,9 @@ public static class ExampleResponses
             }
         };
 
-    public static ErrorResponse ExampleValidaitonError(Dictionary<string, List<string>> validationErrors)
+    public static ErrorResponse ExampleValidaitonError(
+        Dictionary<string, List<string>> validationErrors
+    )
     {
         return new ErrorResponse
         {

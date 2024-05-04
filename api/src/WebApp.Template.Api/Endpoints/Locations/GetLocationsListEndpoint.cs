@@ -7,7 +7,8 @@ using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Endpoints.Locations.GetLocationsList;
 
-public class GetLocationsListEndpoint(ISender mediator) : Endpoint<GetLocationsListRequest, GetLocationsListResponse>
+public class GetLocationsListEndpoint(ISender mediator)
+    : Endpoint<GetLocationsListRequest, GetLocationsListResponse>
 {
     public override void Configure()
     {

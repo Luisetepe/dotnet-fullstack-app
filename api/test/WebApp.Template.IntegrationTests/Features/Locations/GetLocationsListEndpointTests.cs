@@ -4,7 +4,8 @@ using WebApp.Template.Endpoints.Locations.GetLocationsList;
 
 namespace WebApp.Template.IntegrationTests.Features.Locations;
 
-public class GetLocationsListEndpointTests(IntegrationTestFixture fixture) : TestBase<IntegrationTestFixture>
+public class GetLocationsListEndpointTests(IntegrationTestFixture fixture)
+    : TestBase<IntegrationTestFixture>
 {
     [Theory]
     [InlineData(1, 5, "name", "asc", "Loc")]
@@ -21,7 +22,46 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture) : Tes
         string search
     )
     {
-        //Arrange
+        // Arrange
+        var expectedLocations = await GetExpectedSearchResult(
+            page,
+            pageSize,
+            sortBy,
+            sortDirection,
+            search
+        );
+
+        // Act
+        var (httpResponse, result) = await fixture.Client.GETAsync<
+            GetLocationsListEndpoint,
+            GetLocationsListRequest,
+            GetLocationsListResponse
+        >(
+            new GetLocationsListRequest
+            {
+                PageNumber = page,
+                PageSize = pageSize,
+                OrderBy = sortBy,
+                Order = sortDirection,
+                Search = search
+            }
+        );
+
+        // Assert
+        httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        result.Should().NotBeNull();
+        result.Locations.Should().BeEquivalentTo(expectedLocations);
+    }
+
+    private async Task<GetLocationsListResponse.Location[]> GetExpectedSearchResult(
+        int page,
+        int pageSize,
+        string sortBy,
+        string sortDirection,
+        string search
+    )
+    {
         var db = fixture.GetDbContext();
         var locationsQuery = db
             .Locations.AsNoTracking()
@@ -49,7 +89,9 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture) : Tes
                     : locationsQuery.OrderByDescending(x => x.Longitude).ThenBy(x => x.Id);
         }
 
-        var expectedLocations = (await locationsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync())
+        var expectedLocations = (
+            await locationsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToArrayAsync()
+        )
             .Select(x => new GetLocationsListResponse.Location
             {
                 Id = x.Id,
@@ -59,26 +101,6 @@ public class GetLocationsListEndpointTests(IntegrationTestFixture fixture) : Tes
             })
             .ToArray();
 
-        // Act
-        var (httpResponse, result) = await fixture.Client.GETAsync<
-            GetLocationsListEndpoint,
-            GetLocationsListRequest,
-            GetLocationsListResponse
-        >(
-            new GetLocationsListRequest
-            {
-                PageNumber = page,
-                PageSize = pageSize,
-                OrderBy = sortBy,
-                Order = sortDirection,
-                Search = search
-            }
-        );
-
-        // Assert
-        httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        result.Should().NotBeNull();
-        result.Locations.Should().BeEquivalentTo(expectedLocations);
+        return expectedLocations;
     }
 }

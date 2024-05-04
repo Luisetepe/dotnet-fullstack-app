@@ -18,7 +18,10 @@ public class GetDashboardWidgetsDataHandler(WebAppDbContext db)
             var locations = await db.Locations.CountAsync(cancellationToken);
             var plants = await db.Plants.CountAsync(cancellationToken);
             var solarCapacity = await db.Plants.SumAsync(p => p.CapacityDc, cancellationToken);
-            var storageCapacity = await db.Plants.SumAsync(p => p.StorageCapacity, cancellationToken);
+            var storageCapacity = await db.Plants.SumAsync(
+                p => p.StorageCapacity,
+                cancellationToken
+            );
 
             var response = new GetDashboardWidgetsDataResponse
             {

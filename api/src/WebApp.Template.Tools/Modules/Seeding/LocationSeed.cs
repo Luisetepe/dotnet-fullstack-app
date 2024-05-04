@@ -10,7 +10,12 @@ public static class LocationSeed
     public static async Task SeedLocations(WebAppDbContext db, IUniqueIdentifierService idService)
     {
         var locationsFaker = new Faker<Location>().CustomInstantiator(f =>
-            Location.CreateLocation(idService.Create(), f.Address.City(), f.Address.Longitude(), f.Address.Latitude())
+            Location.CreateLocation(
+                idService.Create(),
+                f.Address.City(),
+                f.Address.Longitude(),
+                f.Address.Latitude()
+            )
         );
 
         // Create 5 new Location entities

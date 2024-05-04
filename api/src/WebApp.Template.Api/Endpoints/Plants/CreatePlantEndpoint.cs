@@ -7,7 +7,8 @@ using WebApp.Template.Application.Shared.Models;
 
 namespace WebApp.Template.Endpoints.Plants.CreatePlant;
 
-public class CreatePlantEndpoint(ISender mediator) : Endpoint<CreatePlantRequest, CreatePlantResponse>
+public class CreatePlantEndpoint(ISender mediator)
+    : Endpoint<CreatePlantRequest, CreatePlantResponse>
 {
     public override void Configure()
     {
@@ -99,6 +100,10 @@ public class CreatePlantEndpointSwagger : Summary<CreatePlantEndpoint>
                 }
             )
         );
-        Response(500, "An error occurred while creating the plant.", example: ExampleResponses.ExampleCriticalError);
+        Response(
+            500,
+            "An error occurred while creating the plant.",
+            example: ExampleResponses.ExampleCriticalError
+        );
     }
 }
