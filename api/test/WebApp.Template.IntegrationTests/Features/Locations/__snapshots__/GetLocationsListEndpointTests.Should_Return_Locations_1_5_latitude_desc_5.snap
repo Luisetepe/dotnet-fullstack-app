@@ -1,0 +1,16 @@
+﻿{
+  "Locations": [
+    {
+      "Id": "0G5GJEPTMF4G8",
+      "Name": "Location 5",
+      "Longitude": 78.947586,
+      "Latitude": -43.058302
+    }
+  ],
+  "Pagination": {
+    "CurrentPageNumber": 1,
+    "CurrentPageSize": 5,
+    "TotalRows": 1,
+    "TotalPages": 1
+  }
+}

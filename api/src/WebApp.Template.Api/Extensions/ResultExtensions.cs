@@ -16,6 +16,7 @@ internal static class ResultExtensions
                 => typeof(Result).IsInstanceOfType(result)
                     ? Results.Ok()
                     : Results.Ok(result.GetValue()),
+            ResultStatus.Created => Results.Created((string?)null, result.GetValue()),
             ResultStatus.NotFound => NotFoundEntity(result),
             ResultStatus.Unauthorized => Results.Unauthorized(),
             ResultStatus.Forbidden => Results.Forbid(),

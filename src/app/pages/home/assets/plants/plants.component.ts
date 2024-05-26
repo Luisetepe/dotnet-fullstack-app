@@ -1,7 +1,7 @@
 import { environment } from '@/environments/environment'
-import { PaginationInfo, SearchRequest } from '@/lib/services/backend-api.service'
+import type { PaginationInfo, SearchRequest } from '@/lib/services/backend-api.service'
 import { CommonModule } from '@angular/common'
-import { Component, OnDestroy, OnInit, inject } from '@angular/core'
+import { Component, type OnDestroy, type OnInit, inject } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { NzBadgeModule } from 'ng-zorro-antd/badge'
@@ -14,11 +14,11 @@ import { NzInputModule } from 'ng-zorro-antd/input'
 import { NzNotificationService } from 'ng-zorro-antd/notification'
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header'
 import { NzSelectModule } from 'ng-zorro-antd/select'
-import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table'
+import { NzTableModule, type NzTableQueryParams } from 'ng-zorro-antd/table'
 import { Subject, debounceTime, delay, finalize } from 'rxjs'
 import { PlantDrawerComponent } from './plant-drawer.component'
-import { PlantsResolverData } from './plants.resolver'
-import { PlantByIdDto, PlantGridDataDto, PlantsService } from './plants.service'
+import type { PlantsResolverData } from './plants.resolver'
+import { type PlantByIdDto, type PlantGridDataDto, PlantsService } from './plants.service'
 
 type PlantRow = PlantGridDataDto['plants'][0]
 
@@ -163,7 +163,6 @@ export class PlantsComponent implements OnInit, OnDestroy {
 
 					if (resetPagination) {
 						this.paginartionInfo = data.pagination
-						this.gridManuallyChanged = true
 					}
 				},
 				error: () => {

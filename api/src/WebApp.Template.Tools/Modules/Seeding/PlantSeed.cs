@@ -49,7 +49,7 @@ public static class PlantSeed
             )
         );
 
-        var plants = plantFaker.Generate(10000);
+        var plants = plantFaker.Generate(1000);
 
         await db.Plants.AddRangeAsync(plants);
 

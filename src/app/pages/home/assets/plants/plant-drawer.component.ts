@@ -26,6 +26,7 @@ import { NzFormModule } from 'ng-zorro-antd/form'
 import { NzGridModule } from 'ng-zorro-antd/grid'
 import { NzIconModule } from 'ng-zorro-antd/icon'
 import { NzInputModule } from 'ng-zorro-antd/input'
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number'
 import { NzSelectModule } from 'ng-zorro-antd/select'
 import { PlantByIdDto } from './plants.service'
 
@@ -41,6 +42,7 @@ import { PlantByIdDto } from './plants.service'
 		NzSelectModule,
 		NzDrawerModule,
 		NzGridModule,
+		NzInputNumberModule,
 		NzFormModule,
 		FormsModule,
 		ReactiveFormsModule

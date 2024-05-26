@@ -1,0 +1,89 @@
+﻿{
+  "Plants": [
+    {
+      "Id": "0G5GJEQ9WF6YK",
+      "Name": "Plant 2",
+      "PlantId": "PL02",
+      "UtilityCompany": "Company 2",
+      "Status": "Under construction",
+      "Tags": [
+        "TAG02",
+        "TAG03"
+      ],
+      "CapacityDc": 200.0,
+      "Portfolios": [
+        "Portfolio 2",
+        "Portfolio 3"
+      ]
+    },
+    {
+      "Id": "0G5GJEQ9WF6YN",
+      "Name": "Plant 4",
+      "PlantId": "PL04",
+      "UtilityCompany": "Company 4",
+      "Status": "Planned",
+      "Tags": [
+        "TAG04",
+        "TAG05"
+      ],
+      "CapacityDc": 300.0,
+      "Portfolios": [
+        "Portfolio 4",
+        "Portfolio 5"
+      ]
+    },
+    {
+      "Id": "0G5GJEQ9WF6YJ",
+      "Name": "Plant 1",
+      "PlantId": "PL01",
+      "UtilityCompany": "Company 1",
+      "Status": "Operational",
+      "Tags": [
+        "TAG01",
+        "TAG02"
+      ],
+      "CapacityDc": 100.0,
+      "Portfolios": [
+        "Portfolio 1",
+        "Portfolio 2"
+      ]
+    },
+    {
+      "Id": "0G5GJEQ9WF6YM",
+      "Name": "Plant 3",
+      "PlantId": "PL03",
+      "UtilityCompany": "Company 3",
+      "Status": "Decommissioned",
+      "Tags": [
+        "TAG03",
+        "TAG04"
+      ],
+      "CapacityDc": 200.0,
+      "Portfolios": [
+        "Portfolio 3",
+        "Portfolio 4"
+      ]
+    },
+    {
+      "Id": "0G5GJEQ9WF6YP",
+      "Name": "Plant 5",
+      "PlantId": "PL05",
+      "UtilityCompany": "Company 5",
+      "Status": "Closed",
+      "Tags": [
+        "TAG05",
+        "TAG01"
+      ],
+      "CapacityDc": 400.0,
+      "Portfolios": [
+        "Portfolio 5"
+      ]
+    }
+  ],
+  "Pagination": {
+    "CurrentPageNumber": 1,
+    "CurrentPageSize": 5,
+    "TotalRows": 5,
+    "TotalPages": 1
+  }
+}

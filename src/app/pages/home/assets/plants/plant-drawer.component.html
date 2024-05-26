@@ -1,6 +1,6 @@
 <nz-drawer
   [nzMaskClosable]="false"
-  [nzBodyStyle]="{ overflow: 'hidden' }"
+  [nzBodyStyle]="{ overflowX: 'hidden' }"
   [nzWidth]="720"
   [nzVisible]="drawerVisible()"
   [nzTitle]="drawerTitle()"
@@ -8,12 +8,13 @@
   (nzOnClose)="onCancelDrawer()">
   <form
     nz-form
+    class="space-y-4"
     id="editRowForm"
     *nzDrawerContent
     [formGroup]="editRowForm"
     (ngSubmit)="onSubmitDrawer()">
-    <div nz-row [nzGutter]="8">
-      <div nz-col nzSpan="12">
+    <div>
+      <div>
         <nz-form-item>
           <nz-form-label nzFor="name">Name</nz-form-label>
           <nz-form-control nzErrorTip="Plant name is mandatory">
@@ -25,7 +26,9 @@
           </nz-form-control>
         </nz-form-item>
       </div>
-      <div nz-col nzSpan="12">
+    </div>
+    <div>
+      <div>
         <nz-form-item>
           <nz-form-label nzFor="plantId">Plant ID</nz-form-label>
           <nz-form-control nzErrorTip="PlantID is mandatory">
@@ -38,19 +41,81 @@
         </nz-form-item>
       </div>
     </div>
-
-    <div nz-row [nzGutter]="8">
-      <nz-form-item>
-        <nz-form-label nzFor="name">Plant Type</nz-form-label>
-        <nz-form-control nzErrorTip="Plant Type name is mandatory">
-          <nz-select
-            nzShowSearch
-            nzAllowClear
-            nzPlaceHolder="Select a plant type">
-            <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
+    <div>
+      <div>
+        <nz-form-item>
+          <nz-form-label nzFor="name">Plant Type</nz-form-label>
+          <nz-form-control nzErrorTip="Plant Type name is mandatory">
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select a plant type">
+              <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div>
+      <div>
+        <nz-form-item>
+          <nz-form-label nzFor="name">Status</nz-form-label>
+          <nz-form-control nzErrorTip="Status name is mandatory">
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select a status">
+              <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div>
+      <div>
+        <nz-form-item>
+          <nz-form-label nzFor="tags">Tags</nz-form-label>
+          <nz-form-control nzErrorTip="Tags are mandatory">
+            <input
+              nz-input
+              id="tags"
+              formControlName="tags"
+              placeholder="please enter a tag" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row nzGutter="12">
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzFor="capacityAc">Capacity AC</nz-form-label>
+          <nz-form-control nzErrorTip="Capacity AC is mandatory">
+            <nz-input-number
+              class="w-full"
+              id="capacityAc"
+              formControlName="capacityAc"
+              placeholder="please enter a capacity"
+              [nzMin]="1"
+              [nzStep]="1">
+            </nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzFor="capacityAc">Capacity DC</nz-form-label>
+          <nz-form-control nzErrorTip="Capacity DC is mandatory">
+            <nz-input-number
+              class="w-full"
+              id="capacityDc"
+              formControlName="capacityDc"
+              placeholder="please enter a capacity"
+              [nzMin]="1"
+              [nzStep]="1">
+            </nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
     </div>
   </form>
 

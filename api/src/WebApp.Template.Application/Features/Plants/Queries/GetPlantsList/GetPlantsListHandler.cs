@@ -72,7 +72,7 @@ public class GetPlantsListHandler(WebAppDbContext db)
             .AsNoTracking()
             .Where(x =>
                 string.IsNullOrWhiteSpace(query.Request.Search)
-                || x.Name.Contains(query.Request.Search)
+                || x.Name.ToLower().Contains(query.Request.Search.ToLower())
             );
 
         if (!string.IsNullOrWhiteSpace(query.Request.OrderBy))
