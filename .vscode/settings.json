@@ -48,5 +48,8 @@
 		"api/**/bin": true,
 		"api/**/obj": true,
 		"**/.angular": true
-	}
+	},
+	"files.associations": {
+    "*.snap": "json"
+  }
 }
